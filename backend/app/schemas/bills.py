@@ -5,6 +5,8 @@ from decimal import Decimal
 
 from pydantic import BaseModel, Field, field_serializer
 
+from app.translation.lookup import CodeInfo
+
 
 class LineIn(BaseModel):
     code: str = Field(min_length=1, max_length=20)
@@ -43,3 +45,14 @@ class BillOut(BaseModel):
     lines: list[LineOut]
 
     model_config = {"from_attributes": True}
+
+
+class TranslatedLineOut(LineOut):
+    code_info: CodeInfo | None = None
+
+
+class TranslatedBillOut(BaseModel):
+    id: int
+    label: str | None
+    stated_subtotal: Decimal
+    lines: list[TranslatedLineOut]

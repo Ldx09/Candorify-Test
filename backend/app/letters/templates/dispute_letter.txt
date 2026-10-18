@@ -1,0 +1,28 @@
+$patient_name
+$patient_address
+
+$today
+
+$provider_name
+Billing Department
+$provider_address
+
+Re: Request for review of billing errors
+Account number: $account_number
+Date(s) of service: $date_of_service
+
+To the Billing Department,
+
+I have reviewed the itemized bill for the account listed above and found $issue_count_text that I believe $need_verb to be corrected:
+
+$issues
+
+Please review these charges, correct any errors, and send me an updated itemized bill. If you believe a charge is correct, please explain why in writing.
+
+While this review is in progress, please place this account on hold and do not send it to collections. I am happy to pay the correct amount once the bill has been reviewed.
+
+Thank you for your help.
+
+Sincerely,
+
+$patient_name

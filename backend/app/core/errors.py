@@ -49,6 +49,8 @@ def _message(err: dict) -> str:
         msg = f"{label} is too large"
     elif kind in ("decimal_parsing", "decimal_type", "int_parsing", "float_parsing"):
         msg = f"{label} must be a number"
+    elif kind == "literal_error":
+        msg = f"{label} must be one of: {ctx.get('expected')}"
     elif kind == "json_invalid":
         msg = "Request body is not valid JSON"
     else:

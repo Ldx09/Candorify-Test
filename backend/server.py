@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.deps import get_current_user
-from app.api.routes import auth, bills
+from app.api.routes import auth, bills, codes
 from app.core.config import settings
 from app.core.database import Base, check_connection, engine
 from app.core.errors import register_error_handlers
@@ -53,5 +53,5 @@ def me(user: User = Depends(get_current_user)):
 
 
 protected.include_router(bills.router)  # /api/bills, /api/bills/{id}, /api/bills/{id}/check
-
+protected.include_router(codes.router)  # /api/codes/{code}
 app.include_router(protected)

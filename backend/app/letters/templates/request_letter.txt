@@ -1,0 +1,32 @@
+$patient_name
+$patient_address
+
+$today
+
+$provider_name
+Billing Department
+$provider_address
+
+Re: Request for an itemized bill
+Account number: $account_number
+Date(s) of service: $date_of_service
+
+To the Billing Department,
+
+I am writing to request a complete itemized bill for the account listed above. Please include, for every charge:
+
+- the date of service
+- the billing code (CPT, HCPCS or revenue code)
+- a description of the service or item
+- the quantity and the unit price
+- the line total
+
+I would also like a copy of any payments and adjustments applied to this account.
+
+While I review the charges, please place this account on hold and do not send it to collections. I am not refusing to pay; I am asking to understand what I am being billed for.
+
+Please send the itemized bill to the address above. Thank you for your help.
+
+Sincerely,
+
+$patient_name
