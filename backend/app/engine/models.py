@@ -1,24 +1,11 @@
-"""Data model for a bill and the flag report the check engine produces."""
+"""The flag report the check engine produces. Bill and LineItem live in app/models/."""
 from decimal import Decimal
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
-
-class LineItem(BaseModel):
-    line_no: int
-    code: str  # kept as text: codes like "0250" have a leading zero
-    description: str
-    quantity: Decimal
-    unit_price: Decimal
-    line_total: Decimal  # the total printed on the bill (may be wrong; that's what we check)
-
-
-class Bill(BaseModel):
-    bill_id: str
-    lines: list[LineItem]
-    stated_subtotal: Decimal  # the subtotal printed on the bill
-
+from app.models.bill import Bill  # noqa: F401  (re-exported for convenience)
+from app.models.line_item import LineItem  # noqa: F401
 
 Rule = Literal["duplicate_line", "line_math", "subtotal_mismatch"]
 
@@ -32,7 +19,7 @@ class Flag(BaseModel):
     expected: Decimal | None = None
     actual: Decimal | None = None
     related_line_no: int | None = None  # for duplicates: the earlier line it repeats
-
+    line_numbers: list[int] = Field(default_factory=list)  # every line involved in this flag
 
 class FlagReport(BaseModel):
     bill_id: str

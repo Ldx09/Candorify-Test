@@ -1,10 +1,8 @@
-"""Deterministic check engine. Plain rules and arithmetic only: no AI in the error-finding step.
-
-Same bill in -> same flags out, every time.
-"""
+"""Arithmetic checks: line math (unit price x qty = line total) and subtotal (sum of lines)."""
 from decimal import Decimal
 
-from app.engine.models import Bill, Flag, FlagReport
+from app.engine.models import Bill, Flag
+from app.models.line_item import format_qty
 
 # Differences up to 1 cent are treated as rounding, not errors.
 TOLERANCE = Decimal("0.01")
@@ -12,27 +10,6 @@ TOLERANCE = Decimal("0.01")
 
 def _money(x: Decimal) -> str:
     return f"${x:,.2f}"
-
-
-def check_duplicates(bill: Bill) -> list[Flag]:
-    """Flags any line whose code already appeared earlier on the bill.
-    Matches on the code only, so the same code with different wording is still a duplicate."""
-    flags: list[Flag] = []
-    first_seen: dict[str, int] = {}
-    for line in bill.lines:
-        code = line.code.strip().upper()
-        if code in first_seen:
-            flags.append(Flag(
-                rule="duplicate_line",
-                line_no=line.line_no,
-                code=line.code,
-                related_line_no=first_seen[code],
-                message=(f"Line {line.line_no} repeats code {line.code} from line {first_seen[code]}. "
-                         f"You may have been charged twice for the same item."),
-            ))
-        else:
-            first_seen[code] = line.line_no
-    return flags
 
 
 def check_line_math(bill: Bill) -> list[Flag]:
@@ -45,9 +22,10 @@ def check_line_math(bill: Bill) -> list[Flag]:
                 rule="line_math",
                 line_no=line.line_no,
                 code=line.code,
+                line_numbers=[line.line_no],
                 expected=expected,
                 actual=line.line_total,
-                message=(f"Line {line.line_no} ({line.code}): {line.quantity} x {_money(line.unit_price)} "
+                message=(f"Line {line.line_no} ({line.code}): {format_qty(line.quantity)} x {_money(line.unit_price)} "
                          f"= {_money(expected)}, but the bill shows {_money(line.line_total)}."),
             ))
     return flags
@@ -67,9 +45,3 @@ def check_subtotal(bill: Bill) -> list[Flag]:
                      f"says {_money(bill.stated_subtotal)}."),
         )]
     return []
-
-
-def run_checks(bill: Bill) -> FlagReport:
-    """Runs every check on one bill and returns the flag report."""
-    flags = check_duplicates(bill) + check_line_math(bill) + check_subtotal(bill)
-    return FlagReport(bill_id=bill.bill_id, flag_count=len(flags), flags=flags)

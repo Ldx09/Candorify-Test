@@ -1,0 +1,101 @@
+bill_id,defect_type,planted_error,true_sum_of_lines,stated_subtotal
+GEN-001,line_math,Line total != unit price x quantity on line 2 (96365),1462.00,1462.00
+GEN-002,duplicate,"Duplicate line: Pulse oximetry, single determination (94760)",4060.00,4060.00
+GEN-003,duplicate,"Duplicate line: Emergency department visit, level 4 (99284)",9561.00,9561.00
+GEN-004,mixed,Duplicate line AND line-total arithmetic error,4285.00,4285.00
+GEN-005,none,none,7083.00,7083.00
+GEN-006,none,none,1756.00,1756.00
+GEN-007,duplicate,"Duplicate line: IV infusion, initial hour (96365)",5234.00,5234.00
+GEN-008,none,none,10628.00,10628.00
+GEN-009,none,none,1017.00,1017.00
+GEN-010,subtotal,Stated subtotal does not equal sum of line totals,6579.00,6406.05
+GEN-011,subtotal,Stated subtotal does not equal sum of line totals,595.00,55.46
+GEN-012,none,none,7747.00,7747.00
+GEN-013,none,none,5103.00,5103.00
+GEN-014,duplicate,"Duplicate line: Pharmacy, general supplies (0250)",4185.00,4185.00
+GEN-015,line_math,Line total != unit price x quantity on line 4 (0250),3377.00,3377.00
+GEN-016,none,none,1955.00,1955.00
+GEN-017,subtotal,Stated subtotal does not equal sum of line totals,7366.00,6779.77
+GEN-018,line_math,Line total != unit price x quantity on line 6 (94760),2284.00,2284.00
+GEN-019,duplicate,"Duplicate line: Pulse oximetry, single determination (94760)",8400.00,8400.00
+GEN-020,line_math,Line total != unit price x quantity on line 4 (85025),6356.00,6356.00
+GEN-021,none,none,3921.00,3921.00
+GEN-022,duplicate,"Duplicate line: Ondansetron injection, 4 mg (J2405)",2788.00,2788.00
+GEN-023,line_math,Line total != unit price x quantity on line 3 (80053),3551.00,3551.00
+GEN-024,duplicate,"Duplicate line: Emergency department visit, level 4 (99284)",6246.00,6246.00
+GEN-025,none,none,6506.00,6506.00
+GEN-026,mixed,Duplicate line AND line-total arithmetic error,15270.00,15270.00
+GEN-027,subtotal,Stated subtotal does not equal sum of line totals,7119.00,7718.85
+GEN-028,duplicate,"Duplicate line: Pulse oximetry, single determination (94760)",2858.00,2858.00
+GEN-029,line_math,Line total != unit price x quantity on line 2 (80053),2110.00,2110.00
+GEN-030,subtotal,Stated subtotal does not equal sum of line totals,4240.00,3673.12
+GEN-031,subtotal,Stated subtotal does not equal sum of line totals,1105.00,951.59
+GEN-032,line_math,Line total != unit price x quantity on line 7 (0710),11067.00,11067.00
+GEN-033,mixed,Duplicate line AND line-total arithmetic error,6588.00,6588.00
+GEN-034,subtotal,Stated subtotal does not equal sum of line totals,6432.00,6381.20
+GEN-035,mixed,Duplicate line AND line-total arithmetic error,6049.00,6049.00
+GEN-036,mixed,Duplicate line AND line-total arithmetic error,10303.00,10303.00
+GEN-037,subtotal,Stated subtotal does not equal sum of line totals,9432.00,9113.78
+GEN-038,line_math,Line total != unit price x quantity on line 2 (96365),5088.00,5088.00
+GEN-039,none,none,6434.00,6434.00
+GEN-040,line_math,Line total != unit price x quantity on line 4 (0250),4770.00,4770.00
+GEN-041,duplicate,"Duplicate line: Sodium chloride 0.9% IV solution, 1000 mL (J7030)",6922.00,6922.00
+GEN-042,subtotal,Stated subtotal does not equal sum of line totals,6828.00,7086.37
+GEN-043,mixed,Duplicate line AND line-total arithmetic error,2505.00,2505.00
+GEN-044,none,none,7902.00,7902.00
+GEN-045,subtotal,Stated subtotal does not equal sum of line totals,12103.00,12338.28
+GEN-046,duplicate,Duplicate line: Complete blood count with differential (85025),11375.00,11375.00
+GEN-047,duplicate,"Duplicate line: Recovery room, per 30 minutes (0710)",3458.00,3458.00
+GEN-048,none,none,4904.00,4904.00
+GEN-049,line_math,Line total != unit price x quantity on line 6 (J2405),4489.00,4489.00
+GEN-050,mixed,Duplicate line AND line-total arithmetic error,9093.00,9093.00
+GEN-051,mixed,Duplicate line AND line-total arithmetic error,5367.00,5367.00
+GEN-052,duplicate,Duplicate line: Complete blood count with differential (85025),915.00,915.00
+GEN-053,line_math,Line total != unit price x quantity on line 5 (74177),8799.00,8799.00
+GEN-054,duplicate,"Duplicate line: Sodium chloride 0.9% IV solution, 1000 mL (J7030)",994.00,994.00
+GEN-055,duplicate,"Duplicate line: Pulse oximetry, single determination (94760)",10578.00,10578.00
+GEN-056,subtotal,Stated subtotal does not equal sum of line totals,1912.00,1691.60
+GEN-057,subtotal,Stated subtotal does not equal sum of line totals,1672.00,1847.41
+GEN-058,subtotal,Stated subtotal does not equal sum of line totals,1667.00,2016.76
+GEN-059,line_math,Line total != unit price x quantity on line 4 (99284),11933.00,11933.00
+GEN-060,line_math,Line total != unit price x quantity on line 5 (80053),8142.00,8142.00
+GEN-061,mixed,Duplicate line AND line-total arithmetic error,6282.00,6282.00
+GEN-062,none,none,2039.00,2039.00
+GEN-063,duplicate,"Duplicate line: Sodium chloride 0.9% IV solution, 1000 mL (J7030)",5834.00,5834.00
+GEN-064,line_math,Line total != unit price x quantity on line 2 (74177),7795.00,7795.00
+GEN-065,line_math,Line total != unit price x quantity on line 4 (74177),7270.00,7270.00
+GEN-066,mixed,Duplicate line AND line-total arithmetic error,1405.00,1405.00
+GEN-067,mixed,Duplicate line AND line-total arithmetic error,5443.00,5443.00
+GEN-068,subtotal,Stated subtotal does not equal sum of line totals,4931.00,5393.40
+GEN-069,none,none,8091.00,8091.00
+GEN-070,none,none,5670.00,5670.00
+GEN-071,none,none,10413.00,10413.00
+GEN-072,none,none,1200.00,1200.00
+GEN-073,line_math,Line total != unit price x quantity on line 7 (94760),2162.00,2162.00
+GEN-074,subtotal,Stated subtotal does not equal sum of line totals,13597.00,13516.00
+GEN-075,subtotal,Stated subtotal does not equal sum of line totals,6140.00,6038.40
+GEN-076,mixed,Duplicate line AND line-total arithmetic error,2751.00,2751.00
+GEN-077,none,none,396.00,396.00
+GEN-078,duplicate,"Duplicate line: Sodium chloride 0.9% IV solution, 1000 mL (J7030)",6828.00,6828.00
+GEN-079,mixed,Duplicate line AND line-total arithmetic error,7626.00,7626.00
+GEN-080,line_math,Line total != unit price x quantity on line 1 (0250),2983.00,2983.00
+GEN-081,mixed,Duplicate line AND line-total arithmetic error,5819.00,5819.00
+GEN-082,mixed,Duplicate line AND line-total arithmetic error,4743.00,4743.00
+GEN-083,line_math,Line total != unit price x quantity on line 5 (96365),1399.00,1399.00
+GEN-084,subtotal,Stated subtotal does not equal sum of line totals,1068.00,1300.12
+GEN-085,line_math,Line total != unit price x quantity on line 1 (J2405),4814.00,4814.00
+GEN-086,mixed,Duplicate line AND line-total arithmetic error,4758.00,4758.00
+GEN-087,mixed,Duplicate line AND line-total arithmetic error,3978.00,3978.00
+GEN-088,none,none,3985.00,3985.00
+GEN-089,duplicate,Duplicate line: Comprehensive metabolic panel (80053),5330.00,5330.00
+GEN-090,mixed,Duplicate line AND line-total arithmetic error,8237.00,8237.00
+GEN-091,duplicate,"Duplicate line: Recovery room, per 30 minutes (0710)",8809.00,8809.00
+GEN-092,subtotal,Stated subtotal does not equal sum of line totals,10005.00,10381.16
+GEN-093,line_math,Line total != unit price x quantity on line 4 (0250),2619.00,2619.00
+GEN-094,subtotal,Stated subtotal does not equal sum of line totals,10119.00,10414.52
+GEN-095,duplicate,Duplicate line: Complete blood count with differential (85025),12929.00,12929.00
+GEN-096,none,none,8451.00,8451.00
+GEN-097,mixed,Duplicate line AND line-total arithmetic error,12531.00,12531.00
+GEN-098,subtotal,Stated subtotal does not equal sum of line totals,8839.00,8401.82
+GEN-099,mixed,Duplicate line AND line-total arithmetic error,5287.00,5287.00
+GEN-100,duplicate,"Duplicate line: Emergency department visit, level 4 (99284)",6830.00,6830.00

@@ -1,21 +1,46 @@
-"""Loads bills from the synthetic-bills CSV format:
+"""Reads synthetic bills from CSV or PDF into Bill / LineItem objects.
 
-bill_id,line_no,description,code,quantity,unit_price,line_total
-BILL-001,1,"Surgical dressing, sterile",A6402,1,22.00,22.00
-BILL-001,,STATED SUBTOTAL,,,,2177.00
+    load_bills("data/synthetic_bills.csv")   # or .pdf, picked by file extension
+
+CSV format:
+    bill_id,line_no,description,code,quantity,unit_price,line_total
+    BILL-001,1,"Surgical dressing, sterile",A6402,1,22.00,22.00
+    BILL-001,,STATED SUBTOTAL,,,,2177.00
+
+PDF format (one itemized statement per bill):
+    Account #: BILL-001 ...
+    Code Description Qty Unit price Line total
+    A6402 Surgical dressing, sterile 1 $22.00 $22.00
+    Total charges $2,177.00
 """
 import csv
+import re
 from decimal import Decimal
 from pathlib import Path
 
-from app.engine.models import Bill, LineItem
+import pdfplumber
+
+from app.models.bill import Bill
+from app.models.line_item import LineItem
 
 
-def load_bills(csv_path: str | Path) -> list[Bill]:
+def load_bills(path: str | Path) -> list[Bill]:
+    path = Path(path)
+    suffix = path.suffix.lower()
+    if suffix == ".csv":
+        return load_bills_csv(path)
+    if suffix == ".pdf":
+        return load_bills_pdf(path)
+    raise ValueError(f"Unsupported bill file type '{suffix}'. Use .csv or .pdf")
+
+
+# ---------- CSV ----------
+
+def load_bills_csv(path: str | Path) -> list[Bill]:
     lines_by_bill: dict[str, list[LineItem]] = {}
     subtotal_by_bill: dict[str, Decimal] = {}
 
-    with open(csv_path, newline="", encoding="utf-8") as f:
+    with open(path, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             bill_id = row["bill_id"].strip()
             lines_by_bill.setdefault(bill_id, [])
@@ -34,6 +59,71 @@ def load_bills(csv_path: str | Path) -> list[Bill]:
     missing = [b for b in lines_by_bill if b not in subtotal_by_bill]
     if missing:
         raise ValueError(f"No STATED SUBTOTAL row for: {', '.join(missing)}")
+
+    return [Bill(bill_id=b, lines=lines, stated_subtotal=subtotal_by_bill[b])
+            for b, lines in lines_by_bill.items()]
+
+
+# ---------- PDF ----------
+
+_MONEY = r"\$?(-?[\d,]+\.\d{2})"
+_ACCOUNT = re.compile(r"Account #:\s*(\S+)")
+_HEADER = re.compile(r"^Code\s+Description\s+Qty\s+Unit price\s+Line total$", re.IGNORECASE)
+_LINE = re.compile(rf"^(\S+)\s+(.+?)\s+(\d+(?:\.\d+)?)\s+{_MONEY}\s+{_MONEY}$")
+_TOTAL = re.compile(rf"^Total charges\s+{_MONEY}$", re.IGNORECASE)
+
+
+def _money(text: str) -> Decimal:
+    return Decimal(text.replace(",", ""))
+
+
+def load_bills_pdf(path: str | Path) -> list[Bill]:
+    """Each bill starts at an 'Account #:' line, lists charges under the column header,
+    and ends at 'Total charges'. A bill may continue across pages with the same Account #.
+    Any unreadable line inside the charges table stops loading with a clear error."""
+    lines_by_bill: dict[str, list[LineItem]] = {}
+    subtotal_by_bill: dict[str, Decimal] = {}
+
+    with pdfplumber.open(path) as pdf:
+        for page_no, page in enumerate(pdf.pages, start=1):
+            text = page.extract_text() or ""
+            bill_id = None
+            in_table = False
+            for raw in text.splitlines():
+                row = raw.strip()
+                if m := _ACCOUNT.search(row):
+                    bill_id = m[1]
+                    lines_by_bill.setdefault(bill_id, [])
+                    continue
+                if _HEADER.match(row):
+                    if bill_id is None:
+                        raise ValueError(f"Page {page_no}: charges table found before an 'Account #' line")
+                    in_table = True
+                    continue
+                if not in_table:
+                    continue
+                if m := _TOTAL.match(row):
+                    subtotal_by_bill[bill_id] = _money(m[1])
+                    in_table = False
+                    continue
+                m = _LINE.match(row)
+                if not m:
+                    raise ValueError(f"Page {page_no} ({bill_id}): could not read charge line: {row!r}")
+                lines = lines_by_bill[bill_id]
+                lines.append(LineItem(
+                    line_no=len(lines) + 1,
+                    code=m[1],
+                    description=m[2],
+                    quantity=Decimal(m[3]),
+                    unit_price=_money(m[4]),
+                    line_total=_money(m[5]),
+                ))
+
+    if not lines_by_bill:
+        raise ValueError("No bills found in PDF (no 'Account #' lines)")
+    missing = [b for b in lines_by_bill if b not in subtotal_by_bill]
+    if missing:
+        raise ValueError(f"No 'Total charges' line for: {', '.join(missing)}")
 
     return [Bill(bill_id=b, lines=lines, stated_subtotal=subtotal_by_bill[b])
             for b, lines in lines_by_bill.items()]

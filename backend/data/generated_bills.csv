@@ -1,0 +1,753 @@
+bill_id,line_no,description,code,quantity,unit_price,line_total
+GEN-001,1,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-001,2,"IV infusion, initial hour",96365,2,412.00,1020.00
+GEN-001,3,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-001,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-001,5,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-001,,STATED SUBTOTAL,,,,1462.00
+GEN-002,1,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-002,2,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-002,3,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-002,4,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-002,5,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-002,6,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-002,7,Pulse ox check,94760,1,38.00,38.00
+GEN-002,8,Complete blood count with differential,85025,3,96.00,288.00
+GEN-002,9,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-002,,STATED SUBTOTAL,,,,4060.00
+GEN-003,1,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-003,2,Complete blood count with differential,85025,3,96.00,288.00
+GEN-003,3,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-003,4,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-003,5,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-003,6,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-003,7,ER visit - level 4,99284,1,1450.00,1450.00
+GEN-003,8,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-003,,STATED SUBTOTAL,,,,9561.00
+GEN-004,1,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-004,2,"Surgical dressing, sterile",A6402,3,22.00,40.00
+GEN-004,3,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-004,4,Complete blood count with differential,85025,3,96.00,288.00
+GEN-004,5,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-004,6,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-004,7,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-004,8,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-004,9,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-004,,STATED SUBTOTAL,,,,4285.00
+GEN-005,1,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-005,2,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-005,3,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-005,4,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-005,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-005,6,Complete blood count with differential,85025,3,96.00,288.00
+GEN-005,7,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-005,,STATED SUBTOTAL,,,,7083.00
+GEN-006,1,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-006,2,Complete blood count with differential,85025,2,96.00,192.00
+GEN-006,3,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-006,4,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-006,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-006,,STATED SUBTOTAL,,,,1756.00
+GEN-007,1,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-007,2,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-007,3,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-007,4,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-007,5,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-007,,STATED SUBTOTAL,,,,5234.00
+GEN-008,1,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-008,2,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-008,3,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-008,4,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-008,5,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-008,,STATED SUBTOTAL,,,,10628.00
+GEN-009,1,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-009,2,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-009,3,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-009,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-009,5,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-009,,STATED SUBTOTAL,,,,1017.00
+GEN-010,1,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-010,2,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-010,3,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-010,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-010,5,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-010,6,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-010,7,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-010,,STATED SUBTOTAL,,,,6406.05
+GEN-011,1,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-011,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-011,3,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-011,4,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-011,5,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-011,,STATED SUBTOTAL,,,,55.46
+GEN-012,1,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-012,2,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-012,3,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-012,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-012,,STATED SUBTOTAL,,,,7747.00
+GEN-013,1,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-013,2,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-013,3,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-013,4,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-013,5,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-013,6,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-013,7,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-013,,STATED SUBTOTAL,,,,5103.00
+GEN-014,1,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-014,2,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-014,3,Complete blood count with differential,85025,3,96.00,288.00
+GEN-014,4,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-014,5,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-014,6,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-014,7,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-014,8,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-014,,STATED SUBTOTAL,,,,4185.00
+GEN-015,1,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-015,2,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-015,3,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-015,4,"Pharmacy, general supplies",0250,1,65.00,136.00
+GEN-015,,STATED SUBTOTAL,,,,3377.00
+GEN-016,1,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-016,2,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-016,3,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-016,4,Complete blood count with differential,85025,2,96.00,192.00
+GEN-016,5,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-016,,STATED SUBTOTAL,,,,1955.00
+GEN-017,1,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-017,2,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-017,3,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-017,4,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-017,5,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-017,6,Complete blood count with differential,85025,1,96.00,96.00
+GEN-017,,STATED SUBTOTAL,,,,6779.77
+GEN-018,1,Complete blood count with differential,85025,3,96.00,288.00
+GEN-018,2,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-018,3,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-018,4,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-018,5,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-018,6,"Pulse oximetry, single determination",94760,2,38.00,37.00
+GEN-018,,STATED SUBTOTAL,,,,2284.00
+GEN-019,1,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-019,2,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-019,3,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-019,4,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-019,5,Complete blood count with differential,85025,1,96.00,96.00
+GEN-019,6,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-019,7,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-019,,STATED SUBTOTAL,,,,8400.00
+GEN-020,1,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-020,2,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-020,3,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-020,4,Complete blood count with differential,85025,2,96.00,340.00
+GEN-020,5,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-020,6,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-020,,STATED SUBTOTAL,,,,6356.00
+GEN-021,1,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-021,2,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-021,3,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-021,4,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-021,,STATED SUBTOTAL,,,,3921.00
+GEN-022,1,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-022,2,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-022,3,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-022,4,Complete blood count with differential,85025,3,96.00,288.00
+GEN-022,5,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-022,6,Zofran inj 4mg,J2405,1,54.00,54.00
+GEN-022,,STATED SUBTOTAL,,,,2788.00
+GEN-023,1,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-023,2,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-023,3,Comprehensive metabolic panel,80053,2,118.00,52.00
+GEN-023,4,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-023,5,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-023,6,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-023,7,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-023,,STATED SUBTOTAL,,,,3551.00
+GEN-024,1,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-024,2,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-024,3,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-024,4,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-024,5,ER visit - level 4,99284,2,1450.00,2900.00
+GEN-024,,STATED SUBTOTAL,,,,6246.00
+GEN-025,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-025,2,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-025,3,Complete blood count with differential,85025,3,96.00,288.00
+GEN-025,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-025,5,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-025,,STATED SUBTOTAL,,,,6506.00
+GEN-026,1,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-026,2,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-026,3,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4776.00
+GEN-026,4,Complete blood count with differential,85025,2,96.00,192.00
+GEN-026,5,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-026,6,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-026,7,ER visit - level 4,99284,3,1450.00,4350.00
+GEN-026,8,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-026,9,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-026,,STATED SUBTOTAL,,,,15270.00
+GEN-027,1,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-027,2,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-027,3,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-027,4,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-027,5,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-027,6,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-027,7,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-027,,STATED SUBTOTAL,,,,7718.85
+GEN-028,1,Complete blood count with differential,85025,1,96.00,96.00
+GEN-028,2,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-028,3,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-028,4,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-028,5,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-028,6,Pulse ox check,94760,2,38.00,76.00
+GEN-028,7,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-028,8,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-028,9,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-028,,STATED SUBTOTAL,,,,2858.00
+GEN-029,1,Complete blood count with differential,85025,2,96.00,192.00
+GEN-029,2,Comprehensive metabolic panel,80053,3,118.00,277.00
+GEN-029,3,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-029,4,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-029,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-029,6,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-029,,STATED SUBTOTAL,,,,2110.00
+GEN-030,1,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-030,2,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-030,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-030,4,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-030,5,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-030,6,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-030,7,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-030,8,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-030,,STATED SUBTOTAL,,,,3673.12
+GEN-031,1,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-031,2,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-031,3,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-031,4,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-031,5,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-031,6,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-031,7,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-031,,STATED SUBTOTAL,,,,951.59
+GEN-032,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-032,2,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-032,3,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-032,4,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-032,5,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-032,6,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-032,7,"Recovery room, per 30 minutes",0710,3,340.00,1065.00
+GEN-032,8,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-032,,STATED SUBTOTAL,,,,11067.00
+GEN-033,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,113.00
+GEN-033,2,Complete blood count with differential,85025,2,96.00,192.00
+GEN-033,3,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-033,4,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-033,5,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-033,6,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-033,7,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-033,8,CMP lab panel,80053,1,118.00,118.00
+GEN-033,,STATED SUBTOTAL,,,,6588.00
+GEN-034,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-034,2,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-034,3,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-034,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-034,5,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-034,,STATED SUBTOTAL,,,,6381.20
+GEN-035,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-035,2,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-035,3,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-035,4,"Recovery room, per 30 minutes",0710,3,340.00,946.00
+GEN-035,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-035,6,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-035,7,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-035,8,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-035,,STATED SUBTOTAL,,,,6049.00
+GEN-036,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-036,2,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-036,3,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-036,4,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-036,5,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-036,6,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-036,7,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-036,8,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7179.00
+GEN-036,,STATED SUBTOTAL,,,,10303.00
+GEN-037,1,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-037,2,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-037,3,Complete blood count with differential,85025,2,96.00,192.00
+GEN-037,4,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-037,5,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-037,6,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-037,7,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-037,,STATED SUBTOTAL,,,,9113.78
+GEN-038,1,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-038,2,"IV infusion, initial hour",96365,1,412.00,288.00
+GEN-038,3,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-038,4,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-038,5,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-038,6,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-038,7,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-038,8,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-038,,STATED SUBTOTAL,,,,5088.00
+GEN-039,1,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-039,2,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-039,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-039,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-039,5,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-039,6,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-039,,STATED SUBTOTAL,,,,6434.00
+GEN-040,1,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-040,2,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-040,3,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-040,4,"Pharmacy, general supplies",0250,3,65.00,217.00
+GEN-040,5,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-040,6,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-040,7,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-040,,STATED SUBTOTAL,,,,4770.00
+GEN-041,1,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-041,2,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-041,3,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-041,4,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-041,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-041,6,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-041,7,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-041,8,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-041,9,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-041,,STATED SUBTOTAL,,,,6922.00
+GEN-042,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-042,2,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-042,3,Complete blood count with differential,85025,1,96.00,96.00
+GEN-042,4,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-042,5,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-042,6,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-042,7,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-042,,STATED SUBTOTAL,,,,7086.37
+GEN-043,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-043,2,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-043,3,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-043,4,"Recovery room, per 30 minutes",0710,2,340.00,543.00
+GEN-043,5,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-043,,STATED SUBTOTAL,,,,2505.00
+GEN-044,1,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-044,2,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-044,3,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-044,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-044,5,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-044,,STATED SUBTOTAL,,,,7902.00
+GEN-045,1,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-045,2,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-045,3,Complete blood count with differential,85025,3,96.00,288.00
+GEN-045,4,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-045,5,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-045,6,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-045,7,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-045,,STATED SUBTOTAL,,,,12338.28
+GEN-046,1,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-046,2,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-046,3,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-046,4,Complete blood count with differential,85025,1,96.00,96.00
+GEN-046,5,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-046,6,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-046,7,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-046,8,CBC w/ diff,85025,1,96.00,96.00
+GEN-046,9,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-046,,STATED SUBTOTAL,,,,11375.00
+GEN-047,1,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-047,2,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-047,3,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-047,4,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-047,5,Complete blood count with differential,85025,2,96.00,192.00
+GEN-047,6,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-047,7,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-047,,STATED SUBTOTAL,,,,3458.00
+GEN-048,1,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-048,2,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-048,3,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-048,4,Complete blood count with differential,85025,3,96.00,288.00
+GEN-048,5,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-048,6,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-048,,STATED SUBTOTAL,,,,4904.00
+GEN-049,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-049,2,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-049,3,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-049,4,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-049,5,Complete blood count with differential,85025,1,96.00,96.00
+GEN-049,6,"Ondansetron injection, 4 mg",J2405,3,54.00,119.00
+GEN-049,7,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-049,,STATED SUBTOTAL,,,,4489.00
+GEN-050,1,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-050,2,Complete blood count with differential,85025,2,96.00,192.00
+GEN-050,3,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-050,4,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-050,5,"Recovery room, per 30 minutes",0710,3,340.00,1101.00
+GEN-050,6,Complete blood count with differential,85025,2,96.00,192.00
+GEN-050,,STATED SUBTOTAL,,,,9093.00
+GEN-051,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-051,2,Complete blood count with differential,85025,3,96.00,288.00
+GEN-051,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-051,4,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-051,5,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-051,6,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-051,7,Pulse ox check,94760,1,38.00,38.00
+GEN-051,8,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,313.00
+GEN-051,9,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-051,,STATED SUBTOTAL,,,,5367.00
+GEN-052,1,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-052,2,Complete blood count with differential,85025,3,96.00,288.00
+GEN-052,3,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-052,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-052,5,CBC w/ diff,85025,3,96.00,288.00
+GEN-052,,STATED SUBTOTAL,,,,915.00
+GEN-053,1,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-053,2,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-053,3,Complete blood count with differential,85025,2,96.00,192.00
+GEN-053,4,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-053,5,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7257.00
+GEN-053,,STATED SUBTOTAL,,,,8799.00
+GEN-054,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-054,2,Complete blood count with differential,85025,3,96.00,288.00
+GEN-054,3,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-054,4,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-054,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-054,,STATED SUBTOTAL,,,,994.00
+GEN-055,1,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-055,2,Complete blood count with differential,85025,3,96.00,288.00
+GEN-055,3,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-055,4,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-055,5,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-055,6,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-055,7,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-055,,STATED SUBTOTAL,,,,10578.00
+GEN-056,1,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-056,2,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-056,3,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-056,4,Complete blood count with differential,85025,2,96.00,192.00
+GEN-056,5,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-056,6,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-056,7,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-056,,STATED SUBTOTAL,,,,1691.60
+GEN-057,1,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-057,2,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-057,3,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-057,4,Complete blood count with differential,85025,1,96.00,96.00
+GEN-057,5,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-057,,STATED SUBTOTAL,,,,1847.41
+GEN-058,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-058,2,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-058,3,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-058,4,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-058,,STATED SUBTOTAL,,,,2016.76
+GEN-059,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-059,2,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-059,3,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-059,4,"Emergency department visit, level 4",99284,2,1450.00,2816.00
+GEN-059,5,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-059,6,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-059,7,Complete blood count with differential,85025,3,96.00,288.00
+GEN-059,8,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-059,,STATED SUBTOTAL,,,,11933.00
+GEN-060,1,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-060,2,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-060,3,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-060,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-060,5,Comprehensive metabolic panel,80053,3,118.00,482.00
+GEN-060,6,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-060,7,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-060,8,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-060,,STATED SUBTOTAL,,,,8142.00
+GEN-061,1,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-061,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-061,3,"Surgical dressing, sterile",A6402,1,22.00,177.00
+GEN-061,4,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-061,5,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-061,6,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-061,7,Complete blood count with differential,85025,2,96.00,192.00
+GEN-061,8,Complete blood count with differential,85025,2,96.00,192.00
+GEN-061,,STATED SUBTOTAL,,,,6282.00
+GEN-062,1,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-062,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-062,3,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-062,4,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-062,5,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-062,6,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-062,7,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-062,8,Complete blood count with differential,85025,3,96.00,288.00
+GEN-062,,STATED SUBTOTAL,,,,2039.00
+GEN-063,1,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-063,2,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-063,3,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-063,4,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-063,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-063,6,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-063,7,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-063,8,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-063,,STATED SUBTOTAL,,,,5834.00
+GEN-064,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-064,2,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7015.00
+GEN-064,3,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-064,4,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-064,,STATED SUBTOTAL,,,,7795.00
+GEN-065,1,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-065,2,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-065,3,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-065,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4597.00
+GEN-065,5,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-065,6,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-065,,STATED SUBTOTAL,,,,7270.00
+GEN-066,1,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-066,2,"Pharmacy, general supplies",0250,1,65.00,165.00
+GEN-066,3,Complete blood count with differential,85025,2,96.00,192.00
+GEN-066,4,CMP lab panel,80053,3,118.00,354.00
+GEN-066,5,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-066,,STATED SUBTOTAL,,,,1405.00
+GEN-067,1,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-067,2,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-067,3,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-067,4,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-067,5,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-067,6,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-067,7,Recovery rm 30 min,0710,3,340.00,1020.00
+GEN-067,8,"Pulse oximetry, single determination",94760,2,38.00,198.00
+GEN-067,,STATED SUBTOTAL,,,,5443.00
+GEN-068,1,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-068,2,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-068,3,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-068,4,Complete blood count with differential,85025,2,96.00,192.00
+GEN-068,5,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-068,6,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-068,,STATED SUBTOTAL,,,,5393.40
+GEN-069,1,Complete blood count with differential,85025,3,96.00,288.00
+GEN-069,2,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-069,3,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-069,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-069,5,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-069,6,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-069,7,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-069,,STATED SUBTOTAL,,,,8091.00
+GEN-070,1,Complete blood count with differential,85025,1,96.00,96.00
+GEN-070,2,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-070,3,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-070,4,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-070,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-070,6,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-070,7,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-070,,STATED SUBTOTAL,,,,5670.00
+GEN-071,1,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-071,2,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-071,3,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-071,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-071,5,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-071,6,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-071,,STATED SUBTOTAL,,,,10413.00
+GEN-072,1,Complete blood count with differential,85025,1,96.00,96.00
+GEN-072,2,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-072,3,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-072,4,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-072,,STATED SUBTOTAL,,,,1200.00
+GEN-073,1,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-073,2,Complete blood count with differential,85025,2,96.00,192.00
+GEN-073,3,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-073,4,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-073,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-073,6,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-073,7,"Pulse oximetry, single determination",94760,3,38.00,142.00
+GEN-073,8,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-073,,STATED SUBTOTAL,,,,2162.00
+GEN-074,1,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-074,2,Complete blood count with differential,85025,3,96.00,288.00
+GEN-074,3,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-074,4,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-074,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-074,6,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-074,7,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-074,,STATED SUBTOTAL,,,,13516.00
+GEN-075,1,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-075,2,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-075,3,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-075,4,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-075,5,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-075,6,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-075,7,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-075,,STATED SUBTOTAL,,,,6038.40
+GEN-076,1,Complete blood count with differential,85025,1,96.00,96.00
+GEN-076,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-076,3,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2269.00
+GEN-076,4,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-076,5,Pulse ox check,94760,2,38.00,76.00
+GEN-076,,STATED SUBTOTAL,,,,2751.00
+GEN-077,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-077,2,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-077,3,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-077,4,Complete blood count with differential,85025,1,96.00,96.00
+GEN-077,,STATED SUBTOTAL,,,,396.00
+GEN-078,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-078,2,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-078,3,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-078,4,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-078,5,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-078,6,Complete blood count with differential,85025,1,96.00,96.00
+GEN-078,7,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-078,8,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-078,,STATED SUBTOTAL,,,,6828.00
+GEN-079,1,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-079,2,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-079,3,"IV infusion, initial hour",96365,1,412.00,461.00
+GEN-079,4,ER visit - level 4,99284,1,1450.00,1450.00
+GEN-079,5,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-079,6,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-079,7,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-079,8,Complete blood count with differential,85025,2,96.00,192.00
+GEN-079,9,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-079,,STATED SUBTOTAL,,,,7626.00
+GEN-080,1,"Pharmacy, general supplies",0250,2,65.00,58.00
+GEN-080,2,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-080,3,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-080,4,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-080,,STATED SUBTOTAL,,,,2983.00
+GEN-081,1,"Chest X-ray, two views",71046,3,265.00,795.00
+GEN-081,2,"Ondansetron injection, 4 mg",J2405,1,54.00,176.00
+GEN-081,3,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-081,4,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-081,5,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-081,,STATED SUBTOTAL,,,,5819.00
+GEN-082,1,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-082,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,57.00
+GEN-082,3,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-082,4,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-082,5,Pulse ox check,94760,3,38.00,114.00
+GEN-082,,STATED SUBTOTAL,,,,4743.00
+GEN-083,1,Complete blood count with differential,85025,2,96.00,192.00
+GEN-083,2,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-083,3,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-083,4,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-083,5,"IV infusion, initial hour",96365,2,412.00,854.00
+GEN-083,,STATED SUBTOTAL,,,,1399.00
+GEN-084,1,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-084,2,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-084,3,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-084,4,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-084,,STATED SUBTOTAL,,,,1300.12
+GEN-085,1,"Ondansetron injection, 4 mg",J2405,2,54.00,137.00
+GEN-085,2,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-085,3,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-085,4,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-085,5,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-085,6,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-085,7,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-085,,STATED SUBTOTAL,,,,4814.00
+GEN-086,1,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-086,2,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-086,3,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-086,4,"Pharmacy, general supplies",0250,3,65.00,226.00
+GEN-086,5,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-086,6,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-086,7,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-086,,STATED SUBTOTAL,,,,4758.00
+GEN-087,1,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-087,2,Comprehensive metabolic panel,80053,2,118.00,162.00
+GEN-087,3,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-087,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-087,5,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-087,6,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-087,7,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-087,8,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-087,9,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-087,,STATED SUBTOTAL,,,,3978.00
+GEN-088,1,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-088,2,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-088,3,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-088,4,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-088,5,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-088,6,Complete blood count with differential,85025,3,96.00,288.00
+GEN-088,,STATED SUBTOTAL,,,,3985.00
+GEN-089,1,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-089,2,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-089,3,Comprehensive metabolic panel,80053,2,118.00,236.00
+GEN-089,4,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-089,5,CMP lab panel,80053,2,118.00,236.00
+GEN-089,,STATED SUBTOTAL,,,,5330.00
+GEN-090,1,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-090,2,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+GEN-090,3,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-090,4,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-090,5,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-090,6,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-090,7,Complete blood count with differential,85025,2,96.00,99.00
+GEN-090,8,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-090,9,Recovery rm 30 min,0710,3,340.00,1020.00
+GEN-090,,STATED SUBTOTAL,,,,8237.00
+GEN-091,1,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-091,2,Complete blood count with differential,85025,3,96.00,288.00
+GEN-091,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-091,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+GEN-091,5,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-091,6,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-091,7,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-091,8,Recovery rm 30 min,0710,1,340.00,340.00
+GEN-091,,STATED SUBTOTAL,,,,8809.00
+GEN-092,1,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-092,2,"CT scan, abdomen and pelvis, with contrast",74177,2,2380.00,4760.00
+GEN-092,3,"Emergency department visit, level 4",99284,3,1450.00,4350.00
+GEN-092,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+GEN-092,5,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+GEN-092,6,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-092,,STATED SUBTOTAL,,,,10381.16
+GEN-093,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-093,2,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-093,3,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-093,4,"Pharmacy, general supplies",0250,3,65.00,381.00
+GEN-093,,STATED SUBTOTAL,,,,2619.00
+GEN-094,1,Complete blood count with differential,85025,2,96.00,192.00
+GEN-094,2,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-094,3,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-094,4,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+GEN-094,5,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-094,6,"Pharmacy, general supplies",0250,1,65.00,65.00
+GEN-094,7,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+GEN-094,,STATED SUBTOTAL,,,,10414.52
+GEN-095,1,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-095,2,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-095,3,Complete blood count with differential,85025,1,96.00,96.00
+GEN-095,4,"IV infusion, initial hour",96365,3,412.00,1236.00
+GEN-095,5,CBC w/ diff,85025,1,96.00,96.00
+GEN-095,6,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-095,7,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-095,8,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-095,9,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-095,,STATED SUBTOTAL,,,,12929.00
+GEN-096,1,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-096,2,"Chest X-ray, two views",71046,2,265.00,530.00
+GEN-096,3,"Pulse oximetry, single determination",94760,2,38.00,76.00
+GEN-096,4,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-096,5,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-096,6,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-096,,STATED SUBTOTAL,,,,8451.00
+GEN-097,1,"Pharmacy, general supplies",0250,2,65.00,31.00
+GEN-097,2,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+GEN-097,3,"Pulse oximetry, single determination",94760,3,38.00,114.00
+GEN-097,4,"IV infusion, initial hour",96365,2,412.00,824.00
+GEN-097,5,"Surgical dressing, sterile",A6402,2,22.00,44.00
+GEN-097,6,Recovery rm 30 min,0710,2,340.00,680.00
+GEN-097,7,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-097,8,Comprehensive metabolic panel,80053,1,118.00,118.00
+GEN-097,9,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-097,,STATED SUBTOTAL,,,,12531.00
+GEN-098,1,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+GEN-098,2,"Pharmacy, general supplies",0250,3,65.00,195.00
+GEN-098,3,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+GEN-098,4,"Surgical dressing, sterile",A6402,1,22.00,22.00
+GEN-098,5,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+GEN-098,6,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-098,,STATED SUBTOTAL,,,,8401.82
+GEN-099,1,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-099,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,2,78.00,156.00
+GEN-099,3,"Surgical dressing, sterile",A6402,3,22.00,66.00
+GEN-099,4,"Chest X-ray, two views",71046,1,265.00,265.00
+GEN-099,5,"Emergency department visit, level 4",99284,3,1450.00,4252.00
+GEN-099,6,Normal saline 1000cc,J7030,2,78.00,156.00
+GEN-099,7,Comprehensive metabolic panel,80053,3,118.00,354.00
+GEN-099,,STATED SUBTOTAL,,,,5287.00
+GEN-100,1,Complete blood count with differential,85025,3,96.00,288.00
+GEN-100,2,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+GEN-100,3,"Pharmacy, general supplies",0250,2,65.00,130.00
+GEN-100,4,"IV infusion, initial hour",96365,1,412.00,412.00
+GEN-100,5,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-100,6,"Pulse oximetry, single determination",94760,1,38.00,38.00
+GEN-100,7,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+GEN-100,,STATED SUBTOTAL,,,,6830.00
