@@ -5,23 +5,27 @@ from datetime import timedelta
 from functools import lru_cache
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
-from app.engine.checks import run_checks
 from app.engine.loader import load_bills
 from app.engine.models import FlagReport
 from app.models.bill import Bill
 from app.models.bill_record import BillLineRecord, BillRecord
+from app.models.flag_record import FlagRecord
 from app.models.user import User
-from app.schemas.bills import (BillIn, BillOut, BillSummary, SampleBillRequest, TranslatedBillOut,
-                               TranslatedLineOut)
+from app.engine.models import Flag
+from app.schemas.bills import (BillIn, BillOut, BillSummary, FlagStatusUpdate, SampleBillRequest,
+                               TranslatedBillOut, TranslatedLineOut)
+from app.services.flags import sync_flags
 from app.services.retention import delete_bills
+from app.translation.languages import get_language
 from app.translation.service import lookup_code
+from app.translation.translator import translate_texts
 
 router = APIRouter(prefix="/bills", tags=["bills"])
 
@@ -102,6 +106,21 @@ def create_sample_bill(body: SampleBillRequest | None = None, user: User = Depen
     return _save(db, user, bill, label="Generated sample bill")
 
 
+@router.patch("/flags/{flag_id}", response_model=Flag)
+def update_flag_status(flag_id: int, body: FlagStatusUpdate, user: User = Depends(get_current_user),
+                       db: Session = Depends(get_db)):
+    """Sets a flag's status: "investigating", "add_to_letter" (goes in the dispute letter) or
+    "dismissed" (the user says this charge is fine)."""
+    flag = db.get(FlagRecord, flag_id)
+    bill = db.get(BillRecord, flag.bill_id) if flag else None
+    if flag is None or bill is None or bill.user_id != user.id:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Flag not found")
+    flag.status = body.status
+    db.commit()
+    db.refresh(flag)
+    return flag.to_flag()
+
+
 @router.get("/{bill_id}", response_model=BillOut)
 def get_bill(bill_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     return get_own_bill(db, bill_id, user)
@@ -118,18 +137,33 @@ def delete_bill(bill_id: int, user: User = Depends(get_current_user), db: Sessio
 
 @router.post("/{bill_id}/check", response_model=FlagReport)
 def check_bill(bill_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    """Runs the deterministic check engine on the bill and returns the flag report."""
+    """Runs the deterministic check engine on the bill and returns the flag report.
+    Every flag has an `id` and a `status` (new flags start as "investigating"). Running it again keeps
+    the status the user already chose for flags that are still found."""
     bill = get_own_bill(db, bill_id, user)
-    return run_checks(bill.to_engine_bill())
+    return sync_flags(db, bill)
 
 
 @router.get("/{bill_id}/translate", response_model=TranslatedBillOut)
-def translate_bill(bill_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    """Every line of the bill with its code explained in plain English."""
+def translate_bill(bill_id: int, language: str | None = Query(default=None, max_length=10,
+                                                              description="Optional, e.g. es, ar, zh"),
+                   user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Every line of the bill with its code explained in plain English, and optionally also in the
+    user's language (`plain_english_translated`)."""
+    if language is not None and get_language(language) is None:
+        raise HTTPException(422,
+                            f"Unsupported language '{language}'. See GET /api/languages for the list")
     bill = get_own_bill(db, bill_id, user)
     codes = {c: lookup_code(c) for c in {ln.code for ln in bill.lines}}
-    return TranslatedBillOut(
-        id=bill.id, label=bill.label, stated_subtotal=bill.stated_subtotal,
-        lines=[TranslatedLineOut.model_validate(ln, from_attributes=True).model_copy(update={"code_info": codes[ln.code]})
-               for ln in bill.lines],
-    )
+    lines = [TranslatedLineOut.model_validate(ln, from_attributes=True).model_copy(update={"code_info": codes[ln.code]})
+             for ln in bill.lines]
+    out = TranslatedBillOut(id=bill.id, label=bill.label, stated_subtotal=bill.stated_subtotal, lines=lines)
+    if language:
+        plain = sorted({ci.plain_english for ci in codes.values() if ci.plain_english})
+        result = translate_texts(plain, language)
+        by_source = {it.source: it.text for it in result.items if it.translated}
+        for ln in out.lines:
+            if ln.code_info and ln.code_info.plain_english in by_source:
+                ln.plain_english_translated = by_source[ln.code_info.plain_english]
+        out.language, out.rtl, out.translation_note = result.language.code, result.language.rtl, result.note
+    return out

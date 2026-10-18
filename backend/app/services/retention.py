@@ -17,18 +17,19 @@ from app.core.config import settings
 from app.core.database import IS_SQLITE, SessionLocal
 from app.models.bill_record import BillLineRecord, BillRecord
 from app.models.user import User
+from app.models.flag_record import FlagRecord
 
 logger = logging.getLogger("candorify.retention")
 
 
 def delete_bills(db: Session, bill_ids: list[int]) -> int:
-    """Deletes the given bills and all their lines. Caller commits."""
+    """Deletes the given bills with all their lines and flags. Caller commits."""
     if not bill_ids:
         return 0
+    db.execute(delete(FlagRecord).where(FlagRecord.bill_id.in_(bill_ids)))
     db.execute(delete(BillLineRecord).where(BillLineRecord.bill_id.in_(bill_ids)))
     result = db.execute(delete(BillRecord).where(BillRecord.id.in_(bill_ids)))
     return result.rowcount
-
 
 def delete_user_and_data(db: Session, user: User) -> int:
     """Deletes the user's bill lines, bills and account in one transaction. Returns bills deleted."""

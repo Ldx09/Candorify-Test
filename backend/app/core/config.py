@@ -15,7 +15,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str  # required, e.g. postgresql+psycopg://user:pass@host:5432/candorify
     JWT_SECRET: str  # required, long random string (at least 32 characters in production)
     JWT_ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    # Login lifetime: SESSION_HOURS normally, REMEMBER_ME_DAYS when "keep me signed in" is ticked.
+    SESSION_HOURS: int = 24
+    REMEMBER_ME_DAYS: int = 30
 
     # Only these frontend origins may call the API from a browser / the Tauri window.
     CORS_ORIGINS: list[str] = [
@@ -27,6 +29,11 @@ class Settings(BaseSettings):
     # Retention: stored bills are deleted automatically this many days after upload.
     RETENTION_DAYS: int = 30
     RETENTION_SWEEP_MINUTES: int = 60  # how often the automatic sweep runs (0 = never; run the script instead)
+
+    # Gemini (Google AI Studio) for translation. Without a key, everything is shown in English.
+    GEMINI_API_KEY: str | None = None
+    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_TIMEOUT_SECONDS: float = 20.0
 
     # Interactive API docs at /docs. Default: on in development, off in production.
     DOCS_ENABLED: bool | None = None
@@ -46,6 +53,8 @@ class Settings(BaseSettings):
     def _safe_production_settings(self):
         if self.RETENTION_DAYS < 1:
             raise ValueError("RETENTION_DAYS must be at least 1")
+        if self.SESSION_HOURS < 1 or self.REMEMBER_ME_DAYS < 1:
+            raise ValueError("SESSION_HOURS and REMEMBER_ME_DAYS must be at least 1")
         if self.ENV == "production":
             if self.JWT_SECRET in DEV_SECRET_PLACEHOLDERS or len(self.JWT_SECRET) < 32:
                 raise ValueError("In production JWT_SECRET must be a random string of at least 32 characters")

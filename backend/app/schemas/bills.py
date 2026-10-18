@@ -51,6 +51,7 @@ class BillOut(BaseModel):
 
 class TranslatedLineOut(LineOut):
     code_info: CodeInfo | None = None
+    plain_english_translated: str | None = None  # only when ?language= is given and translation worked
 
 
 class TranslatedBillOut(BaseModel):
@@ -58,6 +59,9 @@ class TranslatedBillOut(BaseModel):
     label: str | None
     stated_subtotal: Decimal
     lines: list[TranslatedLineOut]
+    language: str | None = None
+    rtl: bool = False
+    translation_note: str | None = None
 
 
 class BillSummary(BaseModel):
@@ -74,3 +78,7 @@ class SampleBillRequest(BaseModel):
     or leave it out to generate a fresh synthetic bill with a planted error."""
     sample_id: str | None = Field(default=None, max_length=20)
     defect: Literal["none", "duplicate", "line_math", "subtotal", "mixed"] | None = None  # for generated bills
+
+
+class FlagStatusUpdate(BaseModel):
+    status: Literal["investigating", "add_to_letter", "dismissed"]

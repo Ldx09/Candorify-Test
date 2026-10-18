@@ -11,6 +11,8 @@ Rule = Literal["duplicate_line", "line_math", "subtotal_mismatch"]
 
 
 class Flag(BaseModel):
+    id: int | None = None       # set once the flag is saved for a stored bill
+    status: Literal["investigating", "add_to_letter", "dismissed"] | None = None  # set by the user
     rule: Rule
     line_no: int | None  # None for bill-level flags (subtotal)
     code: str | None

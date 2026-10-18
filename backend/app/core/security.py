@@ -15,10 +15,16 @@ def verify_password(password: str, password_hash: str) -> bool:
     return bcrypt.checkpw(password.encode("utf-8"), password_hash.encode("utf-8"))
 
 
-def create_access_token(user_id: int) -> str:
-    expires = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+def token_lifetime(remember_me: bool) -> timedelta:
+    """About a day normally; about 30 days with "keep me signed in"."""
+    return timedelta(days=settings.REMEMBER_ME_DAYS) if remember_me else timedelta(hours=settings.SESSION_HOURS)
+
+
+def create_access_token(user_id: int, remember_me: bool = False) -> tuple[str, datetime]:
+    """Returns (token, expiry time)."""
+    expires = datetime.now(timezone.utc) + token_lifetime(remember_me)
     payload = {"sub": str(user_id), "exp": expires}
-    return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
+    return jwt.encode(payload, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM), expires
 
 
 def decode_access_token(token: str) -> int | None:

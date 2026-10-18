@@ -25,6 +25,8 @@ services:
         value: '["http://tauri.localhost","tauri://localhost","http://localhost:1420"]'
       - key: RETENTION_DAYS
         value: "30"
+      - key: GEMINI_API_KEY             # paste the team's key in the Render dashboard (never commit it)
+        sync: false
       - key: DOCS_ENABLED               # on for the midterm demo; set to "false" afterwards
         value: "true"
 

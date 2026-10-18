@@ -1,9 +1,17 @@
-"""GET /api/translate?code=  -- the one endpoint the frontend calls for code -> plain English. Protected."""
+"""Code explanations and translation.
+  GET  /api/translate?code=      code -> plain English (cache -> NLM -> offline dictionary). Protected.
+  POST /api/translate/text       translate texts the user reads into their language (Gemini). Protected.
+  GET  /api/languages            languages the user can pick. Public (the sign-in page can show it).
+"""
 from fastapi import APIRouter, Query
 
+from app.schemas.translation import TextTranslationRequest
+from app.translation.languages import LANGUAGES, Language
 from app.translation.service import CodeInfo, System, lookup_code
+from app.translation.translator import TranslationResult, translate_texts
 
 router = APIRouter(tags=["translate"])
+public_router = APIRouter(prefix="/api", tags=["translate"])
 
 
 @router.get("/translate", response_model=CodeInfo)
@@ -14,3 +22,16 @@ def translate(
     """Looks up the code: cache -> NLM -> offline dictionary.
     `source` says where the answer came from (nlm / fallback / not_found); `cached` is true for cache hits."""
     return lookup_code(code, system=system)
+
+
+@router.post("/translate/text", response_model=TranslationResult)
+def translate_text(body: TextTranslationRequest):
+    """Translates up to 50 texts (questions, explanations...) into the user's language.
+    Each item says whether it was translated; anything that can't be translated safely comes back in English."""
+    return translate_texts(body.texts, body.language)
+
+
+@public_router.get("/languages", response_model=list[Language])
+def languages():
+    """Languages users can choose. `rtl: true` means the page should be shown right-to-left."""
+    return LANGUAGES

@@ -10,7 +10,7 @@ from app.core.config import settings
 from app.core.database import Base, check_connection, engine
 from app.core.errors import register_error_handlers
 from app.core.http_security import add_http_security
-from app.models import bill_record  # noqa: F401  (registers the bills tables for create_all)
+from app.models import bill_record, flag_record  # noqa: F401  (registers the tables for create_all)
 from app.models.user import User
 from app.schemas.auth import UserOut
 from app.services.retention import RetentionScheduler
@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Candorify API", version="0.7.0", lifespan=lifespan,
+    title="Candorify API", version="0.8.0", lifespan=lifespan,
     docs_url="/docs" if settings.docs_enabled else None,
     redoc_url=None,
     openapi_url="/openapi.json" if settings.docs_enabled else None,
@@ -48,7 +48,7 @@ app.add_middleware(
 
 # ---- Public routes (no login needed) ----
 app.include_router(auth.router)  # /api/auth/signup, /api/auth/login
-
+app.include_router(translate.public_router)  # /api/languages
 
 @app.get("/health")
 def health():
