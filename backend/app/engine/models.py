@@ -21,6 +21,7 @@ class Flag(BaseModel):
     related_line_no: int | None = None  # for duplicates: the earlier line it repeats
     line_numbers: list[int] = Field(default_factory=list)  # every line involved in this flag
 
+
 class FlagReport(BaseModel):
     bill_id: str
     flag_count: int

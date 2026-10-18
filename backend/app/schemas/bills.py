@@ -3,9 +3,11 @@ so no cents are lost to floating-point rounding; the frontend can display them a
 from datetime import datetime
 from decimal import Decimal
 
+from typing import Literal
+
 from pydantic import BaseModel, Field, field_serializer
 
-from app.translation.lookup import CodeInfo
+from app.translation.service import CodeInfo
 
 
 class LineIn(BaseModel):
@@ -56,3 +58,19 @@ class TranslatedBillOut(BaseModel):
     label: str | None
     stated_subtotal: Decimal
     lines: list[TranslatedLineOut]
+
+
+class BillSummary(BaseModel):
+    id: int
+    label: str | None
+    stated_subtotal: Decimal
+    line_count: int
+    created_at: datetime
+    expires_at: datetime  # deleted automatically after this (retention)
+
+
+class SampleBillRequest(BaseModel):
+    """Demo helper. Give sample_id (e.g. "BILL-001") to load one of the 20 provided synthetic bills,
+    or leave it out to generate a fresh synthetic bill with a planted error."""
+    sample_id: str | None = Field(default=None, max_length=20)
+    defect: Literal["none", "duplicate", "line_math", "subtotal", "mixed"] | None = None  # for generated bills

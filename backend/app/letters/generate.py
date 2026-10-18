@@ -1,4 +1,6 @@
-"""Fills the request and dispute letter templates with real bill data.
+"""Generates the two letters from real bill data, using the templates in letters/templates/:
+  - request-itemized-bill.txt : asks the provider for a full itemized bill
+  - dispute.txt               : lists exactly the flagged lines and asks for a correction
 The wording is fixed in the templates; nothing here decides what is an error.
 The dispute letter only lists flags that the deterministic check engine produced."""
 from datetime import date
@@ -11,9 +13,11 @@ from pydantic import BaseModel
 from app.engine.models import Flag
 from app.models.bill import Bill
 from app.models.line_item import format_qty
-from app.translation.lookup import CodeInfo
+from app.translation.service import CodeInfo
 
 TEMPLATES = Path(__file__).parent / "templates"
+REQUEST_TEMPLATE = TEMPLATES / "request-itemized-bill.txt"
+DISPUTE_TEMPLATE = TEMPLATES / "dispute.txt"
 
 
 class LetterDetails(BaseModel):
@@ -74,7 +78,7 @@ def _issue_text(n: int, flag: Flag, bill: Bill, codes: dict[str, CodeInfo]) -> s
 
 
 def request_letter(details: LetterDetails, bill_label: str | None = None) -> str:
-    text = (TEMPLATES / "request_letter.txt").read_text(encoding="utf-8")
+    text = REQUEST_TEMPLATE.read_text(encoding="utf-8")
     return Template(text).substitute(_fill(details, bill_label))
 
 
@@ -89,5 +93,5 @@ def dispute_letter(bill: Bill, flags: list[Flag], details: LetterDetails,
         "issue_count_text": "1 item" if count == 1 else f"{count} items",
         "need_verb": "needs" if count == 1 else "need",
     }
-    text = (TEMPLATES / "dispute_letter.txt").read_text(encoding="utf-8")
+    text = DISPUTE_TEMPLATE.read_text(encoding="utf-8")
     return Template(text).substitute(values)

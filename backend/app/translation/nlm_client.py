@@ -21,14 +21,18 @@ TABLES = {
 }
 
 
-class NLMUnavailable(Exception):
-    """NLM could not be reached (timeout, network error, 5xx, rate limit, bad response)."""
+class ProviderUnavailable(Exception):
+    """The code-lookup provider (NLM) could not be reached: timeout, network error, 5xx,
+    rate limit or a bad response. Callers catch this and use the offline dictionary instead."""
+
+
+NLMUnavailable = ProviderUnavailable  # older name, kept so existing imports keep working
 
 
 def parse_search_response(data: list, df_fields: list[str]) -> list[dict]:
     """Turns NLM's positional array into a list of clean dicts keyed by the df field names."""
     if not isinstance(data, list) or len(data) < 4:
-        raise NLMUnavailable("Unexpected NLM response shape")
+        raise ProviderUnavailable("Unexpected NLM response shape")
     codes, displays = data[1] or [], data[3] or []
     results = []
     for code, values in zip(codes, displays):
@@ -39,7 +43,7 @@ def parse_search_response(data: list, df_fields: list[str]) -> list[dict]:
 
 
 def search(system: str, code: str, client: httpx.Client | None = None) -> list[dict]:
-    """Searches one NLM table by code. Retries on network errors and 5xx, then raises NLMUnavailable."""
+    """Searches one NLM table by code. Retries on network errors and 5xx, then raises ProviderUnavailable."""
     table = TABLES[system]
     params = {"terms": code, "sf": "code", "df": ",".join(table["df"]), "maxList": 20}
     own_client = client is None
@@ -50,17 +54,17 @@ def search(system: str, code: str, client: httpx.Client | None = None) -> list[d
             try:
                 resp = client.get(f"{BASE_URL}/{table['path']}", params=params)
                 if resp.status_code >= 500:
-                    raise NLMUnavailable(f"NLM returned HTTP {resp.status_code}")
+                    raise ProviderUnavailable(f"NLM returned HTTP {resp.status_code}")
                 if resp.status_code != 200:  # 4xx incl. 429 rate limit: retrying won't help
-                    raise NLMUnavailable(f"NLM returned HTTP {resp.status_code}")
+                    raise ProviderUnavailable(f"NLM returned HTTP {resp.status_code}")
                 return parse_search_response(resp.json(), table["df"])
-            except (httpx.TimeoutException, httpx.TransportError, NLMUnavailable, ValueError) as exc:
+            except (httpx.TimeoutException, httpx.TransportError, ProviderUnavailable, ValueError) as exc:
                 last_error = exc
-                retryable = not (isinstance(exc, NLMUnavailable) and "HTTP 4" in str(exc))
+                retryable = not (isinstance(exc, ProviderUnavailable) and "HTTP 4" in str(exc))
                 if not retryable or attempt == RETRIES:
                     break
                 time.sleep(BACKOFF_SECONDS[min(attempt, len(BACKOFF_SECONDS) - 1)])
-        raise NLMUnavailable(str(last_error))
+        raise ProviderUnavailable(str(last_error))
     finally:
         if own_client:
             client.close()

@@ -30,7 +30,7 @@ class BillRecord(Base):
             stated_subtotal=self.stated_subtotal,
             lines=[LineItem(line_no=ln.line_no, code=ln.code, description=ln.description,
                             quantity=ln.quantity, unit_price=ln.unit_price, line_total=ln.line_total)
-                for ln in self.lines],
+                   for ln in self.lines],
         )
 
 

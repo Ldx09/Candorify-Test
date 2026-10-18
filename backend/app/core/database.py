@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
@@ -12,6 +12,12 @@ connect_args = {"check_same_thread": False} if IS_SQLITE else {"connect_timeout"
 
 # Connection pool: up to 5 open connections reused across requests (+5 extra under load).
 engine = create_engine(settings.DATABASE_URL, connect_args=connect_args, pool_pre_ping=True)
+
+if IS_SQLITE:
+    # SQLite ignores foreign keys (and ON DELETE CASCADE) unless this is switched on for every connection.
+    @event.listens_for(engine, "connect")
+    def _sqlite_foreign_keys(dbapi_conn, _record):
+        dbapi_conn.execute("PRAGMA foreign_keys=ON")
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 

@@ -5,9 +5,13 @@
 `errors` is only present for form validation problems (HTTP 422).
 For errors inside a bill line, `field` looks like "lines.2.unit_price" and the message starts with "Line 3:".
 """
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+
+logger = logging.getLogger("candorify")
 
 
 def _field_path(loc: tuple) -> str:
@@ -63,3 +67,11 @@ def register_error_handlers(app: FastAPI) -> None:
     async def validation_error(request: Request, exc: RequestValidationError):
         errors = [{"field": _field_path(e.get("loc", ())), "message": _message(e)} for e in exc.errors()]
         return JSONResponse(status_code=422, content={"detail": errors[0]["message"], "errors": errors})
+
+    @app.exception_handler(Exception)
+    async def unexpected_error(request: Request, exc: Exception):
+        # The full error goes to the server log only (no request body, so no passwords or bill data);
+        # the client gets a generic message, never a stack trace, SQL, or config values.
+        logger.error("Unhandled error on %s %s: %s", request.method, request.url.path, exc.__class__.__name__,
+                     exc_info=exc)
+        return JSONResponse(status_code=500, content={"detail": "Something went wrong. Please try again."})
