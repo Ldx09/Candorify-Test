@@ -35,6 +35,9 @@ Copy `backend/.env.example` to `backend/.env` and fill in:
 |---|---|---|---|---|
 | POST | `/api/auth/signup` | `{email, password (8–72 chars), full_name?}` | 201 user | 409 email taken · 422 invalid input |
 | POST | `/api/auth/login` | `{email, password}` | 200 `{access_token, token_type}` | 401 wrong email/password |
-| GET | `/api/auth/me` | header `Authorization: Bearer <token>` | 200 user | 401 not logged in / expired |
+| GET | `/api/me` | header `Authorization: Bearer <token>` | 200 user | 401 not logged in / expired |
 
 Every error returns `{"detail": "message to show the user"}`. Validation errors (422) also include `errors: [{field, message}]` for showing messages under each form field.
+
+## env table
+| `CORS_ORIGINS` | no (defaults to the Tauri origins) | `["http://localhost:1420","http://tauri.localhost"]` |

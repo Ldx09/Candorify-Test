@@ -1,0 +1,136 @@
+bill_id,line_no,description,code,quantity,unit_price,line_total
+BILL-001,1,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-001,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,329.00
+BILL-001,3,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-001,4,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+BILL-001,5,Comprehensive metabolic panel,80053,3,118.00,354.00
+BILL-001,,STATED SUBTOTAL,,,,2177.00
+BILL-002,1,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+BILL-002,2,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+BILL-002,3,"Pharmacy, general supplies",0250,1,65.00,65.00
+BILL-002,4,"Surgical dressing, sterile",A6402,3,22.00,66.00
+BILL-002,5,Complete blood count with differential,85025,1,96.00,96.00
+BILL-002,6,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+BILL-002,7,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+BILL-002,,STATED SUBTOTAL,,,,9831.40
+BILL-003,1,"Pulse oximetry, single determination",94760,1,38.00,158.00
+BILL-003,2,"Pharmacy, general supplies",0250,3,65.00,195.00
+BILL-003,3,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+BILL-003,4,"IV infusion, initial hour",96365,3,412.00,1236.00
+BILL-003,,STATED SUBTOTAL,,,,3969.00
+BILL-004,1,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+BILL-004,2,"Surgical dressing, sterile",A6402,1,22.00,117.00
+BILL-004,3,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+BILL-004,4,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+BILL-004,5,"IV infusion, initial hour",96365,1,412.00,412.00
+BILL-004,6,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-004,7,"Chest X-ray, two views",71046,1,265.00,265.00
+BILL-004,8,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+BILL-004,,STATED SUBTOTAL,,,,8746.00
+BILL-005,1,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-005,2,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-005,3,"IV infusion, initial hour",96365,3,412.00,1236.00
+BILL-005,4,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-005,5,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+BILL-005,6,"Chest X-ray, two views",71046,1,265.00,265.00
+BILL-005,7,"Pharmacy, general supplies",0250,1,65.00,65.00
+BILL-005,,STATED SUBTOTAL,,,,2376.00
+BILL-006,1,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+BILL-006,2,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+BILL-006,3,Comprehensive metabolic panel,80053,2,118.00,236.00
+BILL-006,4,Comprehensive metabolic panel,80053,2,118.00,236.00
+BILL-006,5,"Surgical dressing, sterile",A6402,3,22.00,66.00
+BILL-006,6,"IV infusion, initial hour",96365,2,412.00,824.00
+BILL-006,7,Complete blood count with differential,85025,1,96.00,96.00
+BILL-006,8,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-006,,STATED SUBTOTAL,,,,3982.00
+BILL-007,1,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+BILL-007,2,"Chest X-ray, two views",71046,2,265.00,625.00
+BILL-007,3,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+BILL-007,4,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-007,5,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-007,,STATED SUBTOTAL,,,,3617.00
+BILL-008,1,"IV infusion, initial hour",96365,1,412.00,412.00
+BILL-008,2,Complete blood count with differential,85025,1,96.00,96.00
+BILL-008,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-008,4,Comprehensive metabolic panel,80053,2,118.00,236.00
+BILL-008,5,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+BILL-008,6,"Emergency department visit, level 4",99284,2,1450.00,2900.00
+BILL-008,7,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-008,,STATED SUBTOTAL,,,,3812.00
+BILL-009,1,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+BILL-009,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+BILL-009,3,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-009,4,"Chest X-ray, two views",71046,2,265.00,530.00
+BILL-009,5,Complete blood count with differential,85025,1,96.00,96.00
+BILL-009,,STATED SUBTOTAL,,,,1502.40
+BILL-010,1,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+BILL-010,2,Complete blood count with differential,85025,1,96.00,96.00
+BILL-010,3,Comprehensive metabolic panel,80053,2,118.00,236.00
+BILL-010,4,"Recovery room, per 30 minutes",0710,3,340.00,1020.00
+BILL-010,5,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-010,6,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-010,7,"IV infusion, initial hour",96365,1,412.00,412.00
+BILL-010,,STATED SUBTOTAL,,,,4204.00
+BILL-011,1,Complete blood count with differential,85025,3,96.00,288.00
+BILL-011,2,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+BILL-011,3,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-011,4,Complete blood count with differential,85025,3,96.00,288.00
+BILL-011,5,"IV infusion, initial hour",96365,1,412.00,412.00
+BILL-011,,STATED SUBTOTAL,,,,1244.00
+BILL-012,1,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,78.00
+BILL-012,2,"Pharmacy, general supplies",0250,1,65.00,65.00
+BILL-012,3,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+BILL-012,4,Comprehensive metabolic panel,80053,1,118.00,118.00
+BILL-012,5,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+BILL-012,6,"Ondansetron injection, 4 mg",J2405,2,54.00,108.00
+BILL-012,7,"IV infusion, initial hour",96365,1,412.00,412.00
+BILL-012,8,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+BILL-012,,STATED SUBTOTAL,,,,3841.00
+BILL-013,1,Comprehensive metabolic panel,80053,3,118.00,354.00
+BILL-013,2,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+BILL-013,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-013,4,Complete blood count with differential,85025,3,96.00,288.00
+BILL-013,,STATED SUBTOTAL,,,,2642.40
+BILL-014,1,Comprehensive metabolic panel,80053,1,118.00,118.00
+BILL-014,2,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+BILL-014,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-014,4,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-014,5,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,3,78.00,234.00
+BILL-014,,STATED SUBTOTAL,,,,2808.00
+BILL-015,1,Comprehensive metabolic panel,80053,2,118.00,476.00
+BILL-015,2,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-015,3,"Recovery room, per 30 minutes",0710,1,340.00,340.00
+BILL-015,4,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-015,,STATED SUBTOTAL,,,,908.00
+BILL-016,1,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-016,2,Complete blood count with differential,85025,1,96.00,96.00
+BILL-016,3,"Surgical dressing, sterile",A6402,3,22.00,66.00
+BILL-016,4,"Emergency department visit, level 4",99284,1,1450.00,1450.00
+BILL-016,5,"CT scan, abdomen and pelvis, with contrast",74177,3,2380.00,7140.00
+BILL-016,6,"Chest X-ray, two views",71046,1,265.00,265.00
+BILL-016,,STATED SUBTOTAL,,,,9071.00
+BILL-017,1,"Pharmacy, general supplies",0250,1,65.00,65.00
+BILL-017,2,"Chest X-ray, two views",71046,1,265.00,265.00
+BILL-017,3,"Surgical dressing, sterile",A6402,1,22.00,22.00
+BILL-017,4,"IV infusion, initial hour",96365,3,412.00,1236.00
+BILL-017,,STATED SUBTOTAL,,,,1588.00
+BILL-018,1,"Recovery room, per 30 minutes",0710,2,340.00,680.00
+BILL-018,2,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+BILL-018,3,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-018,4,"Pharmacy, general supplies",0250,3,65.00,195.00
+BILL-018,5,"Surgical dressing, sterile",A6402,2,22.00,44.00
+BILL-018,6,"Sodium chloride 0.9% IV solution, 1000 mL",J7030,1,78.00,153.00
+BILL-018,,STATED SUBTOTAL,,,,3490.00
+BILL-019,1,"Chest X-ray, two views",71046,3,265.00,795.00
+BILL-019,2,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00
+BILL-019,3,"Pharmacy, general supplies",0250,2,65.00,130.00
+BILL-019,4,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+BILL-019,,STATED SUBTOTAL,,,,3359.00
+BILL-020,1,Comprehensive metabolic panel,80053,1,118.00,118.00
+BILL-020,2,"CT scan, abdomen and pelvis, with contrast",74177,1,2380.00,2380.00
+BILL-020,3,"Pharmacy, general supplies",0250,2,65.00,130.00
+BILL-020,4,"Recovery room, per 30 minutes",0710,3,340.00,1260.00
+BILL-020,5,"Ondansetron injection, 4 mg",J2405,3,54.00,162.00
+BILL-020,6,"Pulse oximetry, single determination",94760,1,38.00,38.00
+BILL-020,,STATED SUBTOTAL,,,,4088.00

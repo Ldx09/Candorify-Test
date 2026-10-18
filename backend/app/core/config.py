@@ -9,6 +9,13 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
+    # Only these frontend origins may call the API from a browser / the Tauri window.
+    CORS_ORIGINS: list[str] = [
+        "http://localhost:1420",   # Tauri dev server
+        "tauri://localhost",       # Tauri app on Mac/Linux
+        "http://tauri.localhost",  # Tauri app on Windows
+    ]
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 

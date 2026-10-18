@@ -1,0 +1,21 @@
+bill_id,defect_type,planted_error,true_sum_of_lines,stated_subtotal
+BILL-001,mixed,Duplicate line AND line-total arithmetic error,2177.00,2177.00
+BILL-002,subtotal,Stated subtotal does not equal sum of line totals,9319.00,9831.40
+BILL-003,line_math,Line total != unit price x quantity on line 1 (94760),3969.00,3969.00
+BILL-004,mixed,Duplicate line AND line-total arithmetic error,8746.00,8746.00
+BILL-005,duplicate,"Duplicate line: Ondansetron injection, 4 mg (J2405)",2376.00,2376.00
+BILL-006,duplicate,Duplicate line: Comprehensive metabolic panel (80053),3982.00,3982.00
+BILL-007,mixed,Duplicate line AND line-total arithmetic error,3617.00,3617.00
+BILL-008,none,none,3812.00,3812.00
+BILL-009,subtotal,Stated subtotal does not equal sum of line totals,990.00,1502.40
+BILL-010,none,none,4204.00,4204.00
+BILL-011,duplicate,Duplicate line: Complete blood count with differential (85025),1244.00,1244.00
+BILL-012,duplicate,"Duplicate line: Recovery room, per 30 minutes (0710)",3841.00,3841.00
+BILL-013,subtotal,Stated subtotal does not equal sum of line totals,2130.00,2642.40
+BILL-014,duplicate,"Duplicate line: Pulse oximetry, single determination (94760)",2808.00,2808.00
+BILL-015,line_math,Line total != unit price x quantity on line 1 (80053),908.00,908.00
+BILL-016,none,none,9071.00,9071.00
+BILL-017,none,none,1588.00,1588.00
+BILL-018,line_math,Line total != unit price x quantity on line 6 (J7030),3490.00,3490.00
+BILL-019,none,none,3359.00,3359.00
+BILL-020,line_math,Line total != unit price x quantity on line 4 (0710),4088.00,4088.00
