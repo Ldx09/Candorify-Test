@@ -5,12 +5,12 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.deps import get_current_user
-from app.api.routes import account, auth, bills, letters, translate
+from app.api.routes import account, auth, bills, letters, translate, upload
 from app.core.config import settings
 from app.core.database import Base, check_connection, engine
 from app.core.errors import register_error_handlers
 from app.core.http_security import add_http_security
-from app.models import bill_record, flag_record  # noqa: F401  (registers the tables for create_all)
+from app.models import answer_record, bill_record, flag_record  # noqa: F401  (registers the tables for create_all)
 from app.models.user import User
 from app.schemas.auth import UserOut
 from app.services.retention import RetentionScheduler
@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Candorify API", version="0.8.0", lifespan=lifespan,
+    title="Candorify API", version="0.9.0", lifespan=lifespan,
     docs_url="/docs" if settings.docs_enabled else None,
     redoc_url=None,
     openapi_url="/openapi.json" if settings.docs_enabled else None,
@@ -47,8 +47,9 @@ app.add_middleware(
 )
 
 # ---- Public routes (no login needed) ----
-app.include_router(auth.router)  # /api/auth/signup, /api/auth/login
+app.include_router(auth.router)  # /api/auth/signup (/register), /api/auth/login
 app.include_router(translate.public_router)  # /api/languages
+
 
 @app.get("/health")
 def health():
@@ -67,8 +68,9 @@ def me(user: User = Depends(get_current_user)):
 
 
 protected.include_router(account.router)    # DELETE /api/me
-protected.include_router(bills.router)      # /api/bills (list, create, sample, get, delete, check, translate)
-protected.include_router(translate.router)  # /api/translate?code=
+protected.include_router(bills.router)      # /api/bills (list, create, sample, get, delete, check, questions, translate)
+protected.include_router(translate.router)  # /api/translate?code=, /api/translate/text
 protected.include_router(letters.router)    # /api/letters
+protected.include_router(upload.router)     # /api/upload/pdf, /api/upload/sample, /api/upload/review
 
 app.include_router(protected)

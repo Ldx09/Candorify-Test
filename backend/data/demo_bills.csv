@@ -1,0 +1,27 @@
+bill_id,line_no,description,code,quantity,unit_price,line_total,date_of_service
+DEMO-001,1,"Emergency department visit, level 4",99284,1,1450.00,1450.00,09/01/2026
+DEMO-001,2,"Room and board, semi-private",0120,4,2800.00,11200.00,09/01/2026
+DEMO-001,3,"Chest X-ray, two views",71046,2,265.00,530.00,09/01/2026
+DEMO-001,4,"Ondansetron injection, 4 mg",J2405,1,54.00,54.00,09/01/2026
+DEMO-001,5,"Surgical dressing, sterile",A6402,2,22.00,44.00,09/01/2026
+DEMO-001,,STATED SUBTOTAL,,,,13278.00,09/01/2026
+DEMO-002,1,"Emergency department visit, level 5",99285,1,2100.00,2100.00,09/03/2026
+DEMO-002,2,"Ambulance service, ALS, emergency transport, level 1",A0427,1,1250.00,1250.00,09/03/2026
+DEMO-002,3,"Ground ambulance mileage, per mile",A0425,25,28.00,700.00,09/03/2026
+DEMO-002,4,"Intensive care, general",0200,2,6500.00,13000.00,09/03/2026
+DEMO-002,5,"Routine venipuncture (blood draw)",36415,6,18.00,108.00,09/03/2026
+DEMO-002,6,"Comprehensive metabolic panel",80053,1,118.00,118.00,09/03/2026
+DEMO-002,7,"Comprehensive metabolic panel",80053,1,118.00,118.00,09/03/2026
+DEMO-002,,STATED SUBTOTAL,,,,17394.00,09/03/2026
+DEMO-003,1,"Room and board, private",0110,3,3400.00,10200.00,09/05/2026
+DEMO-003,2,"Therapeutic exercise, each 15 minutes",97110,4,95.00,380.00,09/05/2026
+DEMO-003,3,"Television rental, per day",0990,3,15.00,45.00,09/05/2026
+DEMO-003,4,"Crutches, underarm, adjustable, pair",E0114,1,85.00,95.00,09/05/2026
+DEMO-003,5,"Surgical tray",A4550,1,120.00,120.00,09/05/2026
+DEMO-003,,STATED SUBTOTAL,,,,10840.00,09/05/2026
+DEMO-004,1,"Hospital observation, per hour",G0378,18,85.00,1530.00,09/08/2026
+DEMO-004,2,"Emergency department visit, level 3",99283,1,780.00,780.00,09/08/2026
+DEMO-004,3,"Electrocardiogram with interpretation",93000,1,145.00,145.00,09/08/2026
+DEMO-004,4,"Splint application, short arm",29125,1,310.00,310.00,09/08/2026
+DEMO-004,5,"Blood transfusion, whole blood",0390,1,1150.00,1150.00,09/08/2026
+DEMO-004,,STATED SUBTOTAL,,,,3915.00,09/08/2026

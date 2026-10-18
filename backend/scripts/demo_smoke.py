@@ -1,6 +1,6 @@
 """Runs the full midterm demo path against a running server and reports PASS/FAIL for each step:
 health -> sign up -> log in -> load bill -> checks -> translate -> dispute letter -> request letter
--> delete bill -> delete account.
+-> upload PDF + follow-up questions + answers -> delete bill -> delete account.
 
 It creates a throwaway account and deletes it at the end, so it is safe to run against the live app.
 
@@ -12,10 +12,12 @@ import sys
 import time
 import uuid
 
+from pathlib import Path
+
 import httpx
 
 EXPECTED_BILL_001 = {("line_math", 2), ("duplicate_line", 3)}  # known errors in sample BILL-001
-
+DEMO_PDF = Path(__file__).resolve().parents[1] / "data" / "demo_bills.pdf"
 
 def main() -> int:
     base = (sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8000").rstrip("/")
@@ -73,6 +75,20 @@ def main() -> int:
             rules = {f["rule"] for f in c.post(f"/api/bills/{r.json()['id']}/check", headers=h).json()["flags"]}
             gen_ok = rules == {"duplicate_line", "line_math"}
         step("generate a new synthetic bill + check it", gen_ok)
+        r = c.post("/api/upload/pdf", headers=h, data={"account": "DEMO-001"},
+                   files={"file": ("demo_bills.pdf", DEMO_PDF.read_bytes(), "application/pdf")})
+        qids = [q["id"] for q in r.json().get("questions", [])] if r.status_code == 201 else []
+        step("upload PDF bill -> 5 follow-up questions", len(qids) == 5 and qids[0] == "room_nights", str(r.status_code))
+        if r.status_code == 201:
+            up_id = r.json()["bill"]["id"]
+            r = c.post("/api/upload/review", headers=h, json={"bill_id": up_id, "answers": [
+                {"question_id": "room_nights", "value": 3}, {"question_id": "er_visit", "value": "Yes"}]})
+            flags = r.json()["flags"]["flags"] if r.status_code == 200 else []
+            step("answer 3 nights -> answer_mismatch flag", [f["rule"] for f in flags] == ["answer_mismatch"],
+                 str(r.status_code))
+            r = c.post("/api/letters", headers=h, json={"bill_id": up_id, "letter_type": "dispute"})
+            step("dispute letter includes the answer flag",
+                 r.status_code == 200 and "but I stayed 3 nights" in r.json()["text"], str(r.status_code))        
 
         step("delete one bill", c.delete(f"/api/bills/{bill_id}", headers=h).status_code == 204
              and c.get(f"/api/bills/{bill_id}", headers=h).status_code == 404)

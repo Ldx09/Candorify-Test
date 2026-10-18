@@ -68,6 +68,13 @@ def _issue_text(n: int, flag: Flag, bill: Bill, codes: dict[str, CodeInfo]) -> s
         return (f"{n}. Line total does not match quantity x unit price - {_describe_line(bill, flag.line_no, codes)}.\n"
                 f"   {format_qty(line.quantity)} x {_money(line.unit_price)} = {_money(flag.expected)}, "
                 f"but the bill shows {_money(flag.actual)} ({_money(abs(diff))} {direction} than expected).")
+    if flag.rule == "answer_mismatch":
+        lines = flag.line_numbers or [flag.line_no]
+        where = _describe_line(bill, lines[0], codes)
+        if len(lines) > 1:
+            where += f" (and line{'s' if len(lines) > 2 else ''} {', '.join(str(n) for n in lines[1:])})"
+        return (f"{n}. Charge does not match the care I received - {where}.\n"
+                f"   {flag.letter_text or flag.message}")
     if flag.rule == "subtotal_mismatch":
         diff = flag.actual - flag.expected
         direction = "more" if diff > 0 else "less"

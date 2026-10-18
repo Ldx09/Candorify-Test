@@ -7,7 +7,8 @@ from pydantic import BaseModel, Field
 from app.models.bill import Bill  # noqa: F401  (re-exported for convenience)
 from app.models.line_item import LineItem  # noqa: F401
 
-Rule = Literal["duplicate_line", "line_math", "subtotal_mismatch"]
+Rule = Literal["duplicate_line", "line_math", "subtotal_mismatch", "answer_mismatch"]
+ENGINE_RULES = ("duplicate_line", "line_math", "subtotal_mismatch")  # decided by the check engine itself
 
 
 class Flag(BaseModel):
@@ -22,6 +23,8 @@ class Flag(BaseModel):
     actual: Decimal | None = None
     related_line_no: int | None = None  # for duplicates: the earlier line it repeats
     line_numbers: list[int] = Field(default_factory=list)  # every line involved in this flag
+    question_id: str | None = None   # answer_mismatch only: the follow-up question it came from
+    letter_text: str | None = None   # answer_mismatch only: first-person sentence for the dispute letter
 
 
 class FlagReport(BaseModel):

@@ -19,21 +19,23 @@ class GeminiUnavailable(Exception):
     """No API key, network error, timeout, 4xx/5xx, or a reply that isn't the JSON we asked for."""
 
 
-def generate_json(prompt: str, client: httpx.Client | None = None) -> dict:
-    """Sends the prompt and returns Gemini's reply parsed as a JSON object."""
+def generate_json(prompt: str, client: httpx.Client | None = None, timeout: float | None = None,
+                  retries: int = RETRIES, temperature: float = 0) -> dict:
+    """Sends the prompt and returns Gemini's reply parsed as a JSON object.
+    `timeout` (seconds) overrides GEMINI_TIMEOUT_SECONDS, e.g. 5 for the follow-up questions."""
     if not settings.GEMINI_API_KEY:
         raise GeminiUnavailable("GEMINI_API_KEY is not set")
     url = f"{BASE_URL}/{settings.GEMINI_MODEL}:generateContent"
     body = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0, "responseMimeType": "application/json"},
+        "generationConfig": {"temperature": temperature, "responseMimeType": "application/json"},
     }
     headers = {"x-goog-api-key": settings.GEMINI_API_KEY, "Content-Type": "application/json"}
     own = client is None
-    client = client or httpx.Client(timeout=settings.GEMINI_TIMEOUT_SECONDS)
+    client = client or httpx.Client(timeout=timeout or settings.GEMINI_TIMEOUT_SECONDS)
     try:
         last = "unknown error"
-        for attempt in range(RETRIES + 1):
+        for attempt in range(retries + 1):
             try:
                 resp = client.post(url, json=body, headers=headers)
             except (httpx.TimeoutException, httpx.TransportError) as exc:
@@ -51,7 +53,7 @@ def generate_json(prompt: str, client: httpx.Client | None = None) -> dict:
                 last = f"HTTP {resp.status_code}"
                 if resp.status_code < 500:  # 400/401/403/429: retrying won't help
                     break
-            if attempt < RETRIES:
+            if attempt < retries:
                 time.sleep(BACKOFF_SECONDS)
         raise GeminiUnavailable(f"Gemini request failed: {last}")
     finally:

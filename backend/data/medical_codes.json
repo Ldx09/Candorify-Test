@@ -193,5 +193,19 @@
     "system": "Revenue code",
     "description": "EKG/ECG, general",
     "plain_english": "Heart rhythm test charges"
-  }
+  },
+    "0110": {"system": "Revenue code", "description": "Room and board, private", "plain_english": "A private hospital room (you had the room to yourself), per day"},
+  "0120": {"system": "Revenue code", "description": "Room and board, semi-private (two beds)", "plain_english": "A shared hospital room, per day"},
+  "0200": {"system": "Revenue code", "description": "Intensive care, general", "plain_english": "Intensive care unit (ICU) care, per day"},
+  "0390": {"system": "Revenue code", "description": "Blood storage and processing, general", "plain_english": "Blood products given to you (transfusion)"},
+  "0762": {"system": "Revenue code", "description": "Observation room", "plain_english": "Time kept in the hospital for observation"},
+  "0990": {"system": "Revenue code", "description": "Patient convenience items, general", "plain_english": "Comfort items such as TV or phone rental"},
+  "97110": {"system": "CPT", "description": "Therapeutic exercise, each 15 minutes", "plain_english": "Physical therapy exercises, billed per 15 minutes"},
+  "29125": {"system": "CPT", "description": "Application of short arm splint, static", "plain_english": "Putting a splint on your forearm/wrist"},
+  "A0425": {"system": "HCPCS", "description": "Ground mileage, per statute mile", "plain_english": "Ambulance travel, billed per mile"},
+  "A0427": {"system": "HCPCS", "description": "Ambulance service, advanced life support, emergency transport, level 1 (ALS 1-emergency)", "plain_english": "Emergency ambulance ride with advanced life support"},
+  "A4550": {"system": "HCPCS", "description": "Surgical trays", "plain_english": "A tray of sterile supplies used for a procedure"},
+  "E0114": {"system": "HCPCS", "description": "Crutches, underarm, other than wood, adjustable or fixed, pair, with pad, tip and handgrip", "plain_english": "A pair of adjustable underarm crutches"},
+  "G0378": {"system": "HCPCS", "description": "Hospital observation service, per hour", "plain_english": "Time kept in the hospital for observation, per hour"}
+  
 }

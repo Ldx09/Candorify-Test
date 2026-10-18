@@ -1,9 +1,9 @@
 """Database tables for stored bills: `bills` and `bill_lines`. Column names must match Nathalie's schema.
 (The plain Bill / LineItem models in bill.py and line_item.py are what the check engine runs on.)"""
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, String, func
+from sqlalchemy import Date, DateTime, ForeignKey, Integer, Numeric, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -18,6 +18,7 @@ class BillRecord(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     label: Mapped[str | None] = mapped_column(String(100))  # e.g. "ER visit Sept" or "BILL-001"
     stated_subtotal: Mapped[Decimal] = mapped_column(Numeric(12, 2))
+    date_of_service: Mapped[date | None] = mapped_column(Date)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     lines: Mapped[list["BillLineRecord"]] = relationship(
@@ -28,6 +29,7 @@ class BillRecord(Base):
         return Bill(
             bill_id=str(self.id),
             stated_subtotal=self.stated_subtotal,
+            date_of_service=self.date_of_service,
             lines=[LineItem(line_no=ln.line_no, code=ln.code, description=ln.description,
                             quantity=ln.quantity, unit_price=ln.unit_price, line_total=ln.line_total)
                    for ln in self.lines],

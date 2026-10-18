@@ -8,3 +8,8 @@ bcrypt>=4.2
 PyJWT>=2.9
 pdfplumber>=0.11
 httpx>=0.27
+python-multipart>=0.0.9
+
+# dev / scripts only
+reportlab>=4.0      # scripts/make_demo_pdf.py
+pytest>=8.0         # tests/

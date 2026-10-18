@@ -15,6 +15,7 @@ PDF format (one itemized statement per bill):
 """
 import csv
 import re
+from datetime import date, datetime
 from decimal import Decimal
 from pathlib import Path
 
@@ -34,16 +35,30 @@ def load_bills(path: str | Path) -> list[Bill]:
     raise ValueError(f"Unsupported bill file type '{suffix}'. Use .csv or .pdf")
 
 
+def parse_date(text: str | None) -> date | None:
+    """Accepts 09/01/2026 (as printed on bills) or 2026-09-01. Returns None if blank or unreadable."""
+    text = (text or "").strip()
+    for fmt in ("%m/%d/%Y", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
 # ---------- CSV ----------
 
 def load_bills_csv(path: str | Path) -> list[Bill]:
     lines_by_bill: dict[str, list[LineItem]] = {}
     subtotal_by_bill: dict[str, Decimal] = {}
+    date_by_bill: dict[str, date | None] = {}
 
     with open(path, newline="", encoding="utf-8") as f:
         for row in csv.DictReader(f):
             bill_id = row["bill_id"].strip()
             lines_by_bill.setdefault(bill_id, [])
+            if row.get("date_of_service"):  # optional column
+                date_by_bill[bill_id] = parse_date(row["date_of_service"])
             if row["description"].strip().upper() == "STATED SUBTOTAL":
                 subtotal_by_bill[bill_id] = Decimal(row["line_total"])
                 continue
@@ -60,7 +75,7 @@ def load_bills_csv(path: str | Path) -> list[Bill]:
     if missing:
         raise ValueError(f"No STATED SUBTOTAL row for: {', '.join(missing)}")
 
-    return [Bill(bill_id=b, lines=lines, stated_subtotal=subtotal_by_bill[b])
+    return [Bill(bill_id=b, lines=lines, stated_subtotal=subtotal_by_bill[b], date_of_service=date_by_bill.get(b))
             for b, lines in lines_by_bill.items()]
 
 
@@ -71,6 +86,7 @@ _ACCOUNT = re.compile(r"Account #:\s*(\S+)")
 _HEADER = re.compile(r"^Code\s+Description\s+Qty\s+Unit price\s+Line total$", re.IGNORECASE)
 _LINE = re.compile(rf"^(\S+)\s+(.+?)\s+(\d+(?:\.\d+)?)\s+{_MONEY}\s+{_MONEY}$")
 _TOTAL = re.compile(rf"^Total charges\s+{_MONEY}$", re.IGNORECASE)
+_DATE = re.compile(r"Date of service:\s*(\d{1,2}/\d{1,2}/\d{4})", re.IGNORECASE)
 
 
 def _money(text: str) -> Decimal:
@@ -83,6 +99,7 @@ def load_bills_pdf(path: str | Path) -> list[Bill]:
     Any unreadable line inside the charges table stops loading with a clear error."""
     lines_by_bill: dict[str, list[LineItem]] = {}
     subtotal_by_bill: dict[str, Decimal] = {}
+    date_by_bill: dict[str, date | None] = {}
 
     with pdfplumber.open(path) as pdf:
         for page_no, page in enumerate(pdf.pages, start=1):
@@ -95,6 +112,8 @@ def load_bills_pdf(path: str | Path) -> list[Bill]:
                     bill_id = m[1]
                     lines_by_bill.setdefault(bill_id, [])
                     continue
+                if (m := _DATE.search(row)) and bill_id and not in_table:
+                    date_by_bill.setdefault(bill_id, parse_date(m[1]))
                 if _HEADER.match(row):
                     if bill_id is None:
                         raise ValueError(f"Page {page_no}: charges table found before an 'Account #' line")
@@ -125,5 +144,5 @@ def load_bills_pdf(path: str | Path) -> list[Bill]:
     if missing:
         raise ValueError(f"No 'Total charges' line for: {', '.join(missing)}")
 
-    return [Bill(bill_id=b, lines=lines, stated_subtotal=subtotal_by_bill[b])
+    return [Bill(bill_id=b, lines=lines, stated_subtotal=subtotal_by_bill[b], date_of_service=date_by_bill.get(b))
             for b, lines in lines_by_bill.items()]

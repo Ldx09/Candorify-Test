@@ -1,6 +1,6 @@
 """Request/response shapes for /api/bills. Money values are returned as strings (e.g. "234.00")
 so no cents are lost to floating-point rounding; the frontend can display them as-is."""
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 
 from typing import Literal
@@ -21,6 +21,7 @@ class LineIn(BaseModel):
 class BillIn(BaseModel):
     label: str | None = Field(default=None, max_length=100)
     stated_subtotal: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
+    date_of_service: date | None = None  # "2026-09-01"
     lines: list[LineIn] = Field(min_length=1, max_length=500)  # line numbers are assigned 1, 2, 3... in order
 
 
@@ -43,6 +44,7 @@ class BillOut(BaseModel):
     id: int
     label: str | None
     stated_subtotal: Decimal
+    date_of_service: date | None = None
     created_at: datetime
     lines: list[LineOut]
 
@@ -74,8 +76,9 @@ class BillSummary(BaseModel):
 
 
 class SampleBillRequest(BaseModel):
-    """Demo helper. Give sample_id (e.g. "BILL-001") to load one of the 20 provided synthetic bills,
-    or leave it out to generate a fresh synthetic bill with a planted error."""
+    """Demo helper. Give sample_id to load a provided bill: BILL-001..BILL-020 (synthetic set) or
+    DEMO-001..DEMO-004 (demo bills that trigger the follow-up questions). Leave it out to generate a
+    fresh synthetic bill with a planted error."""
     sample_id: str | None = Field(default=None, max_length=20)
     defect: Literal["none", "duplicate", "line_math", "subtotal", "mixed"] | None = None  # for generated bills
 

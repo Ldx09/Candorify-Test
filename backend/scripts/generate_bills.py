@@ -34,6 +34,12 @@ CATALOG = [
     ("94760", "Pulse oximetry, single determination", "Pulse ox check", Decimal("38.00")),
     ("0250", "Pharmacy, general supplies", "Pharmacy supplies", Decimal("65.00")),
     ("0710", "Recovery room, per 30 minutes", "Recovery rm 30 min", Decimal("340.00")),
+    # Codes that trigger the follow-up questions (room / ICU nights, ambulance, blood draws):
+    ("0120", "Room and board, semi-private", "Semi-private room", Decimal("2800.00")),
+    ("0200", "Intensive care, general", "ICU general", Decimal("6500.00")),
+    ("A0427", "Ambulance service, ALS, emergency transport, level 1", "ALS ambulance emergency", Decimal("1250.00")),
+    ("A0425", "Ground ambulance mileage, per mile", "Ambulance miles", Decimal("28.00")),
+    ("36415", "Routine venipuncture (blood draw)", "Blood draw", Decimal("18.00")),
 ]
 
 DEFECT_TYPES = ["none", "duplicate", "line_math", "subtotal", "mixed"]
