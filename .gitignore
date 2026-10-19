@@ -6,4 +6,7 @@ __pycache__/
 .pytest_cache/
 *.db
 .DS_Store
-.idea/
+.idea/.env
+.venv/
+*.db
+__pycache__/
