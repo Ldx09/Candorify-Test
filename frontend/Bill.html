@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Candorify · Check a bill</title>
+  <meta name="description" content="Upload your itemized medical bill. Candorify marks what looks off and helps you ask about it." />
+  <meta name="theme-color" content="#141813" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- mnm44: our 2 fonts, inter tight for everything + instrument serif for the fancy italic bits -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-view="check">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <div class="container header-bar">
+      <button type="button" class="brand" data-go="home" aria-label="Candorify home">candorify</button>
+
+      <nav class="public-nav" id="public-nav" aria-label="Main">
+        <button type="button" class="nav-link hide-sm" data-auth="login">Log in</button>
+        <button type="button" class="btn btn-primary btn-sm" data-auth="register">Sign up free</button>
+      </nav>
+
+      <nav class="app-nav" id="app-nav" aria-label="App" hidden>
+        <button type="button" data-go="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 14 2 2 4-4"/></svg>
+          <span>Check a bill</span>
+        </button>
+        <button type="button" data-go="letters">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <span>Letters</span>
+        </button>
+        <button type="button" data-lookup>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span>Code lookup</span>
+        </button>
+        <button type="button" data-go="results">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>
+          <span>Results</span>
+        </button>
+        <button type="button" data-go="account" class="show-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>Account</span>
+        </button>
+      </nav>
+
+      <div class="header-user" id="header-user" hidden>
+        <span class="badge" id="plan-badge">Free</span>
+        <button type="button" class="nav-link hide-sm" data-go="account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span id="user-email">Account</span>
+        </button>
+      </div>
+
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-menu">Menu</button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= CHECK A BILL ================= -->
+    <section id="view-check" class="view" aria-labelledby="check-title" hidden>
+      <div class="container">
+        <h1 id="check-title" class="sr-only">Check a bill</h1>
+
+        <div class="flow-top">
+          <ol class="stepper" id="stepper" aria-label="Your progress">
+            <li data-step="start"><button type="button" class="step" data-step-go="start"><span class="bar"></span><span class="label">Upload</span></button></li>
+            <li data-step="charges"><button type="button" class="step" data-step-go="charges"><span class="bar"></span><span class="label">Charges</span></button></li>
+            <li data-step="questions"><button type="button" class="step" data-step-go="questions"><span class="bar"></span><span class="label">Questions</span></button></li>
+            <li data-step="flags"><button type="button" class="step" data-step-go="flags"><span class="bar"></span><span class="label">Review</span></button></li>
+            <li data-step="letter"><button type="button" class="step" data-step-go="letter"><span class="bar"></span><span class="label">Letter</span></button></li>
+            <li data-step="finish"><button type="button" class="step" data-step-go="finish"><span class="bar"></span><span class="label">Finish</span></button></li>
+          </ol>
+          <div class="flow-meta">
+            <p class="step-count" id="step-count" aria-live="polite"></p>
+            <button type="button" class="btn btn-quiet btn-sm" id="btn-start-over" hidden>Start over</button>
+          </div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="step-panel" id="step-start">
+          <div class="step-head">
+            <h2>Upload your bill</h2>
+            <p>It needs to be itemized, with every charge listed.</p>
+          </div>
+
+          <div class="upload-layout">
+            <div class="panel upload-main">
+              <div class="dropzone" id="dropzone">
+                <input id="pdf-file" type="file" accept="application/pdf" class="sr-only" />
+                <label for="pdf-file" class="dropzone-inner">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M7 9l5-5 5 5"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg>
+                  <span class="dz-title">Choose a PDF</span>
+                  <span class="dz-sub">or drop it here · PDF, up to 5 MB</span>
+                </label>
+              </div>
+              <div id="file-row" class="file-row" hidden>
+                <p id="file-name" class="file-name"></p>
+                <button type="button" class="link-btn" id="btn-clear-file">Remove</button>
+              </div>
+              <button type="button" class="btn btn-primary btn-block" id="btn-upload" disabled>Read my bill</button>
+              <p id="upload-status" class="status" role="status" aria-live="polite"></p>
+              <p class="privacy-line">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                <span>Your personal details are removed first. <button type="button" class="link-btn" data-terms>How we handle your bill</button></span>
+              </p>
+            </div>
+
+            <div class="upload-side">
+              <button type="button" class="side-option" id="btn-need-itemized">
+                <strong>Only have a summary?</strong>
+                <span>We'll write the request for an itemized bill.</span>
+              </button>
+              <button type="button" class="side-option" id="btn-sample">
+                <strong>Just looking?</strong>
+                <span>Try a sample bill.</span>
+              </button>
+              <details class="sample-opts">
+                <summary>Sample settings</summary>
+                <label class="check" for="sample-errors"><input id="sample-errors" type="checkbox" checked><span>Add made-up errors to find</span></label>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step-panel" id="step-charges" hidden>
+          <div class="step-head">
+            <h2>Check the charges</h2>
+            <p id="charges-intro">Tap a code to see what it means. Fix anything we misread.</p>
+          </div>
+
+          <div class="bill-sheet">
+            <div class="form-row bill-meta">
+              <div class="field">
+                <label for="rev-provider">Hospital</label>
+                <input id="rev-provider" type="text" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="rev-date">Date of service</label>
+                <input id="rev-date" type="text" placeholder="2026-05-14" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="rev-total">Total on the bill ($)</label>
+                <input id="rev-total" type="number" step="0.01" inputmode="decimal" />
+              </div>
+            </div>
+            <div id="lines" class="line-list" aria-label="Charges on your bill"></div>
+            <button type="button" class="btn btn-quiet btn-sm add-line" id="btn-add-line">+ Add a charge</button>
+            <div class="totals-bar" id="totals-bar" aria-live="polite"></div>
+          </div>
+
+          <div class="step-actions">
+            <button type="button" class="btn btn-secondary" data-step-back>Back</button>
+            <button type="button" class="btn btn-primary" id="btn-charges-next">Looks right</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step-panel" id="step-questions" hidden>
+          <div class="step-head">
+            <h2>A few quick questions</h2>
+            <p>Skip any you're not sure about.</p>
+          </div>
+          <form id="questions-form" novalidate>
+            <div id="questions-list" class="q-list"></div>
+            <div class="step-actions">
+              <button type="button" class="btn btn-secondary" data-step-back>Back</button>
+              <button type="submit" class="btn btn-primary" id="btn-questions-next">Check my bill</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step-panel" id="step-flags" hidden>
+          <div class="step-head">
+            <h2>What looks off</h2>
+            <p>Check the ones you want to ask about. These are possible issues, not confirmed errors.</p>
+          </div>
+          <div id="flag-summary" class="flag-summary"></div>
+          <div id="flags-list" class="flag-list"></div>
+
+          <div class="tools-card" id="tools-card">
+            <div class="tools-head">
+              <h3 class="no-margin">More tools</h3>
+              <span class="badge badge-brand">Paid</span>
+            </div>
+            <div class="row">
+              <label for="translate-lang" class="sr-only">Language</label>
+              <select id="translate-lang" class="auto-width"></select>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-translate">Explain every charge</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-benchmark">Compare to Medicare</button>
+            </div>
+            <div id="translations"></div>
+            <div id="benchmarks"></div>
+          </div>
+
+          <div class="step-actions">
+            <button type="button" class="btn btn-secondary" data-step-back>Back</button>
+            <button type="button" class="btn btn-primary" id="btn-flags-next">Write my letter</button>
+          </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step-panel" id="step-letter" hidden>
+          <div class="step-head">
+            <h2>Your letter</h2>
+            <p>Edit it, then send it from your own email.</p>
+          </div>
+          <div id="letter-slot-flow">
+            <div id="letter-builder" class="letter-grid">
+            <div class="panel">
+              <div class="segmented" role="radiogroup" aria-label="Kind of letter">
+                <label><input type="radio" name="letter-type" value="request" checked /><span>Ask for itemized bill</span></label>
+                <label><input type="radio" name="letter-type" value="dispute" /><span>Question charges</span></label>
+              </div>
+
+              <div id="letter-items-wrap" hidden>
+                <h3 class="sub-head">Charges to ask about</h3>
+                <div id="letter-items"></div>
+              </div>
+
+              <h3 class="sub-head">Your details</h3>
+              <div class="field"><label for="tpl-provider">Hospital</label><input id="tpl-provider" type="text" /></div>
+              <div class="field"><label for="tpl-patient">Your name</label><input id="tpl-patient" type="text" autocomplete="name" /></div>
+              <div class="form-row">
+                <div class="field"><label for="tpl-account">Account number</label><input id="tpl-account" type="text" /></div>
+                <div class="field"><label for="tpl-date">Date of service</label><input id="tpl-date" type="text" placeholder="2026-05-14" /></div>
+              </div>
+              <div class="field"><label for="tpl-contact">Your email or phone</label><input id="tpl-contact" type="text" autocomplete="email" /></div>
+
+              <label class="check">
+                <input id="tpl-use-ai" type="checkbox" />
+                <span>Write it with AI</span>
+              </label>
+              <button type="button" class="btn btn-primary btn-block" id="btn-write-letter">Write my letter</button>
+            </div>
+
+            <div class="paper-letter">
+              <div class="field"><label for="tpl-to">To</label><input id="tpl-to" type="email" placeholder="billing@hospital.org" /></div>
+              <div class="field"><label for="tpl-subject">Subject</label><input id="tpl-subject" type="text" /></div>
+              <div class="field"><label for="tpl-body" class="sr-only">Letter</label><textarea id="tpl-body" placeholder="Your letter will show up here."></textarea></div>
+              <div class="row">
+                <button type="button" class="btn btn-primary" id="btn-send-email">Open in my email</button>
+                <button type="button" class="btn btn-secondary" id="btn-copy-letter">Copy</button>
+                <button type="button" class="btn btn-secondary" id="btn-download-annotated" hidden>Download marked-up PDF</button>
+              </div>
+              <p class="hint">Sent from your own email. We never see it.</p>
+            </div>
+          </div>
+          </div>
+          <div class="step-actions">
+            <button type="button" class="btn btn-secondary" data-step-back>Back</button>
+            <button type="button" class="btn btn-primary" id="btn-letter-next">I'm done</button>
+          </div>
+        </div>
+
+        <!-- STEP 6 -->
+        <!-- mnm44: the survey. these answers become the numbers on the our results page -->
+        <div class="step-panel" id="step-finish" hidden>
+          <form id="survey-form" novalidate>
+            <div class="step-head">
+              <h2>How did we do?</h2>
+              <p>Your answers feed our public results page. We keep the answers, never your bill.</p>
+            </div>
+            <div id="survey-flags" class="q-list"></div>
+
+            <div class="q-list survey-more">
+              <fieldset class="question">
+                <legend>Did you find any mistakes we missed?</legend>
+                <div class="pill-group" id="sv-missed"></div>
+              </fieldset>
+              <fieldset class="question">
+                <legend>Have you contacted your provider about these charges?</legend>
+                <div class="pill-group" id="sv-contact"></div>
+              </fieldset>
+              <div class="question">
+                <label class="legend" for="sv-savings">How much did this save you, or how much could it save you?</label>
+                <p class="hint" id="sv-savings-hint">Your best guess is fine. Leave it at 0 if nothing.</p>
+                <div class="money-input"><span aria-hidden="true">$</span><input id="sv-savings" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="sv-savings-hint" /></div>
+                <div class="pill-group sv-confirmed" id="sv-confirmed" role="radiogroup" aria-label="Is that amount confirmed by your provider?"></div>
+              </div>
+              <fieldset class="question">
+                <legend>Did Candorify help you?</legend>
+                <div class="pill-group" id="sv-helped"></div>
+              </fieldset>
+              <fieldset class="question">
+                <legend>Overall, how would you rate Candorify? (1 to 5)</legend>
+                <div class="pill-group" id="sv-sat"></div>
+              </fieldset>
+            </div>
+
+            <p id="survey-error" class="form-error" role="alert" hidden></p>
+            <div class="step-actions">
+              <button type="button" class="link-btn" id="btn-survey-skip">Skip and delete my data</button>
+              <button type="submit" class="btn btn-primary" id="btn-survey-submit">Submit and delete my data</button>
+            </div>
+          </form>
+
+          <div id="sample-finish" class="panel center-card" hidden>
+            <h2>That was a sample</h2>
+            <p class="muted">Ready to try your own bill?</p>
+            <button type="button" class="btn btn-primary" id="btn-sample-done">Start with my bill</button>
+          </div>
+
+          <div id="finish-done" class="panel center-card" hidden>
+            <div class="done-mark" aria-hidden="true"></div>
+            <h2>All done</h2>
+            <p class="muted">Your bill data has been deleted. Once you hear back from your provider, tell us how it went on the results page. It helps the next patient.</p>
+            <div class="row center-row">
+              <button type="button" class="btn btn-primary" id="btn-check-another">Check another bill</button>
+              <button type="button" class="btn btn-secondary" data-go="results">See our results</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wide">
+      <nav class="foot-nav" aria-label="Footer">
+        <button type="button" data-go="home">Home</button><span aria-hidden="true"></span>
+        <button type="button" data-scroll="why">Why it matters</button><span aria-hidden="true"></span>
+        <button type="button" data-go="team">Our team</button><span aria-hidden="true"></span>
+        <button type="button" data-go="results">Our results</button><span aria-hidden="true"></span>
+        <button type="button" data-go="pricing">Pricing</button><span aria-hidden="true"></span>
+        <button type="button" data-go="legal">Terms and Privacy</button>
+      </nav>
+      <svg class="foot-word" viewBox="0 0 1000 236" aria-hidden="true" focusable="false"><text x="0" y="180" textLength="1000" lengthAdjust="spacingAndGlyphs">candorify</text></svg>
+      <p class="foot-cta"><button type="button" class="text-link" data-auth="register">Sign up free <span class="dot" aria-hidden="true"></span></button></p>
+      <p class="disclaimer-text">Loading disclaimer…</p>
+      <p class="foot-copy">© 2026 Candorify</p>
+    </div>
+  </footer>
+
+  <!-- ================= MENU (full screen) ================= -->
+  <!-- mnm44: data-when="in" only shows when logged in, "out" only when logged out, no data-when = always -->
+  <div class="menu-backdrop" id="menu-backdrop" hidden></div>
+  <nav class="site-menu" id="site-menu" aria-label="Menu" hidden>
+    <div class="menu-head">
+      <span class="brand">candorify</span>
+      <button type="button" class="menu-btn" id="menu-close">Close</button>
+    </div>
+    <div class="menu-body">
+      <ol class="menu-list">
+        <li data-when="in"><button type="button" data-go="check">Check a bill</button></li>
+        <li data-when="in"><button type="button" data-go="letters">Letters</button></li>
+        <li data-when="in"><button type="button" data-lookup>Code lookup</button></li>
+        <li data-when="out"><button type="button" data-go="home">Home</button></li>
+        <li data-when="out"><button type="button" data-scroll="why">Why it matters</button></li>
+        <li data-when="out"><button type="button" data-scroll="what-we-look-for">What we look for</button></li>
+        <li data-when="out"><button type="button" data-scroll="how-it-works">How it works</button></li>
+        <li><button type="button" data-go="team">Our team</button></li>
+        <li><button type="button" data-founder>The founder</button></li>
+        <li><button type="button" data-go="results">Our results</button></li>
+        <li><button type="button" data-go="pricing">Pricing</button></li>
+        <li><button type="button" data-go="legal">Terms and Privacy</button></li>
+      </ol>
+      <figure class="menu-preview" aria-hidden="true">
+        <div class="menu-img" id="menu-img"></div>
+        <figcaption><span id="menu-pnum">01</span><span id="menu-plabel">Home</span></figcaption>
+      </figure>
+    </div>
+    <div class="menu-foot">
+      <div data-when="out" class="menu-auth">
+        <button type="button" class="btn btn-light" data-auth="register">Sign up free</button>
+        <button type="button" class="text-link" data-auth="login">Log in</button>
+      </div>
+      <div data-when="in" class="menu-auth">
+        <button type="button" class="text-link" data-go="account">Your account</button>
+      </div>
+      <p class="cap dim">Your time <span data-clock>--:--</span></p>
+    </div>
+  </nav>
+
+
+  <!-- Terms -->
+  <dialog id="terms-dialog" aria-labelledby="terms-title">
+    <div class="dialog-head">
+      <h2 id="terms-title" class="h3 no-margin">Terms and Privacy</h2>
+      <button type="button" class="icon-btn" id="terms-close" aria-label="Close terms">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body" id="terms-text"></div>
+    <div class="dialog-foot"><button type="button" class="text-link" data-go="legal">Open the full page</button></div>
+  </dialog>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scroll-bar"></span></div>
+
+  <!-- Code lookup drawer -->
+  <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+  <aside class="drawer" id="lookup-drawer" role="dialog" aria-modal="true" aria-labelledby="lookup-title" hidden>
+    <div class="drawer-head">
+      <h2 id="lookup-title" class="h3 no-margin">Look up a code</h2>
+      <button type="button" class="icon-btn" id="lookup-close" aria-label="Close code lookup">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      <form id="tc-form">
+        <div class="field"><label for="tc-code">Code</label><input id="tc-code" type="text" placeholder="85025" autocomplete="off" /></div>
+        <div class="form-row">
+          <div class="field"><label for="tc-system">Type</label><select id="tc-system"><option>CPT</option><option>HCPCS</option><option>ICD</option></select></div>
+          <div class="field"><label for="tc-lang">Language</label><select id="tc-lang"></select></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="tc-submit">Explain it</button>
+      </form>
+      <div id="tc-result" aria-live="polite"></div>
+    </div>
+  </aside>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
+  <script>window.CANDORIFY_API_BASE = "";</script>
+  <script src="assets/js/api.js"></script>
+  <script src="main.js"></script>
+  <script src="assets/js/home.js"></script>
+</body>
+</html>
