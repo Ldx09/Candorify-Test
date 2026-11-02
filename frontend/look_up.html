@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Candorify · Your account</title>
+  <title>Candorify · Code lookup</title>
   <meta name="description" content="Upload your itemized medical bill. Candorify marks what looks off and helps you ask about it." />
   <meta name="theme-color" content="#141813" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body data-view="account">
+<body data-view="lookup">
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- ================= HEADER ================= -->
@@ -62,11 +62,24 @@
 
   <main id="main">
 
-    <!-- ================= ACCOUNT ================= -->
-    <section id="view-account" class="view" aria-labelledby="account-title" hidden>
+    <!-- ================= CODE LOOKUP ================= -->
+    <section id="view-lookup" class="view" aria-labelledby="lookup-page-title" hidden>
       <div class="container narrow">
-        <h1 id="account-title" class="h2">Your account</h1>
-        <div id="account-detail"><p class="muted">Loading…</p></div>
+        <div class="step-head">
+          <h1 id="lookup-page-title" class="h2">Look up a code</h1>
+          <p>Type a billing code from your bill to see what it means.</p>
+        </div>
+        <div class="panel">
+      <form id="tc-form">
+        <div class="field"><label for="tc-code">Code</label><input id="tc-code" type="text" placeholder="85025" autocomplete="off" /></div>
+        <div class="form-row">
+          <div class="field"><label for="tc-system">Type</label><select id="tc-system"><option>CPT</option><option>HCPCS</option><option>ICD</option></select></div>
+          <div class="field"><label for="tc-lang">Language</label><select id="tc-lang"></select></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="tc-submit">Explain it</button>
+      </form>
+      <div id="tc-result" aria-live="polite"></div>
+    </div>
       </div>
     </section>
 
@@ -148,7 +161,7 @@
   <div id="toast" role="status" aria-live="polite"></div>
 
   <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
-  <script>window.CANDORIFY_API_BASE = "";</script>
+<script>window.CANDORIFY_API_BASE = "http://localhost:8000";</script>
   <script src="assets/js/api.js"></script>
   <script src="main.js"></script>
   <script src="assets/js/home.js"></script>

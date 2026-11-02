@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Candorify · Letters</title>
+  <title>Candorify · Plans</title>
   <meta name="description" content="Upload your itemized medical bill. Candorify marks what looks off and helps you ask about it." />
   <meta name="theme-color" content="#141813" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body data-view="letters">
+<body data-view="pricing">
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <!-- ================= HEADER ================= -->
@@ -62,53 +62,31 @@
 
   <main id="main">
 
-    <!-- ================= LETTERS ================= -->
-    <section id="view-letters" class="view" aria-labelledby="letters-title" hidden>
+    <!-- ================= PRICING ================= -->
+    <section id="view-pricing" class="view" aria-labelledby="pricing-title" hidden>
       <div class="container">
         <div class="step-head">
-          <h1 id="letters-title" class="h2">Letters</h1>
-          <p>Ask for an itemized bill or question a charge.</p>
+          <h1 id="pricing-title" class="h2">Pricing</h1>
+          <p>Checking a bill is free.</p>
         </div>
-        <div id="letter-slot-letters">
-          <div id="letter-builder" class="letter-grid">
-            <div class="panel">
-              <div class="segmented" role="radiogroup" aria-label="Kind of letter">
-                <label><input type="radio" name="letter-type" value="request" checked /><span>Ask for itemized bill</span></label>
-                <label><input type="radio" name="letter-type" value="dispute" /><span>Question charges</span></label>
-              </div>
-
-              <div id="letter-items-wrap" hidden>
-                <h3 class="sub-head">Charges to ask about</h3>
-                <div id="letter-items"></div>
-              </div>
-
-              <h3 class="sub-head">Your details</h3>
-              <div class="field"><label for="tpl-provider">Hospital</label><input id="tpl-provider" type="text" /></div>
-              <div class="field"><label for="tpl-patient">Your name</label><input id="tpl-patient" type="text" autocomplete="name" /></div>
-              <div class="form-row">
-                <div class="field"><label for="tpl-account">Account number</label><input id="tpl-account" type="text" /></div>
-                <div class="field"><label for="tpl-date">Date of service</label><input id="tpl-date" type="text" placeholder="2026-05-14" /></div>
-              </div>
-              <div class="field"><label for="tpl-contact">Your email or phone</label><input id="tpl-contact" type="text" autocomplete="email" /></div>
-
-              <label class="check">
-                <input id="tpl-use-ai" type="checkbox" />
-                <span>Write it with AI</span>
-              </label>
-              <button type="button" class="btn btn-primary btn-block" id="btn-write-letter">Write my letter</button>
-            </div>
-
-            <div class="paper-letter">
-              <div class="field"><label for="tpl-to">To</label><input id="tpl-to" type="email" placeholder="billing@hospital.org" /></div>
-              <div class="field"><label for="tpl-subject">Subject</label><input id="tpl-subject" type="text" /></div>
-              <div class="field"><label for="tpl-body" class="sr-only">Letter</label><textarea id="tpl-body" placeholder="Your letter will show up here."></textarea></div>
-              <div class="row">
-                <button type="button" class="btn btn-primary" id="btn-send-email">Open in my email</button>
-                <button type="button" class="btn btn-secondary" id="btn-copy-letter">Copy</button>
-                <button type="button" class="btn btn-secondary" id="btn-download-annotated" hidden>Download marked-up PDF</button>
-              </div>
-              <p class="hint">Sent from your own email. We never see it.</p>
-            </div>
+        <div class="price-grid">
+          <div class="panel price-card">
+            <h2 class="h3">Free</h2>
+            <p class="price">$0</p>
+            <ul class="check-list">
+              <li>Upload and check your bill</li>
+              <li>Quick questions about your stay</li>
+              <li>Code lookup</li>
+              <li>Itemized bill request letter</li>
+            </ul>
+            <button type="button" class="btn btn-secondary btn-block" data-go="check">Start free</button>
+          </div>
+          <div class="panel price-card price-card-paid">
+            <h2 class="h3">Paid</h2>
+            <p class="price">$9<small>/month</small></p>
+            <ul class="check-list" id="paid-features"><li>Loading…</li></ul>
+            <button type="button" class="btn btn-primary btn-block" id="btn-upgrade">Upgrade</button>
+            <p class="hint" id="pay-mode-note"></p>
           </div>
         </div>
       </div>
@@ -192,7 +170,7 @@
   <div id="toast" role="status" aria-live="polite"></div>
 
   <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
-  <script>window.CANDORIFY_API_BASE = "";</script>
+  <script>window.CANDORIFY_API_BASE = "http://localhost:8000";</script>
   <script src="assets/js/api.js"></script>
   <script src="main.js"></script>
   <script src="assets/js/home.js"></script>
