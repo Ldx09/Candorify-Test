@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Candorify · Terms and Privacy</title>
+  <meta name="description" content="Upload your itemized medical bill. Candorify marks what looks off and helps you ask about it." />
+  <meta name="theme-color" content="#141813" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- mnm44: our 2 fonts, inter tight for everything + instrument serif for the fancy italic bits -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-view="legal">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <div class="container header-bar">
+      <button type="button" class="brand" data-go="home" aria-label="Candorify home">candorify</button>
+
+      <nav class="public-nav" id="public-nav" aria-label="Main">
+        <button type="button" class="nav-link hide-sm" data-auth="login">Log in</button>
+        <button type="button" class="btn btn-primary btn-sm" data-auth="register">Sign up free</button>
+      </nav>
+
+      <nav class="app-nav" id="app-nav" aria-label="App" hidden>
+        <button type="button" data-go="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 14 2 2 4-4"/></svg>
+          <span>Check a bill</span>
+        </button>
+        <button type="button" data-go="letters">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <span>Letters</span>
+        </button>
+        <button type="button" data-lookup>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span>Code lookup</span>
+        </button>
+        <button type="button" data-go="results">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>
+          <span>Results</span>
+        </button>
+        <button type="button" data-go="account" class="show-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>Account</span>
+        </button>
+      </nav>
+
+      <div class="header-user" id="header-user" hidden>
+        <span class="badge" id="plan-badge">Free</span>
+        <button type="button" class="nav-link hide-sm" data-go="account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span id="user-email">Account</span>
+        </button>
+      </div>
+
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-menu">Menu</button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= TERMS AND PRIVACY (public) ================= -->
+    <!-- mnm44: the ONLY place the legal text lives, the popup on sign up copies it from here. not lawyer checked yet!! -->
+    <section id="view-legal" class="view view-legal" aria-labelledby="legal-title" hidden>
+      <div class="team-hero legal-hero">
+        <div class="wide">
+          <p class="cap dim">Candorify · Last updated November 1, 2026</p>
+          <h1 id="legal-title">Terms and Privacy</h1>
+          <p class="cap-body team-lead">What Candorify is, what it isn't, and what happens to your bill.</p>
+        </div>
+      </div>
+
+      <div class="wide legal-layout">
+        <nav class="legal-toc" aria-label="On this page">
+          <p class="cap dim">On this page</p>
+          <ol>
+            <li><a href="#legal-short">The short version</a></li>
+            <li><a href="#legal-suggestions">Suggestions, not verdicts</a></li>
+            <li><a href="#legal-accuracy">Accuracy</a></li>
+            <li><a href="#legal-you">Your decisions</a></li>
+            <li><a href="#legal-bill">Your bill and personal details</a></li>
+            <li><a href="#legal-keep">How long we keep it</a></li>
+            <li><a href="#legal-account">Your account</a></li>
+            <li><a href="#legal-pay">Payments</a></li>
+            <li><a href="#legal-limits">Limits of responsibility</a></li>
+            <li><a href="#legal-changes">Changes and questions</a></li>
+          </ol>
+        </nav>
+
+        <div class="legal-body" id="legal-body">
+          <section class="legal-sec legal-short" id="legal-short">
+            <p class="cap legal-n">01</p>
+            <h2>The short version</h2>
+            <ul>
+              <li>Candorify points out <strong>possible</strong> issues on your medical bill. These are suggestions to check, not findings.</li>
+              <li>Candorify is <strong>not 100% accurate</strong>. It can miss real mistakes and it can flag charges that are correct.</li>
+              <li>We never say a charge is definitely wrong. Only your provider or insurer can confirm that.</li>
+              <li>You decide what to ask about, and you send any letter yourself.</li>
+              <li>We remove your personal details before anything reads your bill, delete your bill when you finish, and never sell your data.</li>
+            </ul>
+          </section>
+
+          <section class="legal-sec" id="legal-suggestions">
+            <p class="cap legal-n">02</p>
+            <h2>Suggestions, not verdicts</h2>
+            <p>Every item Candorify shows you is a <strong>possible discrepancy to review</strong>. Words like "possible duplicate" or "math doesn't add up" mean "worth asking about." They never mean the charge is confirmed to be wrong.</p>
+            <p>Candorify does not:</p>
+            <ul>
+              <li>verify charges or confirm that an error exists</li>
+              <li>guarantee that you will save money or get a refund</li>
+              <li>replace a billing auditor, patient advocate, doctor, lawyer, or financial advisor</li>
+              <li>give medical, legal, or financial advice</li>
+            </ul>
+            <p>Nothing is settled until your provider or insurance company reviews it and agrees.</p>
+          </section>
+
+          <section class="legal-sec" id="legal-accuracy">
+            <p class="cap legal-n">03</p>
+            <h2>Accuracy</h2>
+            <p>Candorify combines automatic checks with AI. Both can be wrong. In particular:</p>
+            <ul>
+              <li>Reading a PDF is not perfect. We may misread a code, a price, or a quantity, so please check the charges screen against your bill.</li>
+              <li>We may miss real mistakes, and we may flag charges that are correct.</li>
+              <li>Plain-language explanations of billing codes and translations into other languages may be incomplete or imprecise.</li>
+              <li>The accuracy figures we publish come from testing on made-up sample bills. Results on real bills may differ.</li>
+            </ul>
+          </section>
+
+          <section class="legal-sec" id="legal-you">
+            <p class="cap legal-n">04</p>
+            <h2>Your decisions</h2>
+            <ul>
+              <li>You choose which items to include in a letter, and you can mark any item as fine.</li>
+              <li>Letters are drafts. Read and edit them before sending. They are sent from your own email, not by Candorify.</li>
+              <li>Don't skip or delay a payment only because Candorify flagged something. Ask your provider first, and keep an eye on any payment deadlines.</li>
+              <li>Acting on any suggestion is your own choice and responsibility.</li>
+            </ul>
+          </section>
+
+          <section class="legal-sec" id="legal-bill">
+            <p class="cap legal-n">05</p>
+            <h2>Your bill and personal details</h2>
+            <ul>
+              <li>Your PDF is read on our server and deleted right away. We keep only the list of charges (codes, descriptions, quantities and prices), the total, the date of service and the account number printed on the bill. We don't keep your name or address.</li>
+              <li>Reading a bill is automatic and <strong>not perfect</strong>. Unusual layouts can be misread, so check the charges we show you.</li>
+              <li>Your bill itself is never sent to an AI. Only text that needs translating goes to our AI provider, Google (Gemini): the follow-up questions, plain-language explanations of billing codes, and a copy of your letter with your name, address and account number hidden first.</li>
+              <li>Your original PDF is never changed.</li>
+              <li>We don't sell your data or share it with advertisers.</li>
+            </ul>
+          </section>
+
+          <section class="legal-sec" id="legal-keep">
+            <p class="cap legal-n">06</p>
+            <h2>How long we keep it</h2>
+            <ul>
+              <li>Your bill and its details are permanently deleted when you finish your review.</li>
+              <li>If you don't finish, they are deleted automatically after 30 days.</li>
+              <li>We keep only anonymous answers from the short survey and the optional follow-up: how many suggestions you found accurate, whether you contacted your provider, how much you saved, and how satisfied you were. They are not linked to your account or your bill, and they make up the numbers on our Our results page.</li>
+              <li>You can delete your account and everything linked to it at any time from Your account.</li>
+            </ul>
+          </section>
+
+          <section class="legal-sec" id="legal-account">
+            <p class="cap legal-n">07</p>
+            <h2>Your account</h2>
+            <ul>
+              <li>You need an account to use Candorify, and you must be 18 or older.</li>
+              <li>Keep your password private. "Remember me" keeps you signed in on that device, so only use it on a device you trust.</li>
+              <li>Only upload bills that are yours, or that you have permission to review.</li>
+            </ul>
+          </section>
+
+          <section class="legal-sec" id="legal-pay">
+            <p class="cap legal-n">08</p>
+            <h2>Payments</h2>
+            <p>Paid plans are handled by Stripe. You enter your card on Stripe's secure page, and Candorify never sees or stores your card number.</p>
+          </section>
+
+          <section class="legal-sec" id="legal-limits">
+            <p class="cap legal-n">09</p>
+            <h2>Limits of responsibility</h2>
+            <ul>
+              <li>Candorify is provided as is, without any promise that it is complete, accurate or error-free.</li>
+              <li>Because you upload your own bill, Candorify is not a HIPAA-covered entity.</li>
+              <li>To the extent the law allows, Candorify is not responsible for decisions you make based on its suggestions, for amounts you pay or don't pay, or for disclosure of information in your bill.</li>
+            </ul>
+          </section>
+
+          <section class="legal-sec" id="legal-changes">
+            <p class="cap legal-n">10</p>
+            <h2>Changes and questions</h2>
+            <p>Candorify is a student project at NJIT and is still a prototype. These terms have not yet been reviewed by a lawyer and may change. When they do, we'll update the date at the top of this page.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wide">
+      <nav class="foot-nav" aria-label="Footer">
+        <button type="button" data-go="home">Home</button><span aria-hidden="true"></span>
+        <button type="button" data-scroll="why">Why it matters</button><span aria-hidden="true"></span>
+        <button type="button" data-go="team">Our team</button><span aria-hidden="true"></span>
+        <button type="button" data-go="results">Our results</button><span aria-hidden="true"></span>
+        <button type="button" data-go="pricing">Pricing</button><span aria-hidden="true"></span>
+        <button type="button" data-go="legal">Terms and Privacy</button>
+      </nav>
+      <svg class="foot-word" viewBox="0 0 1000 236" aria-hidden="true" focusable="false"><text x="0" y="180" textLength="1000" lengthAdjust="spacingAndGlyphs">candorify</text></svg>
+      <p class="foot-cta"><button type="button" class="text-link" data-auth="register">Sign up free <span class="dot" aria-hidden="true"></span></button></p>
+      <p class="disclaimer-text">Loading disclaimer…</p>
+      <p class="foot-copy">© 2026 Candorify</p>
+    </div>
+  </footer>
+
+  <!-- ================= MENU (full screen) ================= -->
+  <!-- mnm44: data-when="in" only shows when logged in, "out" only when logged out, no data-when = always -->
+  <div class="menu-backdrop" id="menu-backdrop" hidden></div>
+  <nav class="site-menu" id="site-menu" aria-label="Menu" hidden>
+    <div class="menu-head">
+      <span class="brand">candorify</span>
+      <button type="button" class="menu-btn" id="menu-close">Close</button>
+    </div>
+    <div class="menu-body">
+      <ol class="menu-list">
+        <li data-when="in"><button type="button" data-go="check">Check a bill</button></li>
+        <li data-when="in"><button type="button" data-go="letters">Letters</button></li>
+        <li data-when="in"><button type="button" data-lookup>Code lookup</button></li>
+        <li data-when="out"><button type="button" data-go="home">Home</button></li>
+        <li data-when="out"><button type="button" data-scroll="why">Why it matters</button></li>
+        <li data-when="out"><button type="button" data-scroll="what-we-look-for">What we look for</button></li>
+        <li data-when="out"><button type="button" data-scroll="how-it-works">How it works</button></li>
+        <li><button type="button" data-go="team">Our team</button></li>
+        <li><button type="button" data-founder>The founder</button></li>
+        <li><button type="button" data-go="results">Our results</button></li>
+        <li><button type="button" data-go="pricing">Pricing</button></li>
+        <li><button type="button" data-go="legal">Terms and Privacy</button></li>
+      </ol>
+      <figure class="menu-preview" aria-hidden="true">
+        <div class="menu-img" id="menu-img"></div>
+        <figcaption><span id="menu-pnum">01</span><span id="menu-plabel">Home</span></figcaption>
+      </figure>
+    </div>
+    <div class="menu-foot">
+      <div data-when="out" class="menu-auth">
+        <button type="button" class="btn btn-light" data-auth="register">Sign up free</button>
+        <button type="button" class="text-link" data-auth="login">Log in</button>
+      </div>
+      <div data-when="in" class="menu-auth">
+        <button type="button" class="text-link" data-go="account">Your account</button>
+      </div>
+      <p class="cap dim">Your time <span data-clock>--:--</span></p>
+    </div>
+  </nav>
+
+
+  <!-- Terms -->
+  <dialog id="terms-dialog" aria-labelledby="terms-title">
+    <div class="dialog-head">
+      <h2 id="terms-title" class="h3 no-margin">Terms and Privacy</h2>
+      <button type="button" class="icon-btn" id="terms-close" aria-label="Close terms">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body" id="terms-text"></div>
+    <div class="dialog-foot"><button type="button" class="text-link" data-go="legal">Open the full page</button></div>
+  </dialog>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scroll-bar"></span></div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
+  <script>window.CANDORIFY_API_BASE = "";</script>
+  <script src="assets/js/api.js"></script>
+  <script src="main.js"></script>
+  <script src="assets/js/home.js"></script>
+</body>
+</html>
