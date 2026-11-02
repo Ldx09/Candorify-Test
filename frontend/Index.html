@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Candorify</title>
+  <!-- mnm44: this page just sends ppl to home.html. it passes along anything in the link
+       (like the stripe ?session_id= or the google/apple login #access_token=) so those still work -->
+  <script>window.location.replace("home.html" + window.location.search + window.location.hash);</script>
+</head>
+<body>
+  <p><a href="home.html">Go to Candorify</a></p>
+</body>
+</html>
