@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Candorify · Find the mistakes on your medical bill</title>
+  <meta name="description" content="Upload your itemized medical bill. Candorify marks what looks off and helps you ask about it." />
+  <meta name="theme-color" content="#141813" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- mnm44: our 2 fonts, inter tight for everything + instrument serif for the fancy italic bits -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-view="home">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <div class="container header-bar">
+      <button type="button" class="brand" data-go="home" aria-label="Candorify home">candorify</button>
+
+      <nav class="public-nav" id="public-nav" aria-label="Main">
+        <button type="button" class="nav-link hide-sm" data-auth="login">Log in</button>
+        <button type="button" class="btn btn-primary btn-sm" data-auth="register">Sign up free</button>
+      </nav>
+
+      <nav class="app-nav" id="app-nav" aria-label="App" hidden>
+        <button type="button" data-go="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 14 2 2 4-4"/></svg>
+          <span>Check a bill</span>
+        </button>
+        <button type="button" data-go="letters">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <span>Letters</span>
+        </button>
+        <button type="button" data-lookup>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span>Code lookup</span>
+        </button>
+        <button type="button" data-go="results">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>
+          <span>Results</span>
+        </button>
+        <button type="button" data-go="account" class="show-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span>Account</span>
+        </button>
+      </nav>
+
+      <div class="header-user" id="header-user" hidden>
+        <span class="badge" id="plan-badge">Free</span>
+        <button type="button" class="nav-link hide-sm" data-go="account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <span id="user-email">Account</span>
+        </button>
+      </div>
+
+      <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="site-menu">Menu</button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= HOME (public) ================= -->
+    <section id="view-home" class="view view-home" aria-labelledby="home-title" hidden>
+
+      <!-- mnm44: the big green top part w the clock and the giant candorify. first thing ppl see so it leads w the 80% -->
+      <div class="nh">
+        <div class="nh-bg" aria-hidden="true"></div>
+        <div class="wide nh-top">
+          <p class="cap nh-tag" data-reveal>Medical bill checker<br>for everyday patients</p>
+          <p class="cap nh-clock" aria-hidden="true"><span data-clock>--:--</span></p>
+        </div>
+        <div class="wide nh-mid">
+          <h1 id="home-title" class="nh-title" data-reveal>Medical bills are often wrong. You shouldn't pay for the mistakes.</h1>
+          <div class="nh-side" data-reveal style="--delay:.15s">
+            <p class="cap-body">Up to 80% of medical bills contain at least one error. Candorify checks your itemized bill before you pay, so the money stays with you.</p>
+            <div class="nh-cta">
+              <button type="button" class="btn btn-light" data-auth="register">Check my bill free</button>
+              <button type="button" class="text-link" data-scroll="why">Why it matters <span aria-hidden="true">↓</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="wide nh-checks">
+          <div class="nh-checks-head">
+            <span class="ticks" data-ticks="22" aria-hidden="true"></span>
+            <span class="cap">What we check</span><span class="cap dim">(06)</span>
+          </div>
+          <ul class="nh-check-list">
+            <li><button type="button" data-look="0"><span aria-hidden="true">+</span>Double charges</button></li>
+            <li><button type="button" data-look="1"><span aria-hidden="true">+</span>Bad math</button></li>
+            <li><button type="button" data-look="2"><span aria-hidden="true">+</span>Wrong totals</button></li>
+            <li><button type="button" data-look="3"><span aria-hidden="true">+</span>Odd quantities</button></li>
+            <li><button type="button" data-look="4"><span aria-hidden="true">+</span>Extra days</button></li>
+            <li><button type="button" data-look="5"><span aria-hidden="true">+</span>Confusing codes</button></li>
+          </ul>
+        </div>
+        <svg class="nh-word" viewBox="0 0 1000 236" aria-hidden="true" focusable="false"><text x="0" y="180" textLength="1000" lengthAdjust="spacingAndGlyphs">candorify</text></svg>
+      </div>
+
+      <!-- ABOUT: two-column info table -->
+      <section class="wide ninfo" aria-label="About Candorify">
+        <div class="ninfo-left" data-reveal>
+          <p class="cap">Candorify</p>
+          <p class="cap dim">Free to start</p>
+          <p class="cap-body">Upload an itemized bill. We read every line, explain each billing code in plain words, and point out charges worth asking about. Then we write the letter for you.</p>
+        </div>
+        <dl class="ninfo-table" data-reveal style="--delay:.12s">
+          <div><dt>What it does</dt><dd>Checks itemized medical bills for possible errors</dd></div>
+          <div><dt>How</dt><dd>Upload, answer a few questions, review, send</dd></div>
+          <div><dt>Language</dt><dd>Plain words, in your language</dd></div>
+          <div><dt>Who decides</dt><dd>You do. We never call a charge wrong</dd></div>
+        </dl>
+      </section>
+
+      <!-- STATEMENT -->
+      <section class="wide nsay" aria-label="Up to 80% of medical bills have an error">
+        <p class="nsay-l" data-reveal>Up to<br><span data-count="80" data-suffix="%">80%</span></p>
+        <p class="nsay-r" data-reveal style="--delay:.1s">of bills<br>have an error</p>
+        <p class="cap dim nsay-src">Estimate from patient billing advocates. <a href="https://www.beckershospitalreview.com/finance/medical-billing-errors-growing-says-medical-billing-advocates-of-america/" target="_blank" rel="noopener">Source</a></p>
+      </section>
+
+      <!-- WHY: awards-style list -->
+      <section class="wide nlist" id="why" aria-labelledby="why-title">
+        <h2 id="why-title" class="cap">Why it matters</h2>
+        <ol class="nlist-rows" data-reveal-group>
+          <li><p class="nlist-big"><span data-count="1886" data-prefix="$">$1,886</span></p><p class="nlist-meta">Average yearly deductible, one person with job-based insurance</p><p class="nlist-year"><a href="https://files.kff.org/attachment/Employer-Health-Benefits-Survey-2025-Annual-Survey-Summary-of-Findings.pdf" target="_blank" rel="noopener" aria-label="Source: KFF 2025 Employer Health Benefits Survey">(KFF 2025)</a></p></li>
+          <li><p class="nlist-big">You pay first</p><p class="nlist-meta">Until you reach your deductible, most bills are yours to pay</p><p class="nlist-year">(Deductible)</p></li>
+          <li><p class="nlist-big">Healthy? You may never reach it</p><p class="nlist-meta">If you rarely need care, you may pay out of pocket all year</p><p class="nlist-year">(Out of pocket)</p></li>
+          <li><p class="nlist-big">Every error is your money</p><p class="nlist-meta">A duplicate charge or an extra day comes from you, not your insurer</p><p class="nlist-year">(You)</p></li>
+          <li><p class="nlist-big">Auditors skip small bills</p><p class="nlist-meta">One $60 mistake is still worth a few minutes. We don't skip it</p><p class="nlist-year">(Candorify)</p></li>
+        </ol>
+        <div class="nlist-cta" data-reveal>
+          <p class="cap-body">Catch it <em>before</em> you pay. Free with an account.</p>
+          <div class="nlist-cta-btns">
+            <button type="button" class="text-link" data-go="results">See our results</button>
+            <button type="button" class="btn btn-dark" data-auth="register">Check my bill free</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT WE LOOK FOR: scrolling down slides the cards sideways (cards are made in home.js) -->
+      <section class="ngal" id="what-we-look-for" aria-labelledby="catch-title">
+        <div class="ngal-pin">
+          <h2 id="catch-title" class="ngal-title">What we look for</h2>
+          <div class="ngal-window"><ol class="ngal-track" id="gal-track"></ol></div>
+          <div class="ngal-foot">
+            <span class="ticks" id="gal-ticks" data-ticks="40" aria-hidden="true"></span>
+            <div class="ngal-cap" id="gal-cap" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATEMENT -->
+      <section class="wide nsay nsay-dark" aria-label="Four steps, about five minutes">
+        <p class="nsay-l" data-reveal>Four<br>steps</p>
+        <p class="nsay-r" data-reveal style="--delay:.1s">About five<br>minutes</p>
+      </section>
+
+      <!-- mnm44: the glass box! each article below is one side of it. change the step text right here -->
+      <section class="nbox" id="how-it-works" aria-labelledby="how-title">
+        <div class="nbox-pin">
+          <div class="nbox-side">
+            <span class="vticks" id="box-ticks" aria-hidden="true"></span>
+            <h2 id="how-title" class="cap">How it works</h2>
+            <p class="cap dim" aria-hidden="true"><span id="box-count">01</span> / 04</p>
+          </div>
+          <div class="nbox-stage">
+            <div class="nbox-cube" id="box-cube">
+              <article class="nbox-face"><h3>Upload your bill</h3><p>Add the PDF of your itemized bill. Your name, address and other personal details come off before anything reads it.</p></article>
+              <article class="nbox-face"><h3>Check the charges</h3><p>Every line, with each billing code explained in plain words and in your language. Fix anything we misread.</p></article>
+              <article class="nbox-face"><h3>Answer a few questions</h3><p>Like how many nights you stayed. "Not sure" is always fine. We compare your answers with the bill.</p></article>
+              <article class="nbox-face"><h3>Ask about the charges</h3><p>Tick the ones you want to question. We write the letter, and you send it from your own email.</p></article>
+            </div>
+          </div>
+          <ol class="nbox-index" id="box-index">
+            <li><button type="button" data-step="0"><i>01</i>Upload</button></li>
+            <li><button type="button" data-step="1"><i>02</i>Check</button></li>
+            <li><button type="button" data-step="2"><i>03</i>Answer</button></li>
+            <li><button type="button" data-step="3"><i>04</i>Ask</button></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- WHAT YOU GET BACK: big titles, then a green panel slides up over each one -->
+      <section class="ncases" id="what-you-get" aria-labelledby="see-title">
+        <h2 id="see-title" class="wide cap">What you get back</h2>
+
+        <article class="ncase">
+          <div class="wide ncase-head">
+            <ul class="ncase-meta cap"><li>Step 02</li><li>Charges</li><li>Plain words</li></ul>
+            <h3 class="ncase-title">Your bill, explained</h3>
+          </div>
+          <div class="ncase-media">
+            <div class="wide ncase-inner">
+              <div class="lang-card" data-reveal>
+                <p class="cap">Try it. Pick a code</p>
+                <div class="lang-row" role="radiogroup" aria-label="Billing code">
+                  <button type="button" class="code-pick" role="radio" aria-checked="true" data-code="85025">85025</button>
+                  <button type="button" class="code-pick" role="radio" aria-checked="false" data-code="71046">71046</button>
+                  <button type="button" class="code-pick" role="radio" aria-checked="false" data-code="J1100">J1100</button>
+                </div>
+                <p class="lang-out" id="lang-out" aria-live="polite">Complete blood count</p>
+                <div class="lang-row lang-tabs" role="radiogroup" aria-label="Language">
+                  <button type="button" role="radio" aria-checked="true" data-lang="en">English</button>
+                  <button type="button" role="radio" aria-checked="false" data-lang="es">Español</button>
+                  <button type="button" role="radio" aria-checked="false" data-lang="zh">中文</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="ncase">
+          <div class="wide ncase-head">
+            <ul class="ncase-meta cap"><li>Step 04</li><li>Review</li><li>You decide</li></ul>
+            <h3 class="ncase-title">What looks off</h3>
+          </div>
+          <div class="ncase-media">
+            <div class="wide ncase-inner">
+              <figure class="review-mock" data-reveal aria-label="Example of a Candorify review with three charges to look at">
+                <div class="mock-bar"><span class="mock-brand">candorify</span><span class="mock-step">Step 4 of 6: Review</span></div>
+                <p class="mock-title">3 things to look at</p>
+                <div class="mock-flag">
+                  <span class="mock-kind">Possible duplicate</span>
+                  <div class="mock-line"><strong>Blood test</strong><span>$45.00 × 2</span></div>
+                  <p>Charged twice on the same day.</p>
+                  <label class="mock-check"><span class="box" aria-hidden="true"></span>Include in my letter</label>
+                </div>
+                <div class="mock-flag">
+                  <span class="mock-kind">Doesn't match what you told us</span>
+                  <div class="mock-line"><strong>Room and board</strong><span>7 days</span></div>
+                  <p>You said you stayed 6 nights.</p>
+                  <label class="mock-check"><span class="box" aria-hidden="true"></span>Include in my letter</label>
+                </div>
+                <div class="mock-flag is-faded">
+                  <span class="mock-kind">Math doesn't add up</span>
+                  <div class="mock-line"><strong>IV medicine</strong><span>$620.00</span></div>
+                  <p>1 × $260.00 should be $260.00.</p>
+                </div>
+                <figcaption class="mock-caption">Example. Not a real patient or provider.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="ncase">
+          <div class="wide ncase-head">
+            <ul class="ncase-meta cap"><li>Step 05</li><li>Letter</li><li>Sent by you</li></ul>
+            <h3 class="ncase-title">The letter, written</h3>
+          </div>
+          <div class="ncase-media">
+            <div class="wide ncase-inner">
+              <div class="ask-card" data-reveal>
+                <fieldset class="ask-list">
+                  <legend class="cap">Try it. Pick what to ask about</legend>
+                  <label class="check"><input type="checkbox" data-ask="Blood test (85025), charged twice on the same day" checked /><span>Blood test, charged twice</span></label>
+                  <label class="check"><input type="checkbox" data-ask="Room and board, 7 days billed for a 6-night stay" checked /><span>One extra room day</span></label>
+                  <label class="check"><input type="checkbox" data-ask="IV medicine (96374), line total doesn't match the price" /><span>IV medicine math</span></label>
+                </fieldset>
+                <div class="demo-letter" aria-live="polite">
+                  <p>Please review these charges before I pay:</p>
+                  <ul id="ask-list"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- CLOSING -->
+      <section class="ncta" aria-labelledby="cta-title">
+        <div class="wide ncta-inner">
+          <h2 id="cta-title" class="nsay-pair"><span data-reveal>Before you pay,</span><span data-reveal style="--delay:.1s">take a second look.</span></h2>
+          <button type="button" class="btn btn-light" data-auth="register">Check my bill free</button>
+        </div>
+      </section>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wide">
+      <nav class="foot-nav" aria-label="Footer">
+        <button type="button" data-go="home">Home</button><span aria-hidden="true"></span>
+        <button type="button" data-scroll="why">Why it matters</button><span aria-hidden="true"></span>
+        <button type="button" data-go="team">Our team</button><span aria-hidden="true"></span>
+        <button type="button" data-go="results">Our results</button><span aria-hidden="true"></span>
+        <button type="button" data-go="pricing">Pricing</button><span aria-hidden="true"></span>
+        <button type="button" data-go="legal">Terms and Privacy</button>
+      </nav>
+      <svg class="foot-word" viewBox="0 0 1000 236" aria-hidden="true" focusable="false"><text x="0" y="180" textLength="1000" lengthAdjust="spacingAndGlyphs">candorify</text></svg>
+      <p class="foot-cta"><button type="button" class="text-link" data-auth="register">Sign up free <span class="dot" aria-hidden="true"></span></button></p>
+      <p class="disclaimer-text">Loading disclaimer…</p>
+      <p class="foot-copy">© 2026 Candorify</p>
+    </div>
+  </footer>
+
+  <!-- ================= MENU (full screen) ================= -->
+  <!-- mnm44: data-when="in" only shows when logged in, "out" only when logged out, no data-when = always -->
+  <div class="menu-backdrop" id="menu-backdrop" hidden></div>
+  <nav class="site-menu" id="site-menu" aria-label="Menu" hidden>
+    <div class="menu-head">
+      <span class="brand">candorify</span>
+      <button type="button" class="menu-btn" id="menu-close">Close</button>
+    </div>
+    <div class="menu-body">
+      <ol class="menu-list">
+        <li data-when="in"><button type="button" data-go="check">Check a bill</button></li>
+        <li data-when="in"><button type="button" data-go="letters">Letters</button></li>
+        <li data-when="in"><button type="button" data-lookup>Code lookup</button></li>
+        <li data-when="out"><button type="button" data-go="home">Home</button></li>
+        <li data-when="out"><button type="button" data-scroll="why">Why it matters</button></li>
+        <li data-when="out"><button type="button" data-scroll="what-we-look-for">What we look for</button></li>
+        <li data-when="out"><button type="button" data-scroll="how-it-works">How it works</button></li>
+        <li><button type="button" data-go="team">Our team</button></li>
+        <li><button type="button" data-founder>The founder</button></li>
+        <li><button type="button" data-go="results">Our results</button></li>
+        <li><button type="button" data-go="pricing">Pricing</button></li>
+        <li><button type="button" data-go="legal">Terms and Privacy</button></li>
+      </ol>
+      <figure class="menu-preview" aria-hidden="true">
+        <div class="menu-img" id="menu-img"></div>
+        <figcaption><span id="menu-pnum">01</span><span id="menu-plabel">Home</span></figcaption>
+      </figure>
+    </div>
+    <div class="menu-foot">
+      <div data-when="out" class="menu-auth">
+        <button type="button" class="btn btn-light" data-auth="register">Sign up free</button>
+        <button type="button" class="text-link" data-auth="login">Log in</button>
+      </div>
+      <div data-when="in" class="menu-auth">
+        <button type="button" class="text-link" data-go="account">Your account</button>
+      </div>
+      <p class="cap dim">Your time <span data-clock>--:--</span></p>
+    </div>
+  </nav>
+
+
+  <!-- Terms -->
+  <dialog id="terms-dialog" aria-labelledby="terms-title">
+    <div class="dialog-head">
+      <h2 id="terms-title" class="h3 no-margin">Terms and Privacy</h2>
+      <button type="button" class="icon-btn" id="terms-close" aria-label="Close terms">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body" id="terms-text"></div>
+    <div class="dialog-foot"><button type="button" class="text-link" data-go="legal">Open the full page</button></div>
+  </dialog>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scroll-bar"></span></div>
+
+  <div class="float-cta" id="float-cta" hidden>
+    <span>Up to 80% of medical bills have an error.</span>
+    <button type="button" class="btn btn-light btn-sm" data-auth="register">Check my bill free</button>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
+  <script>window.CANDORIFY_API_BASE = "";</script>
+  <script src="assets/js/api.js"></script>
+  <script src="main.js"></script>
+  <script src="assets/js/home.js"></script>
+</body>
+</html>
