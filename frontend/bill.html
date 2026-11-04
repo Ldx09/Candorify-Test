@@ -232,8 +232,13 @@
                 <div class="field"><label for="tpl-account">Account number</label><input id="tpl-account" type="text" /></div>
                 <div class="field"><label for="tpl-date">Date of service</label><input id="tpl-date" type="text" placeholder="2026-05-14" /></div>
               </div>
-              <div class="field"><label for="tpl-contact">Your email or phone</label><input id="tpl-contact" type="text" autocomplete="email" /></div>
-
+              <!-- vrajesh: email/phone is checked before the letter is written (see the script at the bottom) -->
+              <div class="field">
+                <label for="tpl-contact">Your email or phone</label>
+                <input id="tpl-contact" type="text" autocomplete="email" required aria-describedby="tpl-contact-hint tpl-contact-error" />
+                <p class="hint" id="tpl-contact-hint">So the hospital can reply. For example name@example.com or 555-123-4567.</p>
+                <p class="form-error" id="tpl-contact-error" role="alert" hidden>Enter a real email (name@example.com) or a phone number with at least 10 digits.</p>
+              </div>
               <label class="check">
                 <input id="tpl-use-ai" type="checkbox" />
                 <span>Write it with AI</span>
@@ -418,11 +423,41 @@
     </div>
   </aside>
   <div id="toast" role="status" aria-live="polite"></div>
-
+  <!-- vrajesh: blocks "Write my letter" until the email/phone looks real.
+       Runs before Main.js's click handler (capture phase) and stops it if the contact is invalid. -->
+  <script>
+    (function () {
+      function validContact(value) {
+        var v = (value || "").trim();
+        if (/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v)) return true;              // email: name@example.com
+        var digits = v.replace(/\D/g, "");
+        return /^\+?[\d\s().-]+$/.test(v) && digits.length >= 10 && digits.length <= 15;  // phone: 10-15 digits
+      }
+      function showError(show) {
+        var input = document.getElementById("tpl-contact");
+        var err = document.getElementById("tpl-contact-error");
+        if (input) input.setAttribute("aria-invalid", show ? "true" : "false");
+        if (err) err.hidden = !show;
+      }
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest || !e.target.closest("#btn-write-letter")) return;
+        var input = document.getElementById("tpl-contact");
+        if (!input) return;
+        if (validContact(input.value)) { showError(false); return; }
+        e.preventDefault();
+        e.stopImmediatePropagation();   // Main.js never sees the click, so no letter is written
+        showError(true);
+        input.focus();
+      }, true);
+      document.addEventListener("input", function (e) {
+        if (e.target && e.target.id === "tpl-contact") showError(false);
+      });
+    })();
+  </script>
   <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
   <script>window.CANDORIFY_API_BASE = "http://localhost:8000";</script>
-  <script src="Api.js"></script>
-  <script src="Main.js"></script>
+  <script src="api.js"></script>
+  <script src="main.js"></script>
   <script src="home.js"></script>
 </body>
 </html>

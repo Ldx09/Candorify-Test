@@ -188,7 +188,7 @@
       const q = new URLSearchParams();
       if (state.pendingView) q.set("next", state.pendingView);
       if (message) q.set("msg", message);
-      window.location.href = (mode === "register" ? "sign_up.html" : "sign_in.html") + (q.toString() ? "?" + q : "");
+      window.location.href = (mode === "register" ? "signup.html" : "signin.html") + (q.toString() ? "?" + q : "");
       return;
     }
     setAuthMode(mode);

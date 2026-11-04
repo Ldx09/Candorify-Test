@@ -199,9 +199,12 @@
     },
     benchmarkBill: () => notYet("Medicare price comparison"),
     fetchAnnotatedPdf: () => notYet("The marked-up PDF"),
-    finalizeUpload: (billId, survey) => request("/api/bills/" + billId + "/finalize", { method: "POST", body: survey }),
-
-    // ---------- code lookup ----------
+    // Survey isn't stored yet (on hold). Delete the bill; if it's already gone, that's fine too.
+    finalizeUpload: async (billId) => {
+      try { await request("/api/bills/" + billId, { method: "DELETE" }); }
+      catch (e) { if (e.status !== 404) throw e; }
+      return { ok: true };
+    },    // ---------- code lookup ----------
     languages: async () => {
       const list = await request("/api/languages", { auth: false });
       return Object.fromEntries(list.map((l) => [l.code, l.native || l.name]));
