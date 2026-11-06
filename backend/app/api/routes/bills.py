@@ -5,7 +5,7 @@ from datetime import timedelta
 from functools import lru_cache
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, Response, UploadFile, status
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -14,13 +14,14 @@ from app.core.config import settings
 from app.core.database import get_db
 from app.engine.loader import load_bills
 from app.engine.models import Flag, FlagReport
+from app.letters.markup import marked_up_pdf
 from app.models.bill import Bill
 from app.models.bill_record import BillLineRecord, BillRecord
 from app.models.flag_record import FlagRecord
 from app.models.user import User
 from app.questions.localize import localize_questions
 from app.schemas.bills import (BillIn, BillOut, BillSummary, FlagStatusUpdate, SampleBillRequest,
-                               TranslatedBillOut, TranslatedLineOut)
+                            TranslatedBillOut, TranslatedLineOut)
 from app.schemas.questions import QuestionsOut
 from app.services.answers import bill_questions, saved_answers
 from app.services.flags import sync_flags
@@ -171,18 +172,50 @@ def check_language(language: str | None) -> None:
     if language is not None and get_language(language) is None:
         raise HTTPException(422, f"Unsupported language '{language}'. See GET /api/languages for the list")
 
+MAX_PDF_BYTES = 5 * 1024 * 1024
 
+
+@router.post("/{bill_id}/marked-up", response_class=Response,
+             responses={200: {"content": {"application/pdf": {}}, "description": "The marked-up PDF"}})
+async def marked_up_bill(bill_id: int,
+                         file: UploadFile | None = File(default=None,
+                                                        description="Optional: the same PDF the user uploaded. "
+                                                                    "Read in memory only, never stored."),
+                         user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """The bill with every flag (except dismissed ones) highlighted and numbered, plus a last page listing
+    what to ask about. Send the original PDF to get it marked up on the patient's own document; without it
+    (or if its rows can't be matched) the charges are reprinted and marked up instead.
+    Header `X-Marked-On-Original: true|false` says which one you got. Nothing is saved."""
+    bill = get_own_bill(db, bill_id, user)
+    flags = [f for f in sync_flags(db, bill).flags if f.status != "dismissed"]
+    if not flags:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "There's nothing flagged on this bill to mark up")
+    pdf_bytes = None
+    if file is not None and file.filename:
+        pdf_bytes = await file.read(MAX_PDF_BYTES + 1)
+        if len(pdf_bytes) > MAX_PDF_BYTES:
+            raise HTTPException(413, "The PDF is larger than 5 MB")
+        if not pdf_bytes.startswith(b"%PDF"):
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "The file is not a PDF")
+    pdf, on_original = marked_up_pdf(bill.to_engine_bill(), flags, bill.label, pdf_bytes)
+    return Response(pdf, media_type="application/pdf", headers={
+        "Content-Disposition": 'attachment; filename="candorify-marked-up-bill.pdf"',
+        "Cache-Control": "no-store",
+        "X-Marked-On-Original": "true" if on_original else "false",
+        "Access-Control-Expose-Headers": "X-Marked-On-Original, Content-Disposition",
+    })
+    
 @router.get("/{bill_id}/translate", response_model=TranslatedBillOut)
 def translate_bill(bill_id: int, language: str | None = Query(default=None, max_length=10,
-                                                              description="Optional, e.g. es, ar, zh"),
-                   user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+                                                            description="Optional, e.g. es, ar, zh"),
+                user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Every line of the bill with its code explained in plain English, and optionally also in the
     user's language (`plain_english_translated`)."""
     check_language(language)
     bill = get_own_bill(db, bill_id, user)
     codes = {c: lookup_code(c) for c in {ln.code for ln in bill.lines}}
     lines = [TranslatedLineOut.model_validate(ln, from_attributes=True).model_copy(update={"code_info": codes[ln.code]})
-             for ln in bill.lines]
+            for ln in bill.lines]
     out = TranslatedBillOut(id=bill.id, label=bill.label, stated_subtotal=bill.stated_subtotal, lines=lines)
     if language:
         plain = sorted({ci.plain_english for ci in codes.values() if ci.plain_english})

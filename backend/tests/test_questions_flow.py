@@ -224,3 +224,57 @@ def test_translate_question_bank_script(monkeypatch, tmp_path):
     tqb.run(only=["es"])               # only the rejected one is sent again
     assert calls == [1] and first > 30
     assert len(tqb.english_items()) == first
+    
+    
+
+# ---------- marked-up PDF ----------
+
+def _pdf_text(data):
+    import io
+    import pdfplumber
+    with pdfplumber.open(io.BytesIO(data)) as pdf:
+        return len(pdf.pages), "\n".join(p.extract_text() or "" for p in pdf.pages)
+
+
+def test_marked_up_on_original(c):
+    pdf = open("data/demo_bills.pdf", "rb").read()
+    up = c.post("/api/upload/pdf", files={"file": ("b.pdf", pdf, "application/pdf")}, data={"account": "DEMO-003"}).json()
+    bid = up["bill"]["id"]
+    review(c, bid, {"private_room": "No"})
+    r = c.post(f"/api/bills/{bid}/marked-up", files={"file": ("b.pdf", pdf, "application/pdf")})
+    assert r.status_code == 200 and r.headers["content-type"] == "application/pdf"
+    assert r.headers["x-marked-on-original"] == "true" and r.headers["cache-control"] == "no-store"
+    pages, text = _pdf_text(r.content)
+    assert pages == 4 + 4 + 1                                 # original (4) + marked up (4) + summary page
+    assert "Things to ask about" in text and "Line total doesn't match" in text and "private room" in text
+    assert "original bill (unchanged)" in text
+    
+def test_marked_up_rebuilt_without_pdf_and_skips_dismissed(c):
+    out = sample(c, "DEMO-002")
+    bid = out["bill"]["id"]
+    r = review(c, bid, {"ambulance_miles": 10}).json()
+    miles = next(f for f in r["flags"]["flags"] if f.get("question_id") == "ambulance_miles")
+    c.patch(f"/api/bills/flags/{miles['id']}", json={"status": "dismissed"})
+    r = c.post(f"/api/bills/{bid}/marked-up")
+    assert r.status_code == 200 and r.headers["x-marked-on-original"] == "false"
+    _, text = _pdf_text(r.content)
+    assert "reprinted by Candorify" in text and "duplicate" in text and "miles" not in text
+
+
+def test_marked_up_wrong_pdf_falls_back_and_errors(c):
+    pdf = open("data/demo_bills.pdf", "rb").read()
+    bid = sample(c, "DEMO-002")["bill"]["id"]
+    # PDF given, but the stored bill is DEMO-002 under label DEMO-002 -> rows match on the original
+    r = c.post(f"/api/bills/{bid}/marked-up", files={"file": ("b.pdf", pdf, "application/pdf")})
+    assert r.headers["x-marked-on-original"] == "true"
+    # a bill with no flags
+    clean = sample(c, "DEMO-001")["bill"]["id"]
+    assert c.post(f"/api/bills/{clean}/marked-up").status_code == 400
+    # not a PDF
+    assert c.post(f"/api/bills/{bid}/marked-up", files={"file": ("x.pdf", b"hello", "application/pdf")}).status_code == 400
+    # edited charges: the original no longer matches -> rebuilt
+    gen = c.post("/api/upload/sample", json={"defect": "duplicate"}).json()["bill"]["id"]
+    r = c.post(f"/api/bills/{gen}/marked-up", files={"file": ("b.pdf", pdf, "application/pdf")})
+    assert r.status_code == 200 and r.headers["x-marked-on-original"] == "false"
+    pages, text = _pdf_text(r.content)
+    assert pages >= 4 + 2 and "reprint" in text              # their 4 original pages still come first
