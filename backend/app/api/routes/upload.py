@@ -5,6 +5,9 @@
     POST /api/upload/review  the patient's answers -> answer_mismatch flags
 
 The uploaded PDF is read in memory/temp and deleted right away; only the bill lines are stored.
+
+Two readers: our synthetic/demo layout first (unchanged), and only if that can't read the PDF, the
+real-bill reader (app/engine/real_bills.py) for hospital and doctor statements.
 """
 import os
 import tempfile
@@ -16,6 +19,7 @@ from app.api.deps import get_current_user
 from app.api.routes.bills import check_language, get_own_bill, make_sample_bill, save_bill
 from app.core.database import get_db
 from app.engine.loader import load_bills_pdf
+from app.engine.real_bills import read_real_bill
 from app.models.bill import Bill
 from app.models.user import User
 from app.questions.answers import AnswerError
@@ -34,22 +38,43 @@ class SampleUploadRequest(SampleBillRequest):
     language: str | None = None
 
 
-def _result(db: Session, user: User, bill: Bill, label: str, language: str | None) -> UploadResult:
+SUMMARY_NOTICE = ("This looks like a summary bill: it lists charges but not the quantity and price of each item. "
+                  "We checked the total and looked for repeated charges. To check every charge, ask your provider "
+                  "for a fully itemized bill (you can use our request letter).")
+NO_TOTAL_NOTICE = " We couldn't find a total on this bill, so we added up the charges ourselves."
+REAL_BILL_LABEL = "Uploaded bill"
+UNREADABLE = ("We couldn't find any charges in this PDF. Make sure it's a bill with a list of charges "
+              "(not a scanned photo), or enter the charges by hand.")
+
+
+def _result(db: Session, user: User, bill: Bill, label: str, language: str | None,
+            bill_format: str = "itemized", notice: str | None = None) -> UploadResult:
     record = save_bill(db, user, bill, label)
     flags = sync_flags(db, record)
     loc = localize_questions(bill_questions(record), language)
     return UploadResult(bill=BillOut.model_validate(record), flags=flags, questions=loc.questions,
-                        language=loc.language, rtl=loc.rtl, translation_note=loc.note)
+                        language=loc.language, rtl=loc.rtl, translation_note=loc.note,
+                        bill_format=bill_format, notice=notice)
 
 
-def _read_pdf(data: bytes) -> list[Bill]:
+def _read_pdf(data: bytes) -> tuple[list[Bill], str | None]:
+    """Returns (bills, notice). notice is None for our itemized layout and set for real summary bills."""
     fd, path = tempfile.mkstemp(suffix=".pdf")
     try:
         with os.fdopen(fd, "wb") as f:
             f.write(data)
-        return load_bills_pdf(path)
-    except ValueError as exc:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"Could not read this bill: {exc}") from None
+        try:
+            bills = [b for b in load_bills_pdf(path) if b.lines]
+            if bills:
+                return bills, None
+        except ValueError:
+            pass  # not our layout: try the real-bill reader below
+        real = read_real_bill(path)
+        if real is None:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, UNREADABLE)
+        return [real.bill], SUMMARY_NOTICE + ("" if real.has_total else NO_TOTAL_NOTICE)
+    except HTTPException:
+        raise
     except Exception:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Could not read this PDF. Is it a valid PDF file?") from None
     finally:
@@ -70,9 +95,9 @@ async def upload_pdf(file: UploadFile = File(..., description="Itemized bill, PD
         raise HTTPException(413, "The PDF is larger than 5 MB")
     if not data.startswith(b"%PDF"):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "The file is not a PDF")
-    bills = [b for b in _read_pdf(data) if b.lines]
-    if not bills:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "No itemized charges were found in this PDF")
+    bills, notice = _read_pdf(data)
+    if notice is not None:  # a real summary bill: one bill, no account numbers kept
+        return _result(db, user, bills[0], REAL_BILL_LABEL, language, bill_format="summary", notice=notice)
     if account:
         bills = [b for b in bills if b.bill_id.upper() == account.strip().upper()]
         if not bills:

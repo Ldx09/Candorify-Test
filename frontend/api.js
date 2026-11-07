@@ -109,7 +109,7 @@
       bill_id: b.id, label: b.label, provider_name: "", service_date: b.date_of_service || "",
       stated_total: Number(b.stated_subtotal), line_items: toLines(b),
       flags: ((r.flags && r.flags.flags) || []).map(toFlag), questions: toQuestions(r.questions),
-    };
+      bill_format: r.bill_format || "itemized", notice: r.notice || null,    };
   }
 
   // Remembers each uploaded bill as the backend has it, so edits on the charges step can be detected.
@@ -121,10 +121,14 @@
       Number(l.quantity), money(l.unit_price), money(l.line_total)]), money(total), date || ""]);
   }
 
+  // The PDF the user uploaded, kept only in this tab's memory so it can be marked up later.
+  // The backend never stores PDFs; it's sent again only when the user asks for the marked-up copy.
+  const uploadedFiles = {};
+
   const API = {
     getToken, setToken, isLoggedIn,
     // mnm44: things the backend doesn't do yet. the website hides those buttons until these turn true
-    features: { payments: false, medicare: false, annotatedPdf: false, aiLetters: false },
+    features: { payments: false, medicare: false, annotatedPdf: true, aiLetters: false },
 
     health: () => request("/health", { auth: false }),
     disclaimer: () => notYet("The disclaimer"),   // the website falls back to its own wording
@@ -159,8 +163,9 @@
         if (/more than one bill/i.test(err.message)) err.message = "This PDF has more than one bill in it. Please upload one bill at a time.";
         throw err;
       }
-      return toUpload(data);
-    },
+      const out = toUpload(data);
+      uploadedFiles[out.bill_id] = file;
+      return out;    },
     // Sample bill: stored like a real one, with its flags and follow-up questions.
     generate: async (opts = {}) => {
       const r = toUpload(await request("/api/upload/sample", { method: "POST",
@@ -180,7 +185,7 @@
           quantity: Number(Number(l.quantity || 1).toFixed(3)), unit_price: money(l.unit_price), line_total: money(l.line_total) })),
       } });
       request("/api/bills/" + billId, { method: "DELETE" }).catch(() => {});
-      snapshot(bill.id, signature(bill.lines, bill.stated_subtotal, bill.date_of_service));
+      if (uploadedFiles[billId]) { uploadedFiles[bill.id] = uploadedFiles[billId]; delete uploadedFiles[billId]; }      snapshot(bill.id, signature(bill.lines, bill.stated_subtotal, bill.date_of_service));
       const q = await request("/api/bills/" + bill.id + "/questions" + query({ language: lang(language) }));
       return { bill_id: bill.id, changed: true, questions: toQuestions(q.questions) };
     },
@@ -198,8 +203,15 @@
         plain_english: (l.code_info && l.code_info.plain_english) || l.description, translated: l.plain_english_translated || "" })) };
     },
     benchmarkBill: () => notYet("Medicare price comparison"),
-    fetchAnnotatedPdf: () => notYet("The marked-up PDF"),
-    // Survey isn't stored yet (on hold). Delete the bill; if it's already gone, that's fine too.
+    fetchAnnotatedPdf: async (billId) => {
+      const fd = new FormData();
+      if (uploadedFiles[billId]) fd.append("file", uploadedFiles[billId]);
+      let res;
+      try { res = await fetch(API_BASE + "/api/bills/" + billId + "/marked-up", { method: "POST", headers: authHeaders(), body: fd }); }
+      catch (e) { throw new Error("Can't reach Candorify right now. Check your connection and try again."); }
+      if (!res.ok) throw failure(res, await parse(res), "We couldn't make the marked-up PDF.");
+      return res.blob();
+    },    // Survey isn't stored yet (on hold). Delete the bill; if it's already gone, that's fine too.
     finalizeUpload: async (billId) => {
       try { await request("/api/bills/" + billId, { method: "DELETE" }); }
       catch (e) { if (e.status !== 404) throw e; }
@@ -212,7 +224,7 @@
     translateCode: async (code, system, language) => {
       const sys = { CPT: "CPT", HCPCS: "HCPCS", ICD: "ICD-10-CM" }[system] || null;
       const info = await request("/api/translate" + query({ code, system: sys }));
-      const out = { code: info.code, code_system: info.system, plain_english: info.plain_english || info.description || "No description found for this code.",
+      const out = { code: info.code, code_system: info.system, plain_english: info.plain_english || info.description || info.message || "No description found for this code.",
         source: { nlm: "NLM Clinical Tables", fallback: "Candorify's code list", not_found: "" }[info.source] || "", translated: "" };
       if (lang(language) && info.plain_english) {
         const t = await request("/api/translate/text", { method: "POST", body: { language, texts: [info.plain_english] } });

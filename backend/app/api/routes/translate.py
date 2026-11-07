@@ -3,12 +3,15 @@
   POST /api/translate/text       translate texts the user reads into their language (Gemini). Protected.
   GET  /api/languages            languages the user can pick. Public (the sign-in page can show it).
 """
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy.orm import Session
 
-from app.schemas.translation import TextTranslationRequest
+from app.core.database import get_db
+from app.schemas.translation import TextTranslationRequest, TranslationResult
+from app.services.missing_codes import record_missing
 from app.translation.languages import LANGUAGES, Language
 from app.translation.service import CodeInfo, System, lookup_code
-from app.translation.translator import TranslationResult, translate_texts
+from app.translation.translator import translate_texts
 
 router = APIRouter(tags=["translate"])
 public_router = APIRouter(prefix="/api", tags=["translate"])
@@ -18,10 +21,15 @@ public_router = APIRouter(prefix="/api", tags=["translate"])
 def translate(
     code: str = Query(min_length=1, max_length=20, description="Billing or diagnosis code, e.g. J2405, 99284, R10.9"),
     system: System | None = Query(default=None, description="Optional: force the code system"),
+    db: Session = Depends(get_db),
 ):
     """Looks up the code: cache -> NLM -> offline dictionary.
-    `source` says where the answer came from (nlm / fallback / not_found); `cached` is true for cache hits."""
-    return lookup_code(code, system=system)
+    `source` says where the answer came from (nlm / fallback / not_found); `cached` is true for cache hits.
+    When nothing is found, `message` says what the user can do next, and the code is counted in
+    `missing_codes` so we know which codes to add."""
+    info = lookup_code(code, system=system)
+    record_missing(db, info)
+    return info
 
 
 @router.post("/translate/text", response_model=TranslationResult)

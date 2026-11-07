@@ -50,16 +50,16 @@ def _describe_line(bill: Bill, line_no: int, codes: dict[str, CodeInfo]) -> str:
     line = next(l for l in bill.lines if l.line_no == line_no)
     info = codes.get(line.code)
     plain = f" ({info.plain_english})" if info and info.plain_english else ""
-    return f'line {line.line_no}, code {line.code}: "{line.description}"{plain}'
-
+    code = f", code {line.code}" if line.code.strip() else ""
+    return f'line {line.line_no}{code}: "{line.description}"{plain}'
 
 def _issue_text(n: int, flag: Flag, bill: Bill, codes: dict[str, CodeInfo]) -> str:
     if flag.rule == "duplicate_line":
         line = next(l for l in bill.lines if l.line_no == flag.line_no)
         lines = ", ".join(str(x) for x in flag.line_numbers)
         return (f"{n}. Possible duplicate charge - {_describe_line(bill, flag.line_no, codes)}.\n"
-                f"   This appears to be the same charge as line {flag.related_line_no} (same code, quantity "
-                f"{format_qty(line.quantity)} and unit price {_money(line.unit_price)}; lines {lines}). "
+                f"   This appears to be the same charge as line {flag.related_line_no} "
+                f"(same {'code' if line.code.strip() else 'description'}, quantity "                f"{format_qty(line.quantity)} and unit price {_money(line.unit_price)}; lines {lines}). "
                 f"I am questioning {_money(line.line_total)} for line {flag.line_no}.")
     if flag.rule == "line_math":
         line = next(l for l in bill.lines if l.line_no == flag.line_no)

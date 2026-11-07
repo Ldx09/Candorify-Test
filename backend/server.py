@@ -10,7 +10,7 @@ from app.core.config import settings
 from app.core.database import Base, check_connection, engine
 from app.core.errors import register_error_handlers
 from app.core.http_security import add_http_security
-from app.models import answer_record, bill_record, flag_record  # noqa: F401  (registers the tables for create_all)
+from app.models import answer_record, bill_record, flag_record, missing_code_record  # noqa: F401  (registers the tables for create_all)
 from app.models.user import User
 from app.schemas.auth import UserOut
 from app.services.retention import RetentionScheduler

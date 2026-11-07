@@ -36,6 +36,8 @@ class UploadResult(BaseModel):
     language: str = "en"
     rtl: bool = False
     translation_note: str | None = None
+    bill_format: str = "itemized"   # "itemized" (codes, quantities, prices) or "summary" (a real summary bill)
+    notice: str | None = None       # shown to the user, e.g. how to get a fully itemized bill
 
 
 class AnswerIn(BaseModel):

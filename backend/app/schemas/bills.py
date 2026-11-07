@@ -11,12 +11,11 @@ from app.translation.service import CodeInfo
 
 
 class LineIn(BaseModel):
-    code: str = Field(min_length=1, max_length=20)
+    code: str = Field(default="", max_length=20)  # may be blank: real summary bills often print no codes
     description: str = Field(min_length=1, max_length=500)
     quantity: Decimal = Field(gt=0, max_digits=10, decimal_places=3)
     unit_price: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
     line_total: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
-
 
 class BillIn(BaseModel):
     label: str | None = Field(default=None, max_length=100)

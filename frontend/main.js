@@ -19,7 +19,7 @@
 
   // mnm44: the site is split into separate pages now, this says which file each one lives in
   const PAGES = {
-    home: "home.html", check: "bill.html", letters: "dispute.html", lookup: "look_up.html", pricing: "plans.html",
+    home: "home.html", check: "bill.html", letters: "dispute.html", lookup: "lookUp.html", pricing: "plans.html",
     account: "profile.html", results: "performance.html", team: "team.html", legal: "terms.html",
   };
   const onThisPage = (view) => !!document.getElementById("view-" + view);
@@ -401,8 +401,7 @@
         flow.questionsFromServer = true;
       }
       $("#upload-status").textContent = "";
-      toast("Found " + flow.lines.length + " " + plural(flow.lines.length, "charge") + ".");
-      setStep("charges");
+      toast("Found " + flow.lines.length + " " + plural(flow.lines.length, "charge") + "." + (res.notice ? " " + res.notice : ""));      setStep("charges");
       renderCharges();
     } catch (err) {
       $("#upload-status").textContent = err.message;
@@ -780,9 +779,27 @@
   function updateFlagsNext() {
     const n = flow.flags.filter((f) => f.include && f.status !== "dismissed").length;
     $("#btn-flags-next").textContent = n ? `Write my letter (${n} ${plural(n, "charge")})` : "Continue to letter";
+    updateSurveyShortcut();
   }
 
-  // Paid extras
+  // Only when NOTHING was flagged: let the user skip the letter and go straight to "How did we do".
+  // Only when NOTHING was flagged: let the user skip the letter and go straight to "How did we do".
+  function updateSurveyShortcut() {
+    let btn = $("#btn-flags-survey");
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.type = "button";
+      btn.id = "btn-flags-survey";
+      btn.className = "btn btn-quiet";
+      btn.textContent = "Skip to survey";
+      btn.addEventListener("click", () => setStep("finish"));
+      $("#btn-flags-next").before(btn);
+    }
+    const show = flow.flags.length === 0 && flow.source !== "sample";
+    btn.style.display = show ? "" : "none";
+    btn.style.marginLeft = show ? "auto" : "";
+    $("#btn-flags-next").style.marginLeft = show ? "0" : "";   // keep both buttons together on the right
+  }  // Paid extras
   async function translateLines() {
     if (!flow.billId) return;
     if (API.features.payments && !isPaid()) { toast("Explaining every charge is part of the paid plan.", true); go("pricing"); return; }

@@ -25,7 +25,8 @@ def check_line_math(bill: Bill) -> list[Flag]:
                 line_numbers=[line.line_no],
                 expected=expected,
                 actual=line.line_total,
-                message=(f"Line {line.line_no} ({line.code}): {format_qty(line.quantity)} x {_money(line.unit_price)} "
+                message=(f"Line {line.line_no}{f' ({line.code})' if line.code.strip() else ''}: "
+                         f"{format_qty(line.quantity)} x {_money(line.unit_price)} "
                          f"= {_money(expected)}, but the bill shows {_money(line.line_total)}."),
             ))
     return flags

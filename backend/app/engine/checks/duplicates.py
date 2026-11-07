@@ -4,6 +4,8 @@ Two lines are duplicates when they have the same code, unit price and quantity.
 The wording is ignored, so "Comprehensive metabolic panel" and "CMP lab panel"
 with code 80053 at the same price and qty are still duplicates.
 The same code with a different price or quantity is NOT flagged: that is often legitimate.
+Lines with NO code (real summary bills) must also have the same description, so two different
+uncoded charges that happen to cost the same are never called duplicates.
 """
 from decimal import Decimal
 
@@ -11,9 +13,12 @@ from app.engine.models import Bill, Flag
 from app.models.line_item import format_qty
 
 
-def _key(code: str, unit_price: Decimal, quantity: Decimal) -> tuple:
+def _key(code: str, unit_price: Decimal, quantity: Decimal, description: str = "") -> tuple:
     # normalize() makes 22, 22.0 and 22.00 compare equal
-    return (code.strip().upper(), unit_price.normalize(), quantity.normalize())
+    code = code.strip().upper()
+    if not code:  # no code to compare: the description has to match too
+        return ("", " ".join(description.lower().split()), unit_price.normalize(), quantity.normalize())
+    return (code, unit_price.normalize(), quantity.normalize())
 
 
 def check_duplicates(bill: Bill) -> list[Flag]:
@@ -21,7 +26,7 @@ def check_duplicates(bill: Bill) -> list[Flag]:
     Each flag names the repeated line, the first occurrence, and all lines in the group."""
     groups: dict[tuple, list[int]] = {}
     for line in bill.lines:
-        groups.setdefault(_key(line.code, line.unit_price, line.quantity), []).append(line.line_no)
+        groups.setdefault(_key(line.code, line.unit_price, line.quantity, line.description), []).append(line.line_no)
 
     by_line_no = {line.line_no: line for line in bill.lines}
     flags: list[Flag] = []
@@ -32,13 +37,14 @@ def check_duplicates(bill: Bill) -> list[Flag]:
         for repeat in line_nos[1:]:
             line = by_line_no[repeat]
             others = ", ".join(str(n) for n in line_nos)
+            same = f"same code {line.code}" if line.code.strip() else f'same charge "{line.description}"'
             flags.append(Flag(
                 rule="duplicate_line",
                 line_no=repeat,
                 code=line.code,
                 related_line_no=first,
                 line_numbers=line_nos,
-                message=(f"Line {repeat} repeats line {first}: same code {line.code}, quantity "
+                message=(f"Line {repeat} repeats line {first}: {same}, quantity "
                          f"{format_qty(line.quantity)}, unit price ${line.unit_price:,.2f} (lines {others}). "
                          f"You may have been charged twice for the same item."),
             ))

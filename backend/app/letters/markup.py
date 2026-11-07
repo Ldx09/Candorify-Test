@@ -176,7 +176,8 @@ def _summary_pages(c: canvas.Canvas, bill: Bill, flags: list[Flag], rebuilt: boo
         where = ("Total" if f.rule == "subtotal_mismatch"
                  else "Line " + ", ".join(str(ln) for ln in lines) if lines else "Bill")
         first = by_line.get(lines[0]) if lines else None
-        detail = f" - {first.code} {first.description}" if first and f.rule != "subtotal_mismatch" else ""
+        detail = (f" - {(first.code + ' ') if first.code.strip() else ''}{first.description}"
+                  if first and f.rule != "subtotal_mismatch" else "")
         body = f.letter_text if f.rule == "answer_mismatch" and f.letter_text else f.message
         block = simpleSplit(body, "Helvetica", 9.5, w - 2 * x - 24)
         title = f"{FLAG_TITLES.get(f.rule, 'Flagged')} ({where}{detail})"

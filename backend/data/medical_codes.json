@@ -1,211 +1,126 @@
 {
-  "99281": {
-    "system": "CPT",
-    "description": "Emergency department visit, level 1",
-    "plain_english": "Emergency room visit, level 1 of 5 (the simplest kind)"
-  },
-  "99282": {
-    "system": "CPT",
-    "description": "Emergency department visit, level 2",
-    "plain_english": "Emergency room visit, level 2 of 5 (low complexity)"
-  },
-  "99283": {
-    "system": "CPT",
-    "description": "Emergency department visit, level 3",
-    "plain_english": "Emergency room visit, level 3 of 5 (moderate complexity)"
-  },
-  "99284": {
-    "system": "CPT",
-    "description": "Emergency department visit, level 4",
-    "plain_english": "Emergency room visit, level 4 of 5 (moderately high complexity)"
-  },
-  "99285": {
-    "system": "CPT",
-    "description": "Emergency department visit, level 5",
-    "plain_english": "Emergency room visit, level 5 of 5 (the most complex kind)"
-  },
-  "99202": {
-    "system": "CPT",
-    "description": "Office visit, new patient, level 2",
-    "plain_english": "Doctor's office visit as a new patient (short, straightforward)"
-  },
-  "99203": {
-    "system": "CPT",
-    "description": "Office visit, new patient, level 3",
-    "plain_english": "Doctor's office visit as a new patient (low complexity)"
-  },
-  "99204": {
-    "system": "CPT",
-    "description": "Office visit, new patient, level 4",
-    "plain_english": "Doctor's office visit as a new patient (moderate complexity)"
-  },
-  "99205": {
-    "system": "CPT",
-    "description": "Office visit, new patient, level 5",
-    "plain_english": "Doctor's office visit as a new patient (high complexity)"
-  },
-  "99211": {
-    "system": "CPT",
-    "description": "Office visit, established patient, level 1",
-    "plain_english": "Brief office visit, often with a nurse"
-  },
-  "99212": {
-    "system": "CPT",
-    "description": "Office visit, established patient, level 2",
-    "plain_english": "Doctor's office visit, returning patient (straightforward)"
-  },
-  "99213": {
-    "system": "CPT",
-    "description": "Office visit, established patient, level 3",
-    "plain_english": "Doctor's office visit, returning patient (low complexity)"
-  },
-  "99214": {
-    "system": "CPT",
-    "description": "Office visit, established patient, level 4",
-    "plain_english": "Doctor's office visit, returning patient (moderate complexity)"
-  },
-  "99215": {
-    "system": "CPT",
-    "description": "Office visit, established patient, level 5",
-    "plain_english": "Doctor's office visit, returning patient (high complexity)"
-  },
-  "71046": {
-    "system": "CPT",
-    "description": "Chest X-ray, two views",
-    "plain_english": "Chest X-ray with two pictures (front and side)"
-  },
-  "74177": {
-    "system": "CPT",
-    "description": "CT scan, abdomen and pelvis, with contrast",
-    "plain_english": "CT scan of the belly and pelvis, using contrast dye"
-  },
-  "80048": {
-    "system": "CPT",
-    "description": "Basic metabolic panel",
-    "plain_english": "Blood test for kidney function, blood sugar and electrolytes"
-  },
-  "80053": {
-    "system": "CPT",
-    "description": "Comprehensive metabolic panel",
-    "plain_english": "Blood test for kidney and liver function, blood sugar and electrolytes"
-  },
-  "85025": {
-    "system": "CPT",
-    "description": "Complete blood count with automated differential",
-    "plain_english": "Blood test counting red cells, white cells (by type) and platelets"
-  },
-  "36415": {
-    "system": "CPT",
-    "description": "Routine venipuncture",
-    "plain_english": "Drawing blood from a vein"
-  },
-  "93000": {
-    "system": "CPT",
-    "description": "Electrocardiogram with interpretation and report",
-    "plain_english": "Heart rhythm test (ECG/EKG), including the doctor's reading"
-  },
-  "94760": {
-    "system": "CPT",
-    "description": "Pulse oximetry, single determination",
-    "plain_english": "One-time check of the oxygen level in your blood (finger clip)"
-  },
-  "96365": {
-    "system": "CPT",
-    "description": "IV infusion, initial, up to 1 hour",
-    "plain_english": "First hour of medicine or fluid given slowly through an IV"
-  },
-  "96374": {
-    "system": "CPT",
-    "description": "IV push, single or initial drug",
-    "plain_english": "Medicine injected quickly into an IV"
-  },
-  "A6402": {
-    "system": "HCPCS",
-    "description": "Gauze, non-impregnated, sterile, pad size 16 sq. in. or less, without adhesive border, each dressing",
-    "plain_english": "Sterile gauze bandage pad"
-  },
-  "J0696": {
-    "system": "HCPCS",
-    "description": "Injection, ceftriaxone sodium, per 250 mg",
-    "plain_english": "Antibiotic shot (ceftriaxone), billed per 250 mg"
-  },
-  "J1885": {
-    "system": "HCPCS",
-    "description": "Injection, ketorolac tromethamine, per 15 mg",
-    "plain_english": "Pain-relief shot (ketorolac / Toradol), billed per 15 mg"
-  },
-  "J2405": {
-    "system": "HCPCS",
-    "description": "Injection, ondansetron hydrochloride, per 1 mg",
-    "plain_english": "Anti-nausea shot (ondansetron / Zofran), billed per 1 mg"
-  },
-  "J7030": {
-    "system": "HCPCS",
-    "description": "Infusion, normal saline solution, 1000 cc",
-    "plain_english": "One liter bag of salt-water IV fluid"
-  },
-  "0250": {
-    "system": "Revenue code",
-    "description": "Pharmacy, general",
-    "plain_english": "Medicines and pharmacy supplies"
-  },
-  "0270": {
-    "system": "Revenue code",
-    "description": "Medical/surgical supplies, general",
-    "plain_english": "Medical and surgical supplies"
-  },
-  "0300": {
-    "system": "Revenue code",
-    "description": "Laboratory, general",
-    "plain_english": "Lab tests"
-  },
-  "0320": {
-    "system": "Revenue code",
-    "description": "Radiology, diagnostic, general",
-    "plain_english": "X-rays and other imaging"
-  },
-  "0350": {
-    "system": "Revenue code",
-    "description": "CT scan, general",
-    "plain_english": "CT scan charges"
-  },
-  "0360": {
-    "system": "Revenue code",
-    "description": "Operating room services, general",
-    "plain_english": "Operating room charges"
-  },
-  "0450": {
-    "system": "Revenue code",
-    "description": "Emergency room, general",
-    "plain_english": "Emergency room facility charge"
-  },
-  "0636": {
-    "system": "Revenue code",
-    "description": "Drugs requiring detailed coding",
-    "plain_english": "Medicines that must be listed with a specific drug code"
-  },
-  "0710": {
-    "system": "Revenue code",
-    "description": "Recovery room, general",
-    "plain_english": "Time spent in the recovery room"
-  },
-  "0730": {
-    "system": "Revenue code",
-    "description": "EKG/ECG, general",
-    "plain_english": "Heart rhythm test charges"
-  },
-    "0110": {"system": "Revenue code", "description": "Room and board, private", "plain_english": "A private hospital room (you had the room to yourself), per day"},
+  "29125": {"system": "CPT", "description": "Application of short arm splint, static", "plain_english": "Putting a splint on your forearm/wrist"},
+  "36415": {"system": "CPT", "description": "Routine venipuncture", "plain_english": "Drawing blood from a vein"},
+  "71046": {"system": "CPT", "description": "Chest X-ray, two views", "plain_english": "Chest X-ray with two pictures (front and side)"},
+  "74177": {"system": "CPT", "description": "CT scan, abdomen and pelvis, with contrast", "plain_english": "CT scan of the belly and pelvis, using contrast dye"},
+  "80048": {"system": "CPT", "description": "Basic metabolic panel", "plain_english": "Blood test for kidney function, blood sugar and electrolytes"},
+  "80053": {"system": "CPT", "description": "Comprehensive metabolic panel", "plain_english": "Blood test for kidney and liver function, blood sugar and electrolytes"},
+  "85025": {"system": "CPT", "description": "Complete blood count with automated differential", "plain_english": "Blood test counting red cells, white cells (by type) and platelets"},
+  "93000": {"system": "CPT", "description": "Electrocardiogram with interpretation and report", "plain_english": "Heart rhythm test (ECG/EKG), including the doctor's reading"},
+  "94760": {"system": "CPT", "description": "Pulse oximetry, single determination", "plain_english": "One-time check of the oxygen level in your blood (finger clip)"},
+  "96365": {"system": "CPT", "description": "IV infusion, initial, up to 1 hour", "plain_english": "First hour of medicine or fluid given slowly through an IV"},
+  "96374": {"system": "CPT", "description": "IV push, single or initial drug", "plain_english": "Medicine injected quickly into an IV"},
+  "97110": {"system": "CPT", "description": "Therapeutic exercise, each 15 minutes", "plain_english": "Physical therapy exercises, billed per 15 minutes"},
+  "99202": {"system": "CPT", "description": "Office visit, new patient, level 2", "plain_english": "Doctor's office visit as a new patient (short, straightforward)"},
+  "99203": {"system": "CPT", "description": "Office visit, new patient, level 3", "plain_english": "Doctor's office visit as a new patient (low complexity)"},
+  "99204": {"system": "CPT", "description": "Office visit, new patient, level 4", "plain_english": "Doctor's office visit as a new patient (moderate complexity)"},
+  "99205": {"system": "CPT", "description": "Office visit, new patient, level 5", "plain_english": "Doctor's office visit as a new patient (high complexity)"},
+  "99211": {"system": "CPT", "description": "Office visit, established patient, level 1", "plain_english": "Brief office visit, often with a nurse"},
+  "99212": {"system": "CPT", "description": "Office visit, established patient, level 2", "plain_english": "Doctor's office visit, returning patient (straightforward)"},
+  "99213": {"system": "CPT", "description": "Office visit, established patient, level 3", "plain_english": "Doctor's office visit, returning patient (low complexity)"},
+  "99214": {"system": "CPT", "description": "Office visit, established patient, level 4", "plain_english": "Doctor's office visit, returning patient (moderate complexity)"},
+  "99215": {"system": "CPT", "description": "Office visit, established patient, level 5", "plain_english": "Doctor's office visit, returning patient (high complexity)"},
+  "99281": {"system": "CPT", "description": "Emergency department visit, level 1", "plain_english": "Emergency room visit, level 1 of 5 (the simplest kind)"},
+  "99282": {"system": "CPT", "description": "Emergency department visit, level 2", "plain_english": "Emergency room visit, level 2 of 5 (low complexity)"},
+  "99283": {"system": "CPT", "description": "Emergency department visit, level 3", "plain_english": "Emergency room visit, level 3 of 5 (moderate complexity)"},
+  "99284": {"system": "CPT", "description": "Emergency department visit, level 4", "plain_english": "Emergency room visit, level 4 of 5 (moderately high complexity)"},
+  "99285": {"system": "CPT", "description": "Emergency department visit, level 5", "plain_english": "Emergency room visit, level 5 of 5 (the most complex kind)"},
+  "A0425": {"system": "HCPCS", "description": "Ground mileage, per statute mile", "plain_english": "Ambulance travel, billed per mile"},
+  "A0426": {"system": "HCPCS", "description": "Ambulance service, advanced life support, non-emergency transport, level 1 (ALS 1)", "plain_english": "Non-emergency ambulance ride with advanced life support"},
+  "A0427": {"system": "HCPCS", "description": "Ambulance service, advanced life support, emergency transport, level 1 (ALS 1-emergency)", "plain_english": "Emergency ambulance ride with advanced life support"},
+  "A0428": {"system": "HCPCS", "description": "Ambulance service, basic life support, non-emergency transport (BLS)", "plain_english": "Non-emergency ambulance ride with basic life support"},
+  "A0429": {"system": "HCPCS", "description": "Ambulance service, basic life support, emergency transport (BLS-emergency)", "plain_english": "Emergency ambulance ride with basic life support"},
+  "A0433": {"system": "HCPCS", "description": "Advanced life support, level 2 (ALS 2)", "plain_english": "Ambulance ride with a higher level of advanced life support (level 2)"},
+  "A0434": {"system": "HCPCS", "description": "Specialty care transport (SCT)", "plain_english": "Ambulance ride with specialty critical care staff on board"},
+  "A4206": {"system": "HCPCS", "description": "Syringe with needle, sterile, 1 cc or less, each", "plain_english": "One small sterile syringe with needle"},
+  "A4215": {"system": "HCPCS", "description": "Needle, sterile, any size, each", "plain_english": "One sterile needle"},
+  "A4216": {"system": "HCPCS", "description": "Sterile water, saline and/or dextrose, diluent/flush, 10 ml", "plain_english": "A small 10 ml vial of sterile water or saline, used to flush an IV or mix medicine"},
+  "A4217": {"system": "HCPCS", "description": "Sterile water/saline, 500 ml", "plain_english": "A 500 ml bottle of sterile water or saline"},
+  "A4550": {"system": "HCPCS", "description": "Surgical trays", "plain_english": "A tray of sterile supplies used for a procedure"},
+  "A4570": {"system": "HCPCS", "description": "Splint", "plain_english": "A splint to keep an injured body part still"},
+  "A6216": {"system": "HCPCS", "description": "Gauze, non-impregnated, non-sterile, pad size 16 sq. in. or less, without adhesive border, each dressing", "plain_english": "Non-sterile gauze bandage pad"},
+  "A6402": {"system": "HCPCS", "description": "Gauze, non-impregnated, sterile, pad size 16 sq. in. or less, without adhesive border, each dressing", "plain_english": "Sterile gauze bandage pad"},
+  "E0100": {"system": "HCPCS", "description": "Cane, includes canes of all materials, adjustable or fixed, with tip", "plain_english": "A walking cane"},
+  "E0114": {"system": "HCPCS", "description": "Crutches, underarm, other than wood, adjustable or fixed, pair, with pad, tip and handgrip", "plain_english": "A pair of adjustable underarm crutches"},
+  "E0143": {"system": "HCPCS", "description": "Walker, folding, wheeled, adjustable or fixed height", "plain_english": "A folding walker with wheels"},
+  "G0378": {"system": "HCPCS", "description": "Hospital observation service, per hour", "plain_english": "Time kept in the hospital for observation, per hour"},
+  "G0379": {"system": "HCPCS", "description": "Direct admission of patient for hospital observation care", "plain_english": "Being admitted straight into observation care, without going through the ER first"},
+  "G0390": {"system": "HCPCS", "description": "Trauma response team associated with hospital critical care service", "plain_english": "Charge for the hospital's trauma team being called to treat you"},
+  "J0131": {"system": "HCPCS", "description": "Injection, acetaminophen, 10 mg", "plain_english": "IV acetaminophen (Tylenol) for pain or fever, billed per 10 mg"},
+  "J0171": {"system": "HCPCS", "description": "Injection, adrenalin, epinephrine, 0.1 mg", "plain_english": "Epinephrine (adrenaline) shot, often for severe allergic reactions, billed per 0.1 mg"},
+  "J0696": {"system": "HCPCS", "description": "Injection, ceftriaxone sodium, per 250 mg", "plain_english": "Antibiotic shot (ceftriaxone), billed per 250 mg"},
+  "J1100": {"system": "HCPCS", "description": "Injection, dexamethasone sodium phosphate, 1 mg", "plain_english": "Steroid shot (dexamethasone) to reduce swelling, billed per 1 mg"},
+  "J1170": {"system": "HCPCS", "description": "Injection, hydromorphone, up to 4 mg", "plain_english": "Strong pain-relief shot (hydromorphone / Dilaudid), up to 4 mg"},
+  "J1200": {"system": "HCPCS", "description": "Injection, diphenhydramine HCl, up to 50 mg", "plain_english": "Allergy medicine shot (diphenhydramine / Benadryl), up to 50 mg"},
+  "J1885": {"system": "HCPCS", "description": "Injection, ketorolac tromethamine, per 15 mg", "plain_english": "Pain-relief shot (ketorolac / Toradol), billed per 15 mg"},
+  "J2250": {"system": "HCPCS", "description": "Injection, midazolam hydrochloride, per 1 mg", "plain_english": "Sedative shot (midazolam / Versed) to help you relax, billed per 1 mg"},
+  "J2270": {"system": "HCPCS", "description": "Injection, morphine sulfate, up to 10 mg", "plain_english": "Strong pain-relief shot (morphine), up to 10 mg"},
+  "J2405": {"system": "HCPCS", "description": "Injection, ondansetron hydrochloride, per 1 mg", "plain_english": "Anti-nausea shot (ondansetron / Zofran), billed per 1 mg"},
+  "J2550": {"system": "HCPCS", "description": "Injection, promethazine HCl, up to 50 mg", "plain_english": "Anti-nausea shot (promethazine / Phenergan), up to 50 mg"},
+  "J3010": {"system": "HCPCS", "description": "Injection, fentanyl citrate, 0.1 mg", "plain_english": "Strong pain-relief shot (fentanyl), billed per 0.1 mg"},
+  "J7030": {"system": "HCPCS", "description": "Infusion, normal saline solution, 1000 cc", "plain_english": "One liter bag of salt-water IV fluid"},
+  "J7040": {"system": "HCPCS", "description": "Infusion, normal saline solution, sterile (500 ml = 1 unit)", "plain_english": "Half-liter bag of salt-water IV fluid"},
+  "J7050": {"system": "HCPCS", "description": "Infusion, normal saline solution, 250 cc", "plain_english": "Small (250 ml) bag of salt-water IV fluid"},
+  "J7120": {"system": "HCPCS", "description": "Ringers lactate infusion, up to 1000 cc", "plain_english": "One liter bag of IV fluid with salts (lactated Ringer's)"},
+  "L1830": {"system": "HCPCS", "description": "Knee orthosis, immobilizer, canvas longitudinal, prefabricated, off-the-shelf", "plain_english": "A ready-made knee brace that keeps the knee straight"},
+  "L4361": {"system": "HCPCS", "description": "Walking boot, pneumatic and/or vacuum, with or without joints, with or without interface material, prefabricated, off-the-shelf", "plain_english": "A ready-made walking boot for a foot or ankle injury"},
+  "E11.9": {"system": "ICD-10-CM", "description": "Type 2 diabetes mellitus without complications", "plain_english": "Type 2 diabetes"},
+  "E86.0": {"system": "ICD-10-CM", "description": "Dehydration", "plain_english": "Dehydration (not enough fluid in the body)"},
+  "F41.9": {"system": "ICD-10-CM", "description": "Anxiety disorder, unspecified", "plain_english": "Anxiety"},
+  "H66.90": {"system": "ICD-10-CM", "description": "Otitis media, unspecified, unspecified ear", "plain_english": "Middle ear infection"},
+  "I10": {"system": "ICD-10-CM", "description": "Essential (primary) hypertension", "plain_english": "High blood pressure"},
+  "I21.9": {"system": "ICD-10-CM", "description": "Acute myocardial infarction, unspecified", "plain_english": "Heart attack"},
+  "I48.91": {"system": "ICD-10-CM", "description": "Unspecified atrial fibrillation", "plain_english": "Irregular heartbeat (atrial fibrillation)"},
+  "I63.9": {"system": "ICD-10-CM", "description": "Cerebral infarction, unspecified", "plain_english": "Stroke"},
+  "J02.9": {"system": "ICD-10-CM", "description": "Acute pharyngitis, unspecified", "plain_english": "Sore throat"},
+  "J06.9": {"system": "ICD-10-CM", "description": "Acute upper respiratory infection, unspecified", "plain_english": "Cold or other infection of the nose and throat"},
+  "J18.9": {"system": "ICD-10-CM", "description": "Pneumonia, unspecified organism", "plain_english": "Pneumonia (lung infection)"},
+  "J44.1": {"system": "ICD-10-CM", "description": "Chronic obstructive pulmonary disease with (acute) exacerbation", "plain_english": "COPD flare-up (long-term lung disease getting worse)"},
+  "J45.909": {"system": "ICD-10-CM", "description": "Unspecified asthma, uncomplicated", "plain_english": "Asthma"},
+  "K35.80": {"system": "ICD-10-CM", "description": "Unspecified acute appendicitis", "plain_english": "Appendicitis"},
+  "K52.9": {"system": "ICD-10-CM", "description": "Noninfective gastroenteritis and colitis, unspecified", "plain_english": "Stomach and gut irritation (not from an infection)"},
+  "K80.20": {"system": "ICD-10-CM", "description": "Calculus of gallbladder without cholecystitis without obstruction", "plain_english": "Gallstones (without infection or blockage)"},
+  "L03.115": {"system": "ICD-10-CM", "description": "Cellulitis of right lower limb", "plain_english": "Skin infection of the right leg"},
+  "M54.50": {"system": "ICD-10-CM", "description": "Low back pain, unspecified", "plain_english": "Lower back pain"},
+  "N20.0": {"system": "ICD-10-CM", "description": "Calculus of kidney", "plain_english": "Kidney stone"},
+  "N39.0": {"system": "ICD-10-CM", "description": "Urinary tract infection, site not specified", "plain_english": "Urinary tract infection (UTI)"},
+  "O80": {"system": "ICD-10-CM", "description": "Encounter for full-term uncomplicated delivery", "plain_english": "Giving birth at full term with no complications"},
+  "R05.9": {"system": "ICD-10-CM", "description": "Cough, unspecified", "plain_english": "Cough"},
+  "R06.02": {"system": "ICD-10-CM", "description": "Shortness of breath", "plain_english": "Trouble catching your breath"},
+  "R07.89": {"system": "ICD-10-CM", "description": "Other chest pain", "plain_english": "Other kinds of chest pain"},
+  "R07.9": {"system": "ICD-10-CM", "description": "Chest pain, unspecified", "plain_english": "Chest pain"},
+  "R10.84": {"system": "ICD-10-CM", "description": "Generalized abdominal pain", "plain_english": "Pain all over the belly"},
+  "R10.9": {"system": "ICD-10-CM", "description": "Unspecified abdominal pain", "plain_english": "Belly pain"},
+  "R11.0": {"system": "ICD-10-CM", "description": "Nausea", "plain_english": "Feeling sick to your stomach"},
+  "R11.2": {"system": "ICD-10-CM", "description": "Nausea with vomiting, unspecified", "plain_english": "Nausea with throwing up"},
+  "R31.9": {"system": "ICD-10-CM", "description": "Hematuria, unspecified", "plain_english": "Blood in the urine"},
+  "R42": {"system": "ICD-10-CM", "description": "Dizziness and giddiness", "plain_english": "Feeling dizzy or lightheaded"},
+  "R50.9": {"system": "ICD-10-CM", "description": "Fever, unspecified", "plain_english": "Fever"},
+  "R51.9": {"system": "ICD-10-CM", "description": "Headache, unspecified", "plain_english": "Headache"},
+  "R55": {"system": "ICD-10-CM", "description": "Syncope and collapse", "plain_english": "Fainting or passing out"},
+  "S06.0X0A": {"system": "ICD-10-CM", "description": "Concussion without loss of consciousness, initial encounter", "plain_english": "Concussion, without passing out (first visit)"},
+  "S52.501A": {"system": "ICD-10-CM", "description": "Unspecified fracture of the lower end of right radius, initial encounter for closed fracture", "plain_english": "Broken right wrist (forearm bone near the wrist), first visit"},
+  "S61.411A": {"system": "ICD-10-CM", "description": "Laceration without foreign body of right hand, initial encounter", "plain_english": "Cut on the right hand, first visit"},
+  "S93.401A": {"system": "ICD-10-CM", "description": "Sprain of unspecified ligament of right ankle, initial encounter", "plain_english": "Sprained right ankle, first visit"},
+  "T78.40XA": {"system": "ICD-10-CM", "description": "Allergy, unspecified, initial encounter", "plain_english": "Allergic reaction, first visit"},
+  "U07.1": {"system": "ICD-10-CM", "description": "COVID-19", "plain_english": "COVID-19"},
+  "W19.XXXA": {"system": "ICD-10-CM", "description": "Unspecified fall, initial encounter", "plain_english": "Injury from a fall, first visit"},
+  "Z00.00": {"system": "ICD-10-CM", "description": "Encounter for general adult medical examination without abnormal findings", "plain_english": "Routine adult checkup with normal results"},
+  "Z23": {"system": "ICD-10-CM", "description": "Encounter for immunization", "plain_english": "Visit to get a vaccine"},
+  "0110": {"system": "Revenue code", "description": "Room and board, private", "plain_english": "A private hospital room (you had the room to yourself), per day"},
   "0120": {"system": "Revenue code", "description": "Room and board, semi-private (two beds)", "plain_english": "A shared hospital room, per day"},
   "0200": {"system": "Revenue code", "description": "Intensive care, general", "plain_english": "Intensive care unit (ICU) care, per day"},
+  "0250": {"system": "Revenue code", "description": "Pharmacy, general", "plain_english": "Medicines and pharmacy supplies"},
+  "0270": {"system": "Revenue code", "description": "Medical/surgical supplies, general", "plain_english": "Medical and surgical supplies"},
+  "0300": {"system": "Revenue code", "description": "Laboratory, general", "plain_english": "Lab tests"},
+  "0320": {"system": "Revenue code", "description": "Radiology, diagnostic, general", "plain_english": "X-rays and other imaging"},
+  "0350": {"system": "Revenue code", "description": "CT scan, general", "plain_english": "CT scan charges"},
+  "0360": {"system": "Revenue code", "description": "Operating room services, general", "plain_english": "Operating room charges"},
   "0390": {"system": "Revenue code", "description": "Blood storage and processing, general", "plain_english": "Blood products given to you (transfusion)"},
+  "0450": {"system": "Revenue code", "description": "Emergency room, general", "plain_english": "Emergency room facility charge"},
+  "0636": {"system": "Revenue code", "description": "Drugs requiring detailed coding", "plain_english": "Medicines that must be listed with a specific drug code"},
+  "0710": {"system": "Revenue code", "description": "Recovery room, general", "plain_english": "Time spent in the recovery room"},
+  "0730": {"system": "Revenue code", "description": "EKG/ECG, general", "plain_english": "Heart rhythm test charges"},
   "0762": {"system": "Revenue code", "description": "Observation room", "plain_english": "Time kept in the hospital for observation"},
-  "0990": {"system": "Revenue code", "description": "Patient convenience items, general", "plain_english": "Comfort items such as TV or phone rental"},
-  "97110": {"system": "CPT", "description": "Therapeutic exercise, each 15 minutes", "plain_english": "Physical therapy exercises, billed per 15 minutes"},
-  "29125": {"system": "CPT", "description": "Application of short arm splint, static", "plain_english": "Putting a splint on your forearm/wrist"},
-  "A0425": {"system": "HCPCS", "description": "Ground mileage, per statute mile", "plain_english": "Ambulance travel, billed per mile"},
-  "A0427": {"system": "HCPCS", "description": "Ambulance service, advanced life support, emergency transport, level 1 (ALS 1-emergency)", "plain_english": "Emergency ambulance ride with advanced life support"},
-  "A4550": {"system": "HCPCS", "description": "Surgical trays", "plain_english": "A tray of sterile supplies used for a procedure"},
-  "E0114": {"system": "HCPCS", "description": "Crutches, underarm, other than wood, adjustable or fixed, pair, with pad, tip and handgrip", "plain_english": "A pair of adjustable underarm crutches"},
-  "G0378": {"system": "HCPCS", "description": "Hospital observation service, per hour", "plain_english": "Time kept in the hospital for observation, per hour"}
-  
+  "0990": {"system": "Revenue code", "description": "Patient convenience items, general", "plain_english": "Comfort items such as TV or phone rental"}
 }
