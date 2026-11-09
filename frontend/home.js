@@ -1,17 +1,17 @@
-/* mnm44: all the fancy homepage stuff lives here (the sliding cards, the spinning glass box,
- * the clock, fade ins). it only makes things look nice, the actual app is in app.js */
+// homepage only!! sliding cards, spinning glass box, the clock, fade ins, count ups
+// purely the looks. the actual app (upload, letters, all that) is in main.js
 (function () {
   "use strict";
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  // mnm44: if someone's phone/computer is set to less motion, everything just sits still for them
+  // reduce motion setting on = nothing moves for them. respect it
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const pad = (n) => String(n).padStart(2, "0");
   const onHome = () => { const h = $("#view-home"); return h && !h.hidden; };
 
-  // mnm44: anything that moves when you scroll goes in this list so it all runs once per frame (keeps it smooth)
+  // anything that moves on scroll goes in here so it all runs once per frame. keeps it smooth
   const scrollers = [];
   let ticking = false;
   function frame() { ticking = false; scrollers.forEach((fn) => fn()); }
@@ -20,7 +20,7 @@
   addEventListener("resize", () => { layouts.forEach((fn) => fn()); requestFrame(); });
   const layouts = [];
 
-  // ---------- small pieces ----------
+  // --- small helpers ---
   function initClock() {
     const els = $$("[data-clock]");
     if (!els.length) return;
@@ -44,8 +44,9 @@
     for (let i = 0; i < ticks.length; i++) ticks[i].classList.toggle("on", i < lit);
   }
 
-  // ---------- What we look for ----------
-  // mnm44: scroll down and the cards slide sideways, like studio noun. edit the 6 cards right here
+  // ========== WHAT WE LOOK FOR (sideways cards) ==========
+  // scroll down -> cards slide sideways (studio noun vibes). the 6 cards are written right below, edit them here
+  // want a photo on a card? add img: "assets/img/look/double.jpg" (any path) and it fills the card behind the number + title. Matt if u find good photos lmk
   const SLIDES = [
     { title: "Double charges",
       text: "The same test, scan, or supply can show up twice. We compare every line and point out repeats on the same day.",
@@ -77,9 +78,12 @@
     track.innerHTML = SLIDES.map((s, i) => `
       <li class="ngal-card">
         <figure class="frame-card">
-          <div class="ngal-img" aria-hidden="true"><span>${pad(i + 1)}</span></div>
+          <div class="ngal-img">
+            ${s.img ? `<img class="ngal-photo" src="${esc(s.img)}" alt="" loading="lazy">` : ""}
+            <span class="ngal-num" aria-hidden="true">${pad(i + 1)}</span>
+            <span class="ngal-card-title">${esc(s.title)}</span>
+          </div>
           <figcaption>
-            <span class="cap"><i>${pad(i + 1)}</i> ${esc(s.title)}</span>
             <span class="ngal-card-text"><span>${esc(s.text)}</span> <span class="ngal-card-ex">For example: ${esc(s.example)}</span></span>
           </figcaption>
         </figure>
@@ -113,11 +117,25 @@
       $$(".ngal-card", track).forEach((c, k) => c.classList.toggle("is-active", k === i));
     }
 
+    // each card stops dead center before the next one slides in, so the caption always matches
+    // whatever card is in the middle. PER_CARD = how much scrolling each card gets (in screen heights)
+    // bump it up if u want each card to hang around longer
+    const PER_CARD = 0.9;
+    let scrollLen = 0;
     function layout() {
-      if (!pinned) { section.style.height = ""; return; }
+      if (!pinned) { section.style.height = ""; track.style.paddingLeft = track.style.paddingRight = ""; return; }
       track.style.transform = "none";
-      dist = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
-      section.style.height = (innerHeight + dist) + "px";
+      const cards = $$(".ngal-card", track);
+      const w = track.parentElement.clientWidth, cw = cards[0].offsetWidth;
+      const side = Math.max(0, (w - cw) / 2) + "px";        // so the 1st + last card can both reach the middle
+      track.style.paddingLeft = side;
+      track.style.paddingRight = side;
+      // exact gap between card centers. offsetLeft rounds and over 6 cards it drifted like 5px
+      const mid = (c) => { const r = c.getBoundingClientRect(); return r.left + r.width / 2; };
+      const stepPx = cards.length > 1 ? (mid(cards[cards.length - 1]) - mid(cards[0])) / (cards.length - 1) : 0;
+      dist = stepPx * (n - 1);                               // card 1 centered -> card 6 centered
+      scrollLen = Math.round(innerHeight * PER_CARD * (n - 1));
+      section.style.height = (innerHeight + scrollLen) + "px";
     }
 
     function onScroll() {
@@ -125,20 +143,24 @@
       if (!pinned) return;
       const r = section.getBoundingClientRect();
       if (r.bottom < -50 || r.top > innerHeight + 50) return;
-      const p = dist ? clamp(-r.top / dist, 0, 1) : 0;
-      const x = -p * dist;
+      const p = scrollLen ? clamp(-r.top / scrollLen, 0, 1) : 0;
+      // chill on each card for a sec then glide to the next (same trick as the glass box)
+      const raw = p * (n - 1), i = Math.floor(raw), f = raw - i;
+      const k = clamp((f - 0.3) / 0.4, 0, 1), eased = k * k * (3 - 2 * k);
+      const pos = Math.min(n - 1, i + eased);
+      const x = -(pos / (n - 1)) * dist;
       const v = x - lastX; lastX = x;
-      // Motion blur and a slight lean while moving, settling once scrolling stops.
+      // lil motion blur + lean while it's moving, settles when u stop scrolling
       blur = Math.max(blur, Math.min(3, Math.abs(v) * 0.06));
       skew = clamp(v * 0.04, -3, 3);
       track.style.transform = `translate3d(${x.toFixed(1)}px,0,0) skewX(${skew.toFixed(2)}deg)`;
       settle();
-      lightTicks(ticks, p);
-      setActive(clamp(Math.round(p * (n - 1)), 0, n - 1));
+      lightTicks(ticks, pos / (n - 1));
+      setActive(clamp(Math.round(pos), 0, n - 1));   // whichever card is closest to the middle
     }
 
     if (!pinned) {
-      // Still version: cards scroll sideways on their own, caption follows the most visible card.
+      // no-motion version: cards just scroll sideways normally and the caption follows whatever's most visible
       track.parentElement.addEventListener("scroll", () => {
         const w = track.parentElement;
         const p = w.scrollWidth > w.clientWidth ? w.scrollLeft / (w.scrollWidth - w.clientWidth) : 0;
@@ -150,7 +172,7 @@
     galleryJump = (i) => {
       if (pinned) {
         const top = section.getBoundingClientRect().top + scrollY;
-        scrollTo({ top: top + (dist * i) / (n - 1) + 2, behavior: "smooth" });
+        scrollTo({ top: top + (scrollLen * i) / (n - 1) + 2, behavior: "smooth" });
       } else {
         section.scrollIntoView();
         const card = $$(".ngal-card", track)[i];
@@ -162,7 +184,7 @@
     scrollers.push(onScroll);
     layout();
     setActive(0);
-    // Images change the track width once they arrive; fonts change it too.
+    // images + fonts loading in change the track width so re-measure when they do
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { layout(); requestFrame(); });
     addEventListener("load", () => { layout(); requestFrame(); });
   }
@@ -173,8 +195,8 @@
     }));
   }
 
-  // ---------- How it works: the glass box ----------
-  // mnm44: the box turns one side per step as you scroll. the 4 sides are written in home.html
+  // ---- how it works: the glass box ----
+  // box turns 1 side per step as u scroll. the 4 sides are written in home.html
   function initBox() {
     const section = $("#how-it-works"), cube = $("#box-cube");
     if (!section || !cube) return;
@@ -201,7 +223,7 @@
       const total = section.offsetHeight - innerHeight;
       const p = clamp(-r.top / total, 0, 1) * (steps - 1);
       const i = Math.floor(p), f = p - i;
-      // mnm44: it pauses on each side for a sec before turning so ppl can actually read it
+      // pauses on each side for a sec before turning so ppl can actually read it
       const k = clamp((f - 0.22) / 0.56, 0, 1), e = k * k * (3 - 2 * k);
       const pos = Math.min(steps - 1, i + e);
       cube.style.transform = `rotateX(${(pos * 90).toFixed(2)}deg)`;
@@ -223,7 +245,7 @@
     bars.forEach((b, n) => b.style.setProperty("--w", (1 - Math.min(1, n / 5)).toFixed(2)));
   }
 
-  // ---------- Code and language card ----------
+  // code + language card
   const CODES = {
     "85025": { en: "Complete blood count, a common blood test", es: "Hemograma completo, un análisis de sangre común", zh: "全血细胞计数，一种常见的血液检查" },
     "71046": { en: "Chest X-ray, 2 views", es: "Radiografía de tórax, 2 vistas", zh: "胸部X光检查，2个角度" },
@@ -244,7 +266,7 @@
     render();
   }
 
-  // ---------- Letter demo: ticked charges fill the letter ----------
+  // letter demo: tick a charge and it pops into the letter
   function initAskDemo() {
     const boxes = $$("[data-ask]");
     if (!boxes.length) return;
@@ -258,7 +280,7 @@
     render();
   }
 
-  // ---------- Menu: photo preview follows the item you point at ----------
+  // MENU - the photo preview follows whatever item ur pointing at
   function initMenuPreview() {
     const menu = $("#site-menu"), img = $("#menu-img");
     if (!menu || !img) return;
@@ -275,7 +297,7 @@
     menu.addEventListener("focusin", (e) => { const b = e.target.closest(".menu-list button"); if (b) show(b); });
   }
 
-  // ---------- Reveal on scroll, count-ups, progress, header, floating sign-up pill ----------
+  // ------- reveal on scroll, count ups, progress bar, header, floating sign up pill -------
   function initScrollEffects() {
     const reveal = $$("[data-reveal], [data-reveal-group] > *");
     $$("[data-reveal-group]").forEach((g) => $$(":scope > *", g).forEach((el, i) => el.style.setProperty("--delay", (i * 0.1) + "s")));
@@ -289,24 +311,40 @@
       reveal.forEach((el) => io.observe(el));
     }
 
-    // Count numbers up the first time they come into view
-    const fmt = (n) => n.toLocaleString("en-US");
+    // number count-ups!!
+    // every stat sits at 0 and shoots up fast once u can actually see it. way more fun than just showing the number
+    //   data-count="31.7"        the final number (decimals ok)
+    //   data-decimals="1"        how many decimals to show (default 0)
+    //   data-prefix / data-suffix text before/after, e.g. "$" and " billion"
+    //   data-count-delay="600"   wait (ms) so the fade-in finishes first (default 350)
+    //   data-count-dur="900"     how long the count takes (ms, default 900)
     const counters = $$("[data-count]");
-    const run = (el) => {
-      const end = Number(el.dataset.count), pre = el.dataset.prefix || "", suf = el.dataset.suffix || "";
-      if (reduceMotion) { el.textContent = pre + fmt(end) + suf; return; }
-      const t0 = performance.now(), dur = 1300;
-      const step = (now) => {
-        const k = Math.min(1, (now - t0) / dur), eased = 1 - Math.pow(1 - k, 3);
-        el.textContent = pre + fmt(Math.round(end * eased)) + suf;
-        if (k < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
+    const show = (el, n) => {
+      const dec = Number(el.dataset.decimals) || 0;
+      el.textContent = (el.dataset.prefix || "") +
+        n.toLocaleString("en-US", { minimumFractionDigits: dec, maximumFractionDigits: dec }) + (el.dataset.suffix || "");
     };
-    if ("IntersectionObserver" in window) {
+    const run = (el) => {
+      const end = Number(el.dataset.count);
+      if (reduceMotion) { show(el, end); return; }
+      const delay = el.dataset.countDelay != null ? Number(el.dataset.countDelay) : 350;
+      const dur = Number(el.dataset.countDur) || 900;
+      show(el, 0);
+      setTimeout(() => {
+        const t0 = performance.now();
+        const step = (now) => {
+          const k = Math.min(1, Math.max(0, (now - t0) / dur)), eased = 1 - Math.pow(1 - k, 3);
+          show(el, k < 1 ? end * eased : end);
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }, delay);
+    };
+    if (!reduceMotion && "IntersectionObserver" in window) {
+      counters.forEach((el) => show(el, 0));   // sit at 0 until it scrolls into view
       const co = new IntersectionObserver((entries) => {
         entries.forEach((e) => { if (e.isIntersecting) { run(e.target); co.unobserve(e.target); } });
-      }, { threshold: 0.6 });
+      }, { threshold: 0.4 });
       counters.forEach((el) => co.observe(el));
     }
 
@@ -323,7 +361,7 @@
       if (bg && home && !reduceMotion) bg.style.transform = `translate3d(0,${(Math.min(y, 900) * 0.3).toFixed(1)}px,0) scale(1.15)`;
       const end = $(".ncta");
       const nearEnd = end && end.getBoundingClientRect().top < innerHeight;
-      // Stay out of the way while a pinned section (gallery, glass box) fills the screen.
+      // hide the floating pill while a pinned section (gallery / glass box) is taking up the screen
       const pinnedOnScreen = $$(".ngal:not(.is-static), .nbox:not(.is-static)").some((el) => {
         const r = el.getBoundingClientRect();
         return r.top < innerHeight * 0.5 && r.bottom > innerHeight * 0.5;
@@ -333,7 +371,7 @@
     });
     if (cta) cta.addEventListener("click", () => { dismissed = true; cta.classList.remove("is-on"); });
 
-    // Views switch without a scroll event; re-measure when they do.
+    // switching views doesnt fire a scroll event so re-measure when it happens
     if ("MutationObserver" in window) {
       const mo = new MutationObserver(() => { layouts.forEach((fn) => fn()); requestFrame(); });
       $$("main > .view").forEach((v) => mo.observe(v, { attributes: true, attributeFilter: ["hidden"] }));
@@ -353,3 +391,5 @@
     requestFrame();
   });
 })();
+
+// ok small disclaimer, some AI was used to help assist writing a few of these features
