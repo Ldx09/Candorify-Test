@@ -1,6 +1,8 @@
-/* mnm44: ok this is the brain of the whole site lol. every page, the 6 step check
- * (upload > charges > questions > review > letter > survey), login, the results page,
- * all of it lives here. the website and the phone app both use this same file */
+/* ok so this is basically the brain of the whole site lol
+   - every page
+   - the 6 step check (upload > charges > questions > review > letter > survey)
+   - login, results page, pricing, account... all of it
+   website AND the phone app both run off this same file so test both if u change stuff */
 (function () {
   "use strict";
 
@@ -8,23 +10,23 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  // mnm44: google/apple login is OFF until vrajesh adds the backend routes. just flip to true when he does
+  // google/apple login stays OFF til Vrajesh adds the backend routes. just flip it to true when he does
   const OAUTH_ENABLED = { google: false, apple: false };
 
-  // mnm44: pages anyone can see w/o an account. everything else makes you sign up first
+  // pages anyone can see w/o an account. everything else makes u sign up first
   const PUBLIC_VIEWS = new Set(["home", "pricing", "auth", "team", "legal", "results"]);
   const STEPS = ["start", "charges", "questions", "flags", "letter", "finish"];
   const STEP_LABELS = { start: "Upload", charges: "Charges", questions: "Questions", flags: "Review", letter: "Letter", finish: "Finish" };
   const VIEW_PURPOSE = { check: "check a bill", letters: "write a letter", account: "see your account", lookup: "look up a code" };
 
-  // mnm44: the site is split into separate pages now, this says which file each one lives in
+  // site is split into separate pages now, this is just which file each one lives in
   const PAGES = {
-    home: "home.html", check: "bill.html", letters: "dispute.html", lookup: "lookUp.html", pricing: "plans.html",
+    home: "home.html", check: "bill.html", letters: "dispute.html", lookup: "look_up.html", pricing: "plans.html",
     account: "profile.html", results: "performance.html", team: "team.html", legal: "terms.html",
   };
   const onThisPage = (view) => !!document.getElementById("view-" + view);
 
-  // Flag types from the backend, matched by part of the name.
+  // flag types from the backend (matched by part of the name)
   const KIND_LABELS = [
     [/dup/, "Possible duplicate charge"],
     [/arith|math/, "Math doesn't add up"],
@@ -53,7 +55,7 @@
 
   function newFlow() {
     return {
-      source: null,          // "upload" | "sample"
+      source: null,          // "upload" or "sample"
       billId: null,
       provider: "",
       date: "",
@@ -70,7 +72,7 @@
     };
   }
 
-  // ---------- utilities ----------
+  // --- utilities ---
   function money(n) {
     return "$" + Number(n || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
@@ -127,14 +129,15 @@
     if (!sel.value) sel.value = "en";
   }
 
-  // ---------- navigation ----------
+  // ========== NAVIGATION ==========
   function go(view) {
     if (!PUBLIC_VIEWS.has(view) && !API.isLoggedIn()) {
       state.pendingView = view;
       showAuth("register", "Create a free account to " + (VIEW_PURPOSE[view] || "continue") + ". It only takes a minute.");
       return;
     }
-    if ((view === "home" || view === "auth") && API.isLoggedIn()) view = "check";
+    // logged in ppl skip the login page but the logo ALWAYS goes home now (was bouncing to bill.html before)
+    if (view === "auth" && API.isLoggedIn()) view = "check";
     if (!onThisPage(view)) { window.location.href = PAGES[view] || "home.html"; return; }
     showView(view);
   }
@@ -157,7 +160,7 @@
     else focusHeading($("#view-" + view));
   }
 
-  // ---------- auth ----------
+  // auth
   function renderHeader() {
     const inApp = !!state.user;
     $$("#site-menu [data-when]").forEach((el) => { el.hidden = el.dataset.when !== (inApp ? "in" : "out"); });
@@ -183,7 +186,7 @@
   }
 
   function showAuth(mode, message) {
-    // Not on a sign in / sign up page: go there, and remember where to come back to.
+    // not on a sign in/up page -> send them there + remember where to come back to
     if (!onThisPage("auth")) {
       const q = new URLSearchParams();
       if (state.pendingView) q.set("next", state.pendingView);
@@ -253,7 +256,7 @@
     window.location.href = API.oauthUrl(provider, $("#auth-remember").checked);
   }
 
-  // The backend's OAuth callback should redirect to /#access_token=...&remember_me=true
+  // the backend's oauth callback should redirect to /#access_token=...&remember_me=true
   function handleOAuthReturn() {
     if (!window.location.hash || window.location.hash.indexOf("access_token=") === -1) return;
     const params = new URLSearchParams(window.location.hash.slice(1));
@@ -267,7 +270,7 @@
     window.location.href = "home.html";
   }
 
-  // ---------- flow: steps ----------
+  // ----- flow: the steps -----
   function setStep(step) {
     flow.step = step;
     STEPS.forEach((s) => { $("#step-" + s).hidden = s !== step; });
@@ -320,11 +323,11 @@
     toast("Cleared. You can start a new bill.");
   }
 
-  // ---------- step 1: upload / sample ----------
-  const MAX_PDF_MB = 5;    // mnm44: same 5mb limit as the backend so nobody waits around just to get rejected
+  // STEP 1 - upload or sample
+  const MAX_PDF_MB = 5;    // 5mb, same as the backend so nobody waits around just to get rejected
 
   function chooseFile(file) {
-    $("#pdf-file").value = "";          // so picking the same file again still works
+    $("#pdf-file").value = "";          // so picking the same file twice still works
     if (!file) return;
     const isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
     if (!isPdf) { toast("Please choose a PDF file.", true); return; }
@@ -362,7 +365,7 @@
 
   function normalizeQuestion(q, i) {
     const type = ["number", "yes_no", "choice"].includes(q.type) ? q.type : "yes_no";
-    // `choices` are the English values the backend compares; `choice_labels` are what the patient reads.
+    // `choices` = english values the backend compares. `choice_labels` = what the patient actually reads
     const choices = Array.isArray(q.choices) && q.choices.length ? q.choices
       : (type === "yes_no" ? ["Yes", "No", "Not sure"] : []);
     const labels = Array.isArray(q.choice_labels) && q.choice_labels.length === choices.length ? q.choice_labels : choices;
@@ -401,7 +404,8 @@
         flow.questionsFromServer = true;
       }
       $("#upload-status").textContent = "";
-      toast("Found " + flow.lines.length + " " + plural(flow.lines.length, "charge") + "." + (res.notice ? " " + res.notice : ""));      setStep("charges");
+      toast("Found " + flow.lines.length + " " + plural(flow.lines.length, "charge") + "." + (res.notice ? " " + res.notice : ""));
+      setStep("charges");
       renderCharges();
     } catch (err) {
       $("#upload-status").textContent = err.message;
@@ -433,7 +437,7 @@
     finally { setBusy(btn, false); }
   }
 
-  // ---------- step 2: charges ----------
+  // step 2 / charges
   function renderCharges() {
     const sample = flow.source === "sample";
     $("#charges-intro").textContent = sample
@@ -546,7 +550,7 @@
     flow.lines = flow.lines.filter((l) => l.code || l.description || num(l.line_total));
     flow.editing.clear();
     if (!flow.lines.length) { renderLines(); toast("Add at least one charge to continue.", true); return; }
-    // If the charges were fixed, the backend saves the fixed bill and asks questions about that one.
+    // if they fixed the charges the backend saves the fixed bill and asks about that one instead
     if (flow.source === "upload" && flow.billId) {
       const btn = $("#btn-charges-next");
       setBusy(btn, true, "Saving your changes…");
@@ -566,8 +570,8 @@
     else runChecks($("#btn-charges-next"));
   }
 
-  // ---------- step 3: questions ----------
-  // Backup questions used until the backend sends AI-written ones.
+  // === step 3: questions ===
+  // backup questions, used until the backend sends the AI written ones
   const ROOM_RE = /(room\s*(&|and)?\s*board|semi-?private|private room|\bbed\b|r&b|accommodation|ward room|room charge)/i;
   const NOT_ROOM_RE = /(operating|emergency|recovery|treatment|procedure)\s*room/i;
 
@@ -604,7 +608,7 @@
     return qs;
   }
 
-  // mnm44: "not sure" always goes back in english and NEVER turns into a flag. promise
+  // "not sure" always goes back in english and NEVER turns into a flag. promise
   const NOT_SURE = "Not sure";
   function isNotSure(v) { return String(v == null ? "" : v).trim().toLowerCase() === "not sure"; }
 
@@ -642,8 +646,8 @@
     });
   }
 
-  // Plain-code checks on the backup questions. (AI-written questions are
-  // checked by the backend, which returns mismatches as flags.)
+  // plain code checks for the backup qs (the AI written ones get
+  // checked on the backend, mismatches come back as flags)
   function evaluateLocalAnswers() {
     const out = [];
     flow.questions.filter((q) => q.local).forEach((q) => {
@@ -668,7 +672,7 @@
     return out.map((f, i) => ({ key: "local-" + i, id: null, status: "open", include: true, local: true, ...f }));
   }
 
-  // ---------- run the checks ----------
+  // run the checks
   function normalizeFlag(f, i) {
     const ids = String(f.line_item_ids || "").split(",").map((s) => parseInt(s, 10)).filter((n) => !isNaN(n));
     const lineRefs = Array.isArray(f.line_refs) ? f.line_refs
@@ -697,7 +701,7 @@
           .map((q) => ({ question_id: q.id, value: flow.answers[q.id] != null ? flow.answers[q.id] : null }));
         const res = await API.submitReview({ bill_id: flow.billId, answers });
         flow.billId = res.bill_id;
-        // Safety net: never show a flag for a question the patient answered "Not sure".
+        // safety net: never show a flag for something they answered "not sure" to
         flags = (res.flags || []).map(normalizeFlag)
           .filter((f) => !(f.questionId && isNotSure(flow.answers[f.questionId])));
       } else {
@@ -716,7 +720,7 @@
     finally { setBusy(btn, false); }
   }
 
-  // ---------- step 4: flags ----------
+  // step 4 - flags (review)
   function renderFlags() {
     const open = flow.flags.filter((f) => f.status !== "dismissed").length;
     const summary = $("#flag-summary");
@@ -782,8 +786,7 @@
     updateSurveyShortcut();
   }
 
-  // Only when NOTHING was flagged: let the user skip the letter and go straight to "How did we do".
-  // Only when NOTHING was flagged: let the user skip the letter and go straight to "How did we do".
+  // only if NOTHING got flagged: lets them skip the letter and go straight to the survey
   function updateSurveyShortcut() {
     let btn = $("#btn-flags-survey");
     if (!btn) {
@@ -792,14 +795,17 @@
       btn.id = "btn-flags-survey";
       btn.className = "btn btn-quiet";
       btn.textContent = "Skip to survey";
+      btn.style.marginLeft = "auto";
+      btn.style.marginRight = "12px";
       btn.addEventListener("click", () => setStep("finish"));
       $("#btn-flags-next").before(btn);
     }
     const show = flow.flags.length === 0 && flow.source !== "sample";
     btn.style.display = show ? "" : "none";
-    btn.style.marginLeft = show ? "auto" : "";
-    $("#btn-flags-next").style.marginLeft = show ? "0" : "";   // keep both buttons together on the right
-  }  // Paid extras
+    $("#btn-flags-next").style.marginLeft = show ? "0" : "";   // keeps skip to survey right next to continue on desktop
+  }
+
+  // paid extras
   async function translateLines() {
     if (!flow.billId) return;
     if (API.features.payments && !isPaid()) { toast("Explaining every charge is part of the paid plan.", true); go("pricing"); return; }
@@ -847,7 +853,7 @@
     }
   }
 
-  // ---------- step 5 + Letters page: letter builder ----------
+  // ---------- step 5 + the letters page: letter builder ----------
   function itemsFromFlags(list) {
     const items = [];
     (list || flow.flags.filter((f) => f.include && f.status !== "dismissed")).forEach((f) => {
@@ -939,7 +945,7 @@
       if (state.letterMode === "flow" && flow.billId) {
         const picked = flow.flags.filter((f) => f.include && f.status !== "dismissed");
         ctx.flag_ids = picked.filter((f) => f.id != null).map((f) => f.id);
-        ctx.items = itemsFromFlags(picked.filter((f) => f.id == null));   // ones the browser found itself
+        ctx.items = itemsFromFlags(picked.filter((f) => f.id == null));   // the ones the browser caught by itself
       }
     }
     if (state.letterMode === "flow" && flow.billId) ctx.bill_id = flow.billId;
@@ -1002,8 +1008,8 @@
     finally { setBusy(btn, false); }
   }
 
-  // ---------- step 6: finish + survey ----------
-  // options: plain strings, or [value, label] pairs (value is what we send, label is what people read)
+  // step 6, finish + survey
+  // options can be plain strings or [value, label] pairs (value gets sent, label is what ppl read)
   function pillsHTML(name, options, checked, required) {
     return options.map((o, i) => {
       const [value, label] = Array.isArray(o) ? o : [o, o];
@@ -1012,7 +1018,7 @@
   }
   const picked = (name) => { const el = $(`input[name="${name}"]:checked`); return el ? el.value : null; };
 
-  // mnm44: these english codes are what get counted on the results page. dont rename them w/o telling vrajesh!!
+  // these english codes are what get counted on the results page. dont rename them w/o telling Vrajesh!!
   const SV = {
     flag: [["accurate", "Accurate"], ["inaccurate", "Not accurate"], ["unsure", "Not sure"]],
     missed: [["yes", "Yes"], ["no", "No"], ["unsure", "Not sure"]],
@@ -1065,12 +1071,12 @@
     const answers = flow.flags.map((f, n) => picked("sv-flag-" + n));
     const count = (v) => answers.filter((a) => a === v).length;
     await finalize({
-      // original fields (the backend already stores these)
+      // og fields, backend already stores these
       estimated_savings: Math.max(0, num($("#sv-savings").value)),
       flags_shown: flow.flags.length,
       flags_marked_helpful: count("accurate"),
       satisfaction: parseInt(picked("sv-sat"), 10) || 0,
-      // new fields for the results page
+      // new ones for the results page
       flags_accurate: count("accurate"),
       flags_inaccurate: count("inaccurate"),
       flags_unsure: count("unsure"),
@@ -1101,9 +1107,9 @@
     toast("Sample deleted. Upload your own bill whenever you're ready.");
   }
 
-  // ---------- code lookup drawer ----------
+  // code lookup drawer
   function openLookup(code, system) {
-    if (!$("#lookup-drawer")) { go("lookup"); return; }   // the drawer only lives on bill.html
+    if (!$("#lookup-drawer")) { go("lookup"); return; }   // drawer only exists on bill.html, everywhere else just go to the lookup page
     if (!API.isLoggedIn()) { go("check"); return; }
     state.lastFocus = document.activeElement;
     const drawer = $("#lookup-drawer");
@@ -1162,8 +1168,8 @@
     }
   }
 
-  // ---------- terms ----------
-  // mnm44: the terms popup just copies the terms page, so we only ever edit the text in terms.html
+  // --- terms ---
+  // terms popup just copies the terms page so we only ever edit the text in terms.html
   function termsHTML() {
     const body = $("#legal-body");
     if (!body) return "";
@@ -1175,7 +1181,7 @@
     const d = $("#terms-dialog");
     let html = termsHTML();
     if (!html) {
-      // Not on terms.html: borrow the text from it. If that's not possible, just open the page.
+      // not on terms.html? borrow the text from it. if that fails just open the page
       try {
         const page = new DOMParser().parseFromString(await (await fetch(PAGES.legal)).text(), "text/html");
         const body = page.getElementById("legal-body");
@@ -1191,12 +1197,12 @@
     if (typeof d.close === "function") d.close(); else d.removeAttribute("open");
   }
 
-  // ---------- pricing ----------
+  // PRICING
   async function renderPricing() {
     let cfg = { paid_features: [], mock_mode: true };
     try { cfg = await API.paymentConfig(); } catch (e) { /* keep defaults */ }
-    const list = cfg.paid_features && cfg.paid_features.length ? cfg.paid_features : ["Everything in Free", "More features coming soon"];
-    $("#paid-features").innerHTML = list.map((f) => `<li>${esc(f)}</li>`).join("");
+    // basic / premium / business lists live in plans.html now. only swap the premium list if the backend sends its own
+    if (cfg.paid_features && cfg.paid_features.length) $("#paid-features").innerHTML = cfg.paid_features.map((f) => `<li>${esc(f)}</li>`).join("");
     $("#pay-mode-note").textContent = cfg.mock_mode ? "Test mode: no real charge is made." : "Secure checkout with Stripe.";
     const btn = $("#btn-upgrade");
     btn.textContent = isPaid() ? "You're on the paid plan" : (API.features.payments ? "Upgrade" : "Coming soon");
@@ -1223,7 +1229,7 @@
     finally { setBusy(btn, false); renderPricing(); }
   }
 
-  // ---------- account ----------
+  // account
   async function renderAccount() {
     const wrap = $("#account-detail");
     if (!state.user) { wrap.innerHTML = '<p class="muted">Log in to see your account.</p>'; return; }
@@ -1263,9 +1269,9 @@
     };
   }
 
-  // ---------- results page (public) ----------
-  // mnm44: numbers ONLY come from real surveys, and the page stays hidden til 10 reviews.
-  // no fake stats on the live site ever
+  // ========== results page (public) ==========
+  // numbers ONLY come from real surveys and the page stays hidden til we have 10 reviews
+  // no fake stats on the live site. ever.
   const STATS_MIN_REVIEWS = 10;
   const STATS_REFRESH_MS = 60000;
   const FU_OUTCOMES = [
@@ -1373,7 +1379,7 @@
     finally { setBusy(btn, false); }
   }
 
-  // Lab test on made-up bills (needs an account because it runs on the server)
+  // lab test on made up bills (needs an account bc it runs on the server)
   async function runAccuracy() {
     const out = $("#accuracy-result");
     const btn = $("#btn-run-accuracy");
@@ -1394,7 +1400,7 @@
     finally { setBusy(btn, false); }
   }
 
-  // ---------- startup data ----------
+  // startup data
   async function loadDisclaimer() {
     try { const d = await API.disclaimer(); $$(".disclaimer-text").forEach((el) => { el.textContent = d.text; }); }
     catch (e) {
@@ -1406,7 +1412,7 @@
     ["#tc-lang", "#auth-lang", "#translate-lang"].forEach((s) => populateLangSelect($(s)));
   }
 
-  // ---------- hamburger menu ----------
+  // hamburger menu
   function openMenu() {
     state.lastFocus = document.activeElement;
     $("#menu-backdrop").hidden = false;
@@ -1442,8 +1448,8 @@
     window.scrollTo({ top, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
 
-  // ---------- wiring ----------
-  // mnm44: each page only has some of these buttons, so on() just skips the ones that aren't there
+  // ---------- wiring (connecting buttons to stuff) ----------
+  // each page only has some of these buttons so on() just skips the ones that arent there
   function on(sel, ev, fn) { const el = $(sel); if (el) el.addEventListener(ev, fn); }
 
   function wire() {
@@ -1471,7 +1477,7 @@
       if (stepBtn && !stepBtn.disabled) { setStep(stepBtn.dataset.stepGo); return; }
     });
 
-    // Auth
+    // auth
     $$("[data-auth-tab]").forEach((b) => b.addEventListener("click", () => setAuthMode(b.dataset.authTab)));
     on("#auth-form", "submit", handleAuthSubmit);
     $$("[data-oauth]").forEach((b) => b.addEventListener("click", () => startOAuth(b.dataset.oauth)));
@@ -1483,7 +1489,7 @@
       $("#pw-toggle").setAttribute("aria-pressed", String(show));
     });
 
-    // Step 1
+    // step 1
     on("#pdf-file", "change", (e) => chooseFile(e.target.files[0]));
     on("#btn-clear-file", "click", clearFile);
     const dz = $("#dropzone");
@@ -1497,17 +1503,17 @@
     on("#btn-need-itemized", "click", () => { go("letters"); setLetterType("request"); });
     on("#btn-start-over", "click", startOver);
 
-    // Step 2
+    // step 2
     on("#lines", "click", onLinesClick);
     on("#lines", "input", onLinesInput);
     on("#rev-total", "input", renderTotals);
     on("#btn-add-line", "click", addLine);
     on("#btn-charges-next", "click", continueFromCharges);
 
-    // Step 3
+    // step 3
     on("#questions-form", "submit", (e) => { e.preventDefault(); collectAnswers(); runChecks($("#btn-questions-next")); });
 
-    // Step 4
+    // step 4
     on("#flags-list", "change", onFlagsChange);
     on("#questions-list", "change", (e) => {
       const box = e.target.closest("input[data-not-sure]");
@@ -1522,7 +1528,7 @@
     on("#btn-benchmark", "click", benchmarkLines);
     on("#btn-flags-next", "click", () => setStep("letter"));
 
-    // Step 5 / letters
+    // step 5 / letters
     $$('input[name="letter-type"]').forEach((r) => r.addEventListener("change", () => { setLetterType(r.value); renderLetterItems(); }));
     on("#letter-items", "click", onLetterItemsClick);
     on("#letter-items", "input", onLetterItemsInput);
@@ -1532,36 +1538,36 @@
     on("#btn-download-annotated", "click", downloadAnnotated);
     on("#btn-letter-next", "click", () => setStep("finish"));
 
-    // Step 6
+    // step 6
     on("#survey-form", "submit", submitSurvey);
     on("#survey-form", "change", () => { $("#survey-error").hidden = true; });
-    // Skipping still deletes the bill. "skipped: true" tells the backend not to count it in the results.
+    // skipping still deletes the bill. skipped: true tells the backend not to count it in the results
     on("#btn-survey-skip", "click", () => finalize({ skipped: true, estimated_savings: 0, flags_shown: 0, flags_marked_helpful: 0, satisfaction: 0 }, $("#btn-survey-skip")));
     on("#btn-sample-done", "click", finishSample);
     on("#btn-check-another", "click", resetFlow);
 
-    // Lookup drawer
+    // lookup drawer
     on("#tc-form", "submit", lookupCode);
     on("#lookup-close", "click", closeLookup);
     on("#drawer-backdrop", "click", closeLookup);
 
-    // Menu
+    // menu
     on("#menu-btn", "click", openMenu);
     on("#menu-close", "click", () => closeMenu());
     on("#menu-backdrop", "click", () => closeMenu());
 
-    // Terms
+    // terms
     on("#terms-close", "click", closeTerms);
     on("#terms-dialog", "click", (e) => { if (e.target.id === "terms-dialog") closeTerms(); });
 
-    // Pricing / results
+    // pricing + results
     on("#btn-upgrade", "click", startUpgrade);
     on("#btn-run-accuracy", "click", runAccuracy);
     on("#followup-form", "submit", submitFollowUp);
     on("#fu-outcome", "change", () => { $("#fu-amount-wrap").hidden = picked("fu-outcome") !== "corrected"; });
   }
 
-  // Used by the mobile app's hardware back button (js/mobile.js).
+  // the phone app's back button uses this (js/mobile.js)
   function back() {
     if (!$("#site-menu").hidden) { closeMenu(); return true; }
     if ($("#lookup-drawer") && !$("#lookup-drawer").hidden) { closeLookup(); return true; }
@@ -1575,7 +1581,7 @@
     return false;
   }
 
-  // Hides buttons for things the backend can't do yet (see API.features in api.js).
+  // hides buttons for stuff the backend cant do yet (API.features in api.js)
   function hideUnfinished() {
     const f = API.features;
     const hide = (sel) => { const el = $(sel); if (el) el.hidden = true; };
@@ -1595,7 +1601,7 @@
     loadLanguages();
     await refreshUser();
 
-    // Stripe redirect back with ?session_id=
+    // stripe sends ppl back here w ?session_id=
     const params = new URLSearchParams(window.location.search);
     if (params.get("session_id") && API.isLoggedIn()) {
       try {
@@ -1614,7 +1620,7 @@
       if (msg && onThisPage("auth")) { $("#auth-prompt").textContent = msg; $("#auth-prompt").hidden = false; }
       return;
     }
-    // Links like home.html#why or team.html#founder: show the page and scroll there.
+    // links like home.html#why or team.html#founder -> show the page + scroll there
     const target = window.location.hash.slice(1);
     if (page === "home" && target) showView("home"); else go(page || "home");
     if (target && document.getElementById(target)) setTimeout(() => scrollToId(target), 80);
@@ -1623,3 +1629,5 @@
   window.CandorifyApp = { go, back };
   document.addEventListener("DOMContentLoaded", init);
 })();
+
+// just so everyone knows - SOME AI was used to help assist in writing a few of these features
