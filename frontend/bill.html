@@ -8,14 +8,14 @@
   <meta name="theme-color" content="#141813" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- mnm44: our 2 fonts, inter tight for everything + instrument serif for the fancy italic bits -->
+  <!-- 2 fonts. inter tight + instrument serif (the italic one) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-view="check">
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- ================= HEADER ================= -->
+  <!-- HEADER -->
   <header class="site-header">
     <div class="container header-bar">
       <button type="button" class="brand" data-go="home" aria-label="Candorify home">candorify</button>
@@ -82,12 +82,36 @@
           </div>
         </div>
 
-        <!-- STEP 1 -->
+        <!-- step 1 -->
         <div class="step-panel" id="step-start">
           <div class="step-head">
             <h2>Upload your bill</h2>
             <p>It needs to be itemized, with every charge listed.</p>
           </div>
+
+          <!-- what u need before uploading. photo upload is coming later so pdf only for now -->
+          <section class="need-card" aria-labelledby="need-title">
+            <h3 id="need-title" class="need-title">What you'll need</h3>
+            <ol class="need-steps">
+              <li>
+                <span class="need-n" aria-hidden="true">01</span>
+                <strong>Ask for your itemized bill</strong>
+                <p>Contact the billing office of your hospital or doctor and ask for an itemized bill that lists every charge with its code. Under federal law (HIPAA), you have the right to a copy of your billing records, and they generally must respond within 30 days. <a href="https://www.hhs.gov/hipaa/for-professionals/privacy/guidance/access/index.html" target="_blank" rel="noopener">Your rights (HHS)</a></p>
+                <button type="button" class="link-btn" data-go="letters">We can write the request for you</button>
+              </li>
+              <li>
+                <span class="need-n" aria-hidden="true">02</span>
+                <strong>Get it as a PDF</strong>
+                <p>Ask them to email it or post it to your patient portal. It usually comes as a PDF. Save the PDF to your phone or computer.</p>
+              </li>
+              <li>
+                <span class="need-n" aria-hidden="true">03</span>
+                <strong>Upload it below</strong>
+                <p>One bill at a time, up to 5 MB. We read every charge and you check it before anything else happens.</p>
+              </li>
+            </ol>
+            <p class="need-soon"><span class="badge">Coming soon</span> Uploading a photo of a paper bill. For now, please upload the PDF.</p>
+          </section>
 
           <div class="upload-layout">
             <div class="panel upload-main">
@@ -128,7 +152,7 @@
           </div>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- step 2 - charges -->
         <div class="step-panel" id="step-charges" hidden>
           <div class="step-head">
             <h2>Check the charges</h2>
@@ -138,7 +162,7 @@
           <div class="bill-sheet">
             <div class="form-row bill-meta">
               <div class="field">
-                <label for="rev-provider">Medical Facility</label>
+                <label for="rev-provider">Hospital</label>
                 <input id="rev-provider" type="text" autocomplete="off" />
               </div>
               <div class="field">
@@ -161,7 +185,7 @@
           </div>
         </div>
 
-        <!-- STEP 3 -->
+        <!-- step 3 / questions -->
         <div class="step-panel" id="step-questions" hidden>
           <div class="step-head">
             <h2>A few quick questions</h2>
@@ -176,7 +200,7 @@
           </form>
         </div>
 
-        <!-- STEP 4 -->
+        <!-- STEP 4 (review) -->
         <div class="step-panel" id="step-flags" hidden>
           <div class="step-head">
             <h2>What looks off</h2>
@@ -206,7 +230,7 @@
           </div>
         </div>
 
-        <!-- STEP 5 -->
+        <!-- step 5: the letter -->
         <div class="step-panel" id="step-letter" hidden>
           <div class="step-head">
             <h2>Your letter</h2>
@@ -226,7 +250,7 @@
               </div>
 
               <h3 class="sub-head">Your details</h3>
-              <div class="field"><label for="tpl-provider">Medical Facility</label><input id="tpl-provider" type="text" /></div>
+              <div class="field"><label for="tpl-provider">Hospital</label><input id="tpl-provider" type="text" /></div>
               <div class="field"><label for="tpl-patient">Your name</label><input id="tpl-patient" type="text" autocomplete="name" /></div>
               <div class="form-row">
                 <div class="field"><label for="tpl-account">Account number</label><input id="tpl-account" type="text" /></div>
@@ -236,7 +260,7 @@
               <div class="field">
                 <label for="tpl-contact">Your email or phone</label>
                 <input id="tpl-contact" type="text" autocomplete="email" required aria-describedby="tpl-contact-hint tpl-contact-error" />
-                <p class="hint" id="tpl-contact-hint">So the medical facility can reply. For example name@example.com or 555-123-4567.</p>
+                <p class="hint" id="tpl-contact-hint">So the hospital can reply. For example name@example.com or 555-123-4567.</p>
                 <p class="form-error" id="tpl-contact-error" role="alert" hidden>Enter a real email (name@example.com) or a phone number with at least 10 digits.</p>
               </div>
               <label class="check">
@@ -265,8 +289,8 @@
           </div>
         </div>
 
-        <!-- STEP 6 -->
-        <!-- mnm44: the survey. these answers become the numbers on the our results page -->
+        <!-- step 6 -->
+        <!-- the survey!! these answers are what turn into the numbers on the our results page so pls dont change the field names w/o telling Vrajesh -->
         <div class="step-panel" id="step-finish" hidden>
           <form id="survey-form" novalidate>
             <div class="step-head">
@@ -345,8 +369,8 @@
     </div>
   </footer>
 
-  <!-- ================= MENU (full screen) ================= -->
-  <!-- mnm44: data-when="in" only shows when logged in, "out" only when logged out, no data-when = always -->
+  <!-- menu (full screen) -->
+  <!-- data-when "in" -> logged in only, "out" -> logged out only, none -> always -->
   <div class="menu-backdrop" id="menu-backdrop" hidden></div>
   <nav class="site-menu" id="site-menu" aria-label="Menu" hidden>
     <div class="menu-head">
@@ -386,7 +410,7 @@
   </nav>
 
 
-  <!-- Terms -->
+  <!-- terms -->
   <dialog id="terms-dialog" aria-labelledby="terms-title">
     <div class="dialog-head">
       <h2 id="terms-title" class="h3 no-margin">Terms and Privacy</h2>
@@ -401,7 +425,7 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"><span id="scroll-bar"></span></div>
 
-  <!-- Code lookup drawer -->
+  <!-- code lookup drawer (slides in from the side) -->
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
   <aside class="drawer" id="lookup-drawer" role="dialog" aria-modal="true" aria-labelledby="lookup-title" hidden>
     <div class="drawer-head">
@@ -454,10 +478,12 @@
       });
     })();
   </script>
-  <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
+  <!-- localhost = testing. swap to the render link before deploying, phone app does its own thing -->
   <script>window.CANDORIFY_API_BASE = "http://localhost:8000";</script>
   <script src="api.js"></script>
   <script src="main.js"></script>
   <script src="home.js"></script>
 </body>
 </html>
+
+<!-- heads up, we used some AI to help assist writing some of these features -->
