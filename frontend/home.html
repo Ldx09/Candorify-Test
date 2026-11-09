@@ -8,14 +8,14 @@
   <meta name="theme-color" content="#141813" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- mnm44: our 2 fonts, inter tight for everything + instrument serif for the fancy italic bits -->
+  <!-- fonts: inter tight for basically everything, instrument serif for the fancy italic bits -->
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body data-view="home">
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- ================= HEADER ================= -->
+  <!-- ======== HEADER ======== -->
   <header class="site-header">
     <div class="container header-bar">
       <button type="button" class="brand" data-go="home" aria-label="Candorify home">candorify</button>
@@ -62,10 +62,10 @@
 
   <main id="main">
 
-    <!-- ================= HOME (public) ================= -->
+    <!-- home page (public, no login needed) -->
     <section id="view-home" class="view view-home" aria-labelledby="home-title" hidden>
 
-      <!-- mnm44: the big green top part w the clock and the giant candorify. first thing ppl see so it leads w the 80% -->
+      <!-- big green top part w the clock + giant candorify. first thing ppl see so it leads w the 80% -->
       <div class="nh">
         <div class="nh-bg" aria-hidden="true"></div>
         <div class="wide nh-top">
@@ -73,13 +73,23 @@
           <p class="cap nh-clock" aria-hidden="true"><span data-clock>--:--</span></p>
         </div>
         <div class="wide nh-mid">
-          <h1 id="home-title" class="nh-title" data-reveal>Medical bills are often wrong. You shouldn't pay for the mistakes.</h1>
-          <div class="nh-side" data-reveal style="--delay:.15s">
-            <p class="cap-body">Up to 80% of medical bills contain at least one error. Candorify checks your itemized bill before you pay, so the money stays with you.</p>
-            <div class="nh-cta">
-              <button type="button" class="btn btn-light" data-auth="register">Check my bill free</button>
-              <button type="button" class="text-link" data-scroll="why">Why it matters <span aria-hidden="true">↓</span></button>
-            </div>
+          <!-- left side = slogan + "medical bills are often wrong". right side = the 80% that counts up. on phones the 80% shows first -->
+          <div class="nh-side" data-reveal>
+            <p class="cap nh-slogan">Every error is your money.</p>
+            <p class="nh-promise">Medical bills are often wrong.<br>You shouldn't pay for the mistakes.</p>
+          </div>
+          <div class="nh-lead" data-reveal style="--delay:.15s">
+            <h1 id="home-title" class="nh-title"><span class="nh-stat">Up to <span data-count="80" data-suffix="%" data-count-delay="600">80%</span></span> of medical bills have an error.</h1>
+            <p class="cap dim nh-src">Estimate from patient billing advocates. <a href="https://www.beckershospitalreview.com/finance/medical-billing-errors-growing-says-medical-billing-advocates-of-america/" target="_blank" rel="noopener">Source</a></p>
+          </div>
+        </div>
+        <svg class="nh-word" viewBox="0 0 1000 236" aria-hidden="true" focusable="false"><text x="0" y="180" textLength="1000" lengthAdjust="spacingAndGlyphs">candorify</text></svg>
+        <!-- what we do + the 2 main buttons, under the wordmark -->
+        <div class="wide nh-after" data-reveal>
+          <p class="cap-body nh-body">Candorify checks your itemized bill before you pay, so the money stays with you.</p>
+          <div class="nh-cta">
+            <button type="button" class="btn btn-light" data-auth="register">Check my bill free</button>
+            <button type="button" class="text-link" data-scroll="why">Why it matters <span aria-hidden="true">↓</span></button>
           </div>
         </div>
         <div class="wide nh-checks">
@@ -96,10 +106,9 @@
             <li><button type="button" data-look="5"><span aria-hidden="true">+</span>Confusing codes</button></li>
           </ul>
         </div>
-        <svg class="nh-word" viewBox="0 0 1000 236" aria-hidden="true" focusable="false"><text x="0" y="180" textLength="1000" lengthAdjust="spacingAndGlyphs">candorify</text></svg>
       </div>
 
-      <!-- ABOUT: two-column info table -->
+      <!-- ABOUT - 2 column info table -->
       <section class="wide ninfo" aria-label="About Candorify">
         <div class="ninfo-left" data-reveal>
           <p class="cap">Candorify</p>
@@ -114,21 +123,15 @@
         </dl>
       </section>
 
-      <!-- STATEMENT -->
-      <section class="wide nsay" aria-label="Up to 80% of medical bills have an error">
-        <p class="nsay-l" data-reveal>Up to<br><span data-count="80" data-suffix="%">80%</span></p>
-        <p class="nsay-r" data-reveal style="--delay:.1s">of bills<br>have an error</p>
-        <p class="cap dim nsay-src">Estimate from patient billing advocates. <a href="https://www.beckershospitalreview.com/finance/medical-billing-errors-growing-says-medical-billing-advocates-of-america/" target="_blank" rel="noopener">Source</a></p>
-      </section>
-
-      <!-- WHY: awards-style list -->
+      <!-- why it matters (the awards style list) -->
       <section class="wide nlist" id="why" aria-labelledby="why-title">
         <h2 id="why-title" class="cap">Why it matters</h2>
+        <!-- every number here links to where it came from (the thing on the right). if u add a stat make sure we can trace it to the original source, not some random blog -->
         <ol class="nlist-rows" data-reveal-group>
+          <li><p class="nlist-big"><span data-count="1300" data-prefix="$">$1,300</span></p><p class="nlist-meta">Average error found on hospital bills over $10,000, in an audit by Equifax</p><p class="nlist-year"><a href="https://abcnews.go.com/GMA/story/?id=127077" target="_blank" rel="noopener" aria-label="Source: Equifax audit, reported by ABC News">(Equifax)</a></p></li>
+          <li><p class="nlist-big"><span data-count="31.7" data-decimals="1" data-prefix="$" data-suffix=" billion">$31.7 billion</span></p><p class="nlist-meta">Paid improperly by Medicare alone in 2024. Even the biggest payer gets billing wrong</p><p class="nlist-year"><a href="https://www.cms.gov/newsroom/fact-sheets/fiscal-year-2024-improper-payments-fact-sheet" target="_blank" rel="noopener" aria-label="Source: CMS fiscal year 2024 improper payments fact sheet">(CMS 2024)</a></p></li>
           <li><p class="nlist-big"><span data-count="1886" data-prefix="$">$1,886</span></p><p class="nlist-meta">Average yearly deductible, one person with job-based insurance</p><p class="nlist-year"><a href="https://files.kff.org/attachment/Employer-Health-Benefits-Survey-2025-Annual-Survey-Summary-of-Findings.pdf" target="_blank" rel="noopener" aria-label="Source: KFF 2025 Employer Health Benefits Survey">(KFF 2025)</a></p></li>
           <li><p class="nlist-big">You pay first</p><p class="nlist-meta">Until you reach your deductible, most bills are yours to pay</p><p class="nlist-year">(Deductible)</p></li>
-          <li><p class="nlist-big">Healthy? You may never reach it</p><p class="nlist-meta">If you rarely need care, you may pay out of pocket all year</p><p class="nlist-year">(Out of pocket)</p></li>
-          <li><p class="nlist-big">Every error is your money</p><p class="nlist-meta">A duplicate charge or an extra day comes from you, not your insurer</p><p class="nlist-year">(You)</p></li>
           <li><p class="nlist-big">Auditors skip small bills</p><p class="nlist-meta">One $60 mistake is still worth a few minutes. We don't skip it</p><p class="nlist-year">(Candorify)</p></li>
         </ol>
         <div class="nlist-cta" data-reveal>
@@ -140,25 +143,25 @@
         </div>
       </section>
 
-      <!-- WHAT WE LOOK FOR: scrolling down slides the cards sideways (cards are made in home.js) -->
+      <!-- what we look for: scroll down = cards slide sideways. the cards themselves get built in home.js -->
       <section class="ngal" id="what-we-look-for" aria-labelledby="catch-title">
         <div class="ngal-pin">
           <h2 id="catch-title" class="ngal-title">What we look for</h2>
           <div class="ngal-window"><ol class="ngal-track" id="gal-track"></ol></div>
           <div class="ngal-foot">
-            <span class="ticks" id="gal-ticks" data-ticks="40" aria-hidden="true"></span>
+            <span class="ticks" id="gal-ticks" data-ticks="90" aria-hidden="true"></span>
             <div class="ngal-cap" id="gal-cap" aria-hidden="true"></div>
           </div>
         </div>
       </section>
 
-      <!-- STATEMENT -->
+      <!-- statement -->
       <section class="wide nsay nsay-dark" aria-label="Four steps, about five minutes">
         <p class="nsay-l" data-reveal>Four<br>steps</p>
         <p class="nsay-r" data-reveal style="--delay:.1s">About five<br>minutes</p>
       </section>
 
-      <!-- mnm44: the glass box! each article below is one side of it. change the step text right here -->
+      <!-- the glass box!! each article = one side of it. step text gets changed right here -->
       <section class="nbox" id="how-it-works" aria-labelledby="how-title">
         <div class="nbox-pin">
           <div class="nbox-side">
@@ -183,13 +186,13 @@
         </div>
       </section>
 
-      <!-- WHAT YOU GET BACK: big titles, then a green panel slides up over each one -->
+      <!-- what you get back -> big titles, then a green panel slides up over each one -->
       <section class="ncases" id="what-you-get" aria-labelledby="see-title">
         <h2 id="see-title" class="wide cap">What you get back</h2>
 
         <article class="ncase">
           <div class="wide ncase-head">
-            <ul class="ncase-meta cap"><li>Step 02</li><li>Charges</li><li>Plain words</li></ul>
+            <ul class="ncase-meta cap"><li>01 / 03</li><li>Charges</li><li>Plain words</li></ul>
             <h3 class="ncase-title">Your bill, explained</h3>
           </div>
           <div class="ncase-media">
@@ -214,25 +217,25 @@
 
         <article class="ncase">
           <div class="wide ncase-head">
-            <ul class="ncase-meta cap"><li>Step 04</li><li>Review</li><li>You decide</li></ul>
+            <ul class="ncase-meta cap"><li>02 / 03</li><li>Review</li><li>You decide</li></ul>
             <h3 class="ncase-title">What looks off</h3>
           </div>
           <div class="ncase-media">
             <div class="wide ncase-inner">
               <figure class="review-mock" data-reveal aria-label="Example of a Candorify review with three charges to look at">
-                <div class="mock-bar"><span class="mock-brand">candorify</span><span class="mock-step">Step 4 of 6: Review</span></div>
+                <div class="mock-bar"><span class="mock-brand">candorify</span><span class="mock-step">Review</span></div>
                 <p class="mock-title">3 things to look at</p>
                 <div class="mock-flag">
                   <span class="mock-kind">Possible duplicate</span>
                   <div class="mock-line"><strong>Blood test</strong><span>$45.00 × 2</span></div>
                   <p>Charged twice on the same day.</p>
-                  <label class="mock-check"><span class="box" aria-hidden="true"></span>Include in my letter</label>
+                  <label class="mock-check"><input type="checkbox" checked /><span class="box" aria-hidden="true"></span>Include in my letter</label>
                 </div>
                 <div class="mock-flag">
                   <span class="mock-kind">Doesn't match what you told us</span>
                   <div class="mock-line"><strong>Room and board</strong><span>7 days</span></div>
                   <p>You said you stayed 6 nights.</p>
-                  <label class="mock-check"><span class="box" aria-hidden="true"></span>Include in my letter</label>
+                  <label class="mock-check"><input type="checkbox" checked /><span class="box" aria-hidden="true"></span>Include in my letter</label>
                 </div>
                 <div class="mock-flag is-faded">
                   <span class="mock-kind">Math doesn't add up</span>
@@ -247,7 +250,7 @@
 
         <article class="ncase">
           <div class="wide ncase-head">
-            <ul class="ncase-meta cap"><li>Step 05</li><li>Letter</li><li>Sent by you</li></ul>
+            <ul class="ncase-meta cap"><li>03 / 03</li><li>Letter</li><li>Sent by you</li></ul>
             <h3 class="ncase-title">The letter, written</h3>
           </div>
           <div class="ncase-media">
@@ -269,10 +272,10 @@
         </article>
       </section>
 
-      <!-- CLOSING -->
+      <!-- closing -->
       <section class="ncta" aria-labelledby="cta-title">
         <div class="wide ncta-inner">
-          <h2 id="cta-title" class="nsay-pair"><span data-reveal>Before you pay,</span><span data-reveal style="--delay:.1s">take a second look.</span></h2>
+          <h2 id="cta-title" class="nsay-pair"><span data-reveal>Every error</span><span data-reveal style="--delay:.1s">is your money.</span></h2>
           <button type="button" class="btn btn-light" data-auth="register">Check my bill free</button>
         </div>
       </section>
@@ -297,8 +300,8 @@
     </div>
   </footer>
 
-  <!-- ================= MENU (full screen) ================= -->
-  <!-- mnm44: data-when="in" only shows when logged in, "out" only when logged out, no data-when = always -->
+  <!-- --- full screen menu --- -->
+  <!-- data-when="in" = only when logged in, "out" = only logged out, nothing = always shows -->
   <div class="menu-backdrop" id="menu-backdrop" hidden></div>
   <nav class="site-menu" id="site-menu" aria-label="Menu" hidden>
     <div class="menu-head">
@@ -338,7 +341,7 @@
   </nav>
 
 
-  <!-- Terms -->
+  <!-- terms -->
   <dialog id="terms-dialog" aria-labelledby="terms-title">
     <div class="dialog-head">
       <h2 id="terms-title" class="h3 no-margin">Terms and Privacy</h2>
@@ -359,10 +362,12 @@
   </div>
   <div id="toast" role="status" aria-live="polite"></div>
 
-  <!-- mnm44: leave this empty on the website. the phone app swaps in the render link -->
+  <!-- !! this is set to localhost for testing rn. before we deploy change it to the render link or just "" !! (the phone app swaps it on its own) -->
   <script>window.CANDORIFY_API_BASE = "http://localhost:8000";</script>
   <script src="api.js"></script>
   <script src="main.js"></script>
   <script src="home.js"></script>
 </body>
 </html>
+
+<!-- note: some AI was used to help assist w writing a few of these features -->
