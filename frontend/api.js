@@ -1,12 +1,17 @@
-/* mnm44: every call to the backend goes thru here. this file translates between the website and
- * vrajesh's backend (Candorify-Test/backend), so the rest of the code didn't have to change much.
- * on the website API_BASE stays empty (same server). the desktop/phone app sets it to the render link */
+/*
+  every call to the backend goes thru this file.
+  it basically translates between the site and Vrajesh's backend (Candorify-Test/backend)
+  so the rest of the front end didnt have to change much
+
+  API_BASE -> set at the bottom of each html page. localhost while we test,
+  the render link (or "") when it's live. desktop/phone app sets its own
+*/
 (function (global) {
   const API_BASE = global.CANDORIFY_API_BASE || "";
   const TOKEN_KEY = "candorify_token";
   const LANG_KEY = "candorify_lang";
 
-  // mnm44: private/incognito mode can block storage, so we just keep the login in memory instead of crashing
+  // incognito can block storage so we just keep the login in memory instead of crashing
   const memory = {};
   function store(kind) {
     try {
@@ -44,7 +49,7 @@
     try { return text ? JSON.parse(text) : null; } catch (e) { return text; }
   }
 
-  // The backend always answers errors as {"detail": "readable message"}.
+  // backend errors always come back as {"detail": "readable message"}
   function failure(res, data, fallback) {
     const detail = data && data.detail
       ? (typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail))
@@ -76,10 +81,10 @@
     const s = q.toString();
     return s ? "?" + s : "";
   };
-  const lang = (l) => (l && l !== "en" ? l : null);   // English is the default, no need to send it
+  const lang = (l) => (l && l !== "en" ? l : null);   // english is the default, no point sending it
 
-  // ---------- turning backend answers into what the website expects ----------
-  // Flag statuses: backend "investigating" / "add_to_letter" / "dismissed"; website "open" / "confirmed" / "dismissed".
+  // ---------- backend answers -> what the site expects ----------
+  // flag statuses: backend = investigating / add_to_letter / dismissed, site = open / confirmed / dismissed. Vrajesh if u rename these on ur end pls tell me
   const STATUS_IN = { investigating: "open", add_to_letter: "confirmed", dismissed: "dismissed" };
   const STATUS_OUT = { open: "investigating", confirmed: "add_to_letter", dismissed: "dismissed" };
 
@@ -97,8 +102,8 @@
   function toQuestions(qs) {
     return (qs || []).map((q) => ({
       id: q.id, type: q.answer_type, text: q.text,
-      choices: q.choices ? q.choices.map((c) => c.value) : undefined,         // English, sent back
-      choice_labels: q.choices ? q.choices.map((c) => c.label) : undefined,  // the patient's language, shown
+      choices: q.choices ? q.choices.map((c) => c.value) : undefined,         // english, gets sent back
+      choice_labels: q.choices ? q.choices.map((c) => c.label) : undefined,  // the patient's language, shown on screen
       line_refs: (q.line_refs || []).map((n) => n - 1),
     }));
   }
@@ -109,10 +114,11 @@
       bill_id: b.id, label: b.label, provider_name: "", service_date: b.date_of_service || "",
       stated_total: Number(b.stated_subtotal), line_items: toLines(b),
       flags: ((r.flags && r.flags.flags) || []).map(toFlag), questions: toQuestions(r.questions),
-      bill_format: r.bill_format || "itemized", notice: r.notice || null,    };
+      bill_format: r.bill_format || "itemized", notice: r.notice || null,
+    };
   }
 
-  // Remembers each uploaded bill as the backend has it, so edits on the charges step can be detected.
+  // remembers each uploaded bill the way the backend has it so we can tell if they edited stuff on the charges step
   const snapshots = {};
   const snapshot = (id, sig) => { snapshots[id] = sig; };
   const money = (n) => Number(Number(n || 0).toFixed(2));
@@ -121,27 +127,23 @@
       Number(l.quantity), money(l.unit_price), money(l.line_total)]), money(total), date || ""]);
   }
 
-  // The PDF the user uploaded, kept only in this tab's memory so it can be marked up later.
-  // The backend never stores PDFs; it's sent again only when the user asks for the marked-up copy.
-  const uploadedFiles = {};
-
   const API = {
     getToken, setToken, isLoggedIn,
-    // mnm44: things the backend doesn't do yet. the website hides those buttons until these turn true
-    features: { payments: false, medicare: false, annotatedPdf: true, aiLetters: false },
+    // stuff the backend can't do yet. the site hides those buttons until these flip to true
+    features: { payments: false, medicare: false, annotatedPdf: false, aiLetters: false },
 
     health: () => request("/health", { auth: false }),
-    disclaimer: () => notYet("The disclaimer"),   // the website falls back to its own wording
+    disclaimer: () => notYet("The disclaimer"),   // site falls back to its own wording
 
-    // ---------- accounts ----------
+    // accounts
     register: async (email, password, preferred_language, accept_terms, remember_me = false) => {
       persistent.setItem(LANG_KEY, preferred_language || "en");
       return request("/api/auth/register", { method: "POST", auth: false, body: { email, password, remember_me } });
     },
     login: (email, password, remember_me = false) =>
       request("/api/auth/login", { method: "POST", auth: false, body: { email, password, remember_me } }),
-    // The backend has no plans or language on the account yet: everyone is on the free plan,
-    // and the language picked at sign up is kept in this browser.
+    // no plans or language on accounts in the backend yet so everyone's on free
+    // and whatever language they picked at sign up just lives in this browser
     me: async () => Object.assign(await request("/api/me"),
       { tier: "free", preferred_language: persistent.getItem(LANG_KEY) || "en" }),
     oauthUrl: (provider, remember_me) =>
@@ -149,7 +151,7 @@
     deleteMe: () => request("/api/me", { method: "DELETE" }),
     privacyPolicy: async () => ({ retention_days: 30, summary: "" }),
 
-    // ---------- the check flow ----------
+    // --- the check flow ---
     uploadPdf: async (file, language) => {
       const fd = new FormData();
       fd.append("file", file);
@@ -163,17 +165,16 @@
         if (/more than one bill/i.test(err.message)) err.message = "This PDF has more than one bill in it. Please upload one bill at a time.";
         throw err;
       }
-      const out = toUpload(data);
-      uploadedFiles[out.bill_id] = file;
-      return out;    },
-    // Sample bill: stored like a real one, with its flags and follow-up questions.
+      return toUpload(data);
+    },
+    // sample bill gets stored like a real one (flags + follow up qs and all)
     generate: async (opts = {}) => {
       const r = toUpload(await request("/api/upload/sample", { method: "POST",
         body: { defect: opts.inject_errors === false ? "none" : null, language: lang(opts.language) } }));
       return Object.assign(r, { id: r.bill_id, provider_name: "Sample bill" });
     },
-    // If the charges were edited, the backend needs the new version: save it as a new bill
-    // (and delete the old one), then get that bill's questions.
+    // if they edited the charges the backend needs the new version -> save it as a new bill
+    // (delete the old one) then grab that bill's questions
     syncBill: async (billId, { lines, total, date, label, language }) => {
       const sig = signature(lines, total, date);
       if (snapshots[billId] === sig) return { bill_id: billId, changed: false };
@@ -185,11 +186,11 @@
           quantity: Number(Number(l.quantity || 1).toFixed(3)), unit_price: money(l.unit_price), line_total: money(l.line_total) })),
       } });
       request("/api/bills/" + billId, { method: "DELETE" }).catch(() => {});
-      if (uploadedFiles[billId]) { uploadedFiles[bill.id] = uploadedFiles[billId]; delete uploadedFiles[billId]; }      snapshot(bill.id, signature(bill.lines, bill.stated_subtotal, bill.date_of_service));
+      snapshot(bill.id, signature(bill.lines, bill.stated_subtotal, bill.date_of_service));
       const q = await request("/api/bills/" + bill.id + "/questions" + query({ language: lang(language) }));
       return { bill_id: bill.id, changed: true, questions: toQuestions(q.questions) };
     },
-    // Answers in, every flag on the bill out ("Not sure" and skipped answers never make a flag).
+    // answers go in, every flag on the bill comes out. "not sure" + skipped answers never make a flag
     submitReview: async ({ bill_id, answers }) => {
       const r = await request("/api/upload/review", { method: "POST", body: { bill_id, answers: answers || [] } });
       return { bill_id: r.bill_id, flags: ((r.flags && r.flags.flags) || []).map(toFlag) };
@@ -203,20 +204,15 @@
         plain_english: (l.code_info && l.code_info.plain_english) || l.description, translated: l.plain_english_translated || "" })) };
     },
     benchmarkBill: () => notYet("Medicare price comparison"),
-    fetchAnnotatedPdf: async (billId) => {
-      const fd = new FormData();
-      if (uploadedFiles[billId]) fd.append("file", uploadedFiles[billId]);
-      let res;
-      try { res = await fetch(API_BASE + "/api/bills/" + billId + "/marked-up", { method: "POST", headers: authHeaders(), body: fd }); }
-      catch (e) { throw new Error("Can't reach Candorify right now. Check your connection and try again."); }
-      if (!res.ok) throw failure(res, await parse(res), "We couldn't make the marked-up PDF.");
-      return res.blob();
-    },    // Survey isn't stored yet (on hold). Delete the bill; if it's already gone, that's fine too.
+    fetchAnnotatedPdf: () => notYet("The marked-up PDF"),
+    // survey isn't stored yet (on hold) so we just delete the bill. if it's already gone thats fine too
     finalizeUpload: async (billId) => {
       try { await request("/api/bills/" + billId, { method: "DELETE" }); }
       catch (e) { if (e.status !== 404) throw e; }
       return { ok: true };
-    },    // ---------- code lookup ----------
+    },
+
+    // ------ code lookup ------
     languages: async () => {
       const list = await request("/api/languages", { auth: false });
       return Object.fromEntries(list.map((l) => [l.code, l.native || l.name]));
@@ -233,9 +229,9 @@
       return out;
     },
 
-    // ---------- letters ----------
-    // Letters come from the backend's templates. With a bill, a dispute letter lists that bill's chosen flags;
-    // without one (Letters page) it lists the charges typed in.
+    // LETTERS
+    // letters come from the backend templates. w a bill -> dispute letter lists that bill's chosen flags
+    // no bill (the letters page) -> lists whatever charges they typed in
     renderTemplate: async (template, ctx) => {
       const dispute = template === "dispute_charge";
       const body = {
@@ -252,13 +248,13 @@
       return { subject: dispute ? "Request for review of billing errors" : "Request for an itemized bill", body: r.text };
     },
 
-    // ---------- plans (not built yet) ----------
+    // plans (not built yet)
     paymentConfig: async () => ({ paid_features: [], mock_mode: true }),
     startCheckout: () => notYet("Paid plans"),
     confirmCheckout: () => notYet("Paid plans"),
 
-    // ---------- our results ----------
-    // mnm44: these power the "our results" page (performance.html)
+    // our results
+    // these feed the our results page (performance.html). Nat these are the ones that'll need the survey data once we actually save it
     publicStats: () => request("/api/stats/public", { auth: false }),
     score: () => request("/api/stats/lab-test", { auth: false }),
     submitFollowUp: (payload) => request("/api/survey/follow-up", { method: "POST", body: payload }),
@@ -266,3 +262,5 @@
 
   global.CandorifyAPI = API;
 })(window);
+
+/* some AI was used to help assist w writing these features */
