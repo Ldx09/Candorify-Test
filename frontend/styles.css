@@ -1,5 +1,5 @@
-/* mnm44: base styles for the app screens (login, the check flow, letters, pricing, account).
-   the new look + colors are further down this file and override the colors */
+/* base styles for the app pages: login, the check flow, letters, pricing, account
+   heads up the new look is further down and overrides a lot of the colors up here */
 :root {
   --slate: #213B3F;
   --slate-2: #2D4C51;
@@ -57,7 +57,7 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .auto-width { width: auto !important; }
 
-/* ---------- Header: the logo's slate block ---------- */
+/* header (the slate block w the logo) */
 .site-header { position: sticky; top: 0; z-index: 60; background: var(--slate); color: var(--offwhite); }
 .header-bar { display: flex; align-items: center; gap: 16px; min-height: 68px; }
 .brand {
@@ -83,7 +83,7 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 .header-user .badge-brand { background: var(--marker); color: var(--slate-ink); }
 .show-sm { display: none !important; }
 
-/* ---------- Buttons ---------- */
+/* --- buttons --- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
   font: inherit; font-weight: 600; font-size: 1rem; line-height: 1.2;
@@ -112,13 +112,13 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 .badge { display: inline-flex; align-items: center; padding: 3px 12px; border-radius: 999px; font-size: .82rem; font-weight: 600; background: var(--mist); color: var(--slate); }
 .badge-brand { background: var(--marker); color: var(--slate-ink); }
 
-/* ---------- Surfaces ---------- */
+/* panels n cards */
 .view { padding: 44px 0 96px; }
 .view-home, .view-team { padding: 0; }
 .panel { background: var(--paper); border: 1.5px solid var(--line); padding: 28px; }
 .center-card { text-align: center; max-width: 520px; margin: 0 auto; padding: 44px 28px; border-top: 6px solid var(--slate); }
 
-/* ---------- Forms ---------- */
+/* form stuff */
 .field { margin-bottom: 16px; }
 .field > label, .legend { display: block; font-weight: 600; margin-bottom: 6px; padding: 0; }
 .hint { font-size: .92rem; color: var(--muted); margin: 6px 0 0; }
@@ -149,7 +149,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .pill-option input:checked + span { background: var(--slate); border-color: var(--slate); color: var(--offwhite); font-weight: 600; }
 .pill-option input:focus-visible + span { box-shadow: var(--ring); }
 
-/* Segmented control: square tabs with an underline, not a rounded pill tray */
+/* tabs w an underline. tried the rounded pill version, looked off */
 .segmented { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 1.5px solid var(--line); }
 .segmented label, .segmented > button { flex: 1; position: relative; }
 .segmented input { position: absolute; opacity: 0; }
@@ -163,14 +163,14 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .money-input { display: flex; align-items: center; gap: 8px; max-width: 220px; }
 .money-input span { font-weight: 600; color: var(--muted); }
 
-/* ---------- Auth ---------- */
+/* login / sign up */
 .auth-wrap { max-width: 460px; margin: 0 auto; padding: 34px; border: 2px solid var(--slate); box-shadow: 10px 10px 0 var(--mist); }
 .oauth { display: grid; gap: 10px; }
 .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); margin: 20px 0; }
 .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 .notice-box { padding: 12px 14px; background: var(--marker-soft); color: var(--slate-ink); border-left: 4px solid var(--marker); }
 
-/* ---------- App views ---------- */
+/* ===== app pages (check a bill, letters, lookup etc) ===== */
 #view-check, #view-letters, #view-results, #view-pricing, #view-account, #view-auth { background: var(--mist-2); min-height: calc(100vh - 68px); }
 .flow-top { margin-bottom: 34px; }
 .stepper { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
@@ -199,7 +199,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .step-actions .link-btn { align-self: center; padding: 8px; }
 }
 
-/* Upload */
+/* upload */
 .upload-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 0; align-items: stretch; border: 2px solid var(--slate); background: var(--paper); }
 .upload-layout .panel { border: 0; border-right: 2px solid var(--slate); }
 .dropzone { border: 2px dashed var(--line-strong); background: var(--mist-2); margin-bottom: 18px; transition: border-color .15s, background-color .15s; }
@@ -225,7 +225,7 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .upload-layout .panel { border-right: 0; border-bottom: 2px solid var(--slate); }
 }
 
-/* Charges: one printed bill with rows */
+/* charges step, made to look like one printed bill w rows */
 .bill-sheet { background: var(--paper); border: 1px solid var(--line); padding: 28px 30px 24px; box-shadow: 10px 10px 0 rgba(33, 59, 63, .1); }
 .bill-meta { padding-bottom: 8px; border-bottom: 2px solid var(--ink); margin-bottom: 4px; }
 .line-list { display: flex; flex-direction: column; }
@@ -260,10 +260,10 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
   .line-edit .span-2 { grid-column: 1 / -1; }
 }
 
-/* Highlighter marks */
+/* highlighter marks */
 mark, .flag-kind { background: linear-gradient(100deg, transparent 2%, var(--marker) 4% 96%, transparent 98%); color: var(--slate-ink); font-weight: 600; padding: 1px 6px; }
 
-/* Questions */
+/* questions */
 .q-list { display: flex; flex-direction: column; gap: 14px; }
 .question { background: var(--paper); border: 1.5px solid var(--line); border-left: 4px solid var(--slate); padding: 22px 24px; }
 .question legend { float: left; width: 100%; font-weight: 600; font-size: 1.08rem; padding: 0; margin-bottom: 4px; }
@@ -272,8 +272,8 @@ mark, .flag-kind { background: linear-gradient(100deg, transparent 2%, var(--mar
 .question input[type="number"] { max-width: 160px; }
 .survey-more { margin-top: 14px; }
 
-/* Flags */
-/* mnm44: the cards on the review step that say what looks off */
+/* flags */
+/* review step cards aka the "this looks off" boxes */
 .flag-summary { font-family: var(--display); font-weight: 600; font-size: 1.6rem; color: var(--slate); margin-bottom: 16px; }
 .flag-list { display: flex; flex-direction: column; gap: 14px; }
 .flag-card { background: var(--paper); border: 1.5px solid var(--line); padding: 22px 24px; position: relative; }
@@ -304,7 +304,7 @@ tr.is-high td { background: var(--marker-soft); }
 .explain-item { background: var(--paper); padding: 12px 14px; border: 1px solid var(--line); }
 .loading { color: var(--muted); font-style: italic; margin-top: 12px; }
 
-/* Letter */
+/* letter */
 .letter-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; align-items: start; }
 .paper-letter { background: var(--paper); border: 1px solid var(--line); padding: 28px 30px; box-shadow: 10px 10px 0 rgba(33, 59, 63, .1); }
 .paper-letter textarea { border-style: dashed; }
@@ -316,7 +316,7 @@ tr.is-high td { background: var(--marker-soft); }
 .item-row .row { justify-content: space-between; margin-bottom: 8px; }
 @media (max-width: 860px) { .letter-grid { grid-template-columns: 1fr; } }
 
-/* Pricing / results / account */
+/* pricing + results + account */
 .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 820px; border: 2px solid var(--slate); }
 .price-grid .panel { border: 0; }
 .price-grid .panel + .panel { border-left: 2px solid var(--slate); }
@@ -327,6 +327,19 @@ tr.is-high td { background: var(--marker-soft); }
 .check-list li { position: relative; padding: 7px 0 7px 30px; border-bottom: 1px dashed var(--line); }
 .check-list li::before { content: ""; position: absolute; left: 6px; top: 13px; width: 7px; height: 12px; border: solid var(--teal); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
 @media (max-width: 700px) { .price-grid { grid-template-columns: 1fr; } .price-grid .panel + .panel { border-left: 0; border-top: 2px solid var(--slate); } }
+/* 3 plans. each card is a flex column so the button + note always land at the bottom and line up across all 3 */
+.price-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1180px; }
+.price-card { display: flex; flex-direction: column; }
+.price-card .check-list { flex: 1; }
+.price-card .h3 { margin-bottom: 4px; }
+.price-for { color: var(--muted); margin-bottom: 10px; }   /* who it's for, right under the plan name */
+/* biz has no price yet so it just says coming soon. same height as a real price so the lists dont jump around */
+.price-tbd { color: var(--muted); }
+.price-tbd span { font-size: 1.6rem; font-weight: 500; }
+@media (min-width: 901px) { .price-grid-3 .price-for { line-height: 1.5; min-height: 3em; } }   /* forces 2 lines on desktop. "package deal: for self-insured employers" wraps and was pushing that list down lol */
+.price-foot { display: grid; gap: 10px; }
+.price-foot .hint { margin: 0; min-height: 3.4em; line-height: 1.6; }   /* room for 2 lines of note in every card -> buttons stay lined up */
+@media (max-width: 900px) { .price-grid-3 { grid-template-columns: 1fr; } .price-grid-3 .panel + .panel { border-left: 0; border-top: 2px solid var(--slate); } }
 .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 24px; border: 1.5px solid var(--slate); }
 .stat { padding: 22px; border-right: 1px solid var(--line); }
 .stat:last-child { border-right: 0; }
@@ -344,7 +357,7 @@ tr.is-high td { background: var(--marker-soft); }
 .done-mark { width: 64px; height: 64px; border-radius: 50%; background: var(--marker); margin: 0 auto 16px; position: relative; }
 .done-mark::after { content: ""; position: absolute; left: 23px; top: 13px; width: 14px; height: 26px; border: solid var(--slate-ink); border-width: 0 4px 4px 0; transform: rotate(45deg); }
 
-/* Drawer, dialog, toast */
+/* drawer, popup dialog, toast */
 .drawer-backdrop { position: fixed; inset: 0; background: rgba(20, 38, 41, .45); z-index: 80; }
 .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100%); z-index: 90; background: var(--paper); border-left: 2px solid var(--slate); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .25s ease; }
 .drawer.is-open { transform: none; }
@@ -369,7 +382,7 @@ dialog::backdrop { background: rgba(20, 38, 41, .5); }
 .site-footer { background: var(--slate); color: var(--on-slate); padding: 44px 0; font-size: .95rem; }
 .site-footer .link-btn { color: var(--offwhite); }
 
-/* Phones */
+/* phones */
 @media (max-width: 760px) {
   .hide-sm { display: none !important; }
   .show-sm { display: inline-flex !important; }
@@ -392,17 +405,17 @@ dialog::backdrop { background: rgba(20, 38, 41, .5); }
   .public-nav .nav-link { padding: 10px 8px; }
 }
 
-/* mnm44: turns off ALL animations for ppl who ask their device for less motion */
+/* if someone's device is set to reduce motion we kill ALL animations. accessibility thing, pls dont remove */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
 
-/* Number questions: "Not sure" pill beside the field */
+/* number qs: "not sure" pill next to the box */
 .num-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .num-row input[type="number"] { max-width: 160px; margin: 0; }
 .num-row input[type="number"]:disabled { opacity: .45; }
-/* Sample bill settings (from the old "Try a demo bill" page) */
+/* sample bill settings (leftover from the old try-a-demo page but still used) */
 .sample-opts { padding: 14px 28px 22px; font-size: .92rem; }
 .sample-opts summary { cursor: pointer; color: var(--teal); font-weight: 600; padding: 6px 0; }
 .sample-opts label:not(.check) { display: block; margin: 10px 0 6px; font-weight: 600; }
@@ -410,9 +423,12 @@ dialog::backdrop { background: rgba(20, 38, 41, .5); }
 .sample-opts .check { margin: 12px 0 4px; }
 
 
-/* mnm44: the whole new look lives here. inspired by studio-noun.com (grain, giant wordmark,
-   sliding cards, glass box, big menu) but in our beige, green and black.
-   rule of thumb: boxes holding stuff are square, buttons you tap are round */
+/* ======================================================
+   NEW LOOK starts here !!
+   vibe was studio-noun.com (grain, giant wordmark, sliding cards, glass box, big menu)
+   but in our beige / green / black
+   rule we went with -> boxes that hold stuff = square, buttons u tap = round
+   ====================================================== */
 :root {
   --beige: #EFE8D9;
   --beige-2: #E5DCC8;
@@ -427,7 +443,7 @@ dialog::backdrop { background: rgba(20, 38, 41, .5); }
   --clay: #B9643A;
   --hh: 64px;
 
-  /* mnm44: the app screens use these old names, i just pointed them at the new colors */
+  /* the app pages still use the old color names. didnt wanna rename everything so i pointed them at the new colors. Nat if u see weird colors on the app pages it's prob here */
   --slate: #1F3B2D;
   --slate-2: #2E5A43;
   --slate-ink: #121511;
@@ -451,7 +467,7 @@ dialog::backdrop { background: rgba(20, 38, 41, .5); }
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 
-/* ---------- Base ---------- */
+/* ===== base ===== */
 body { background: var(--beige); color: var(--ink); font-family: var(--body); font-size: 1.0625rem; letter-spacing: -.005em; line-height: 1.6; }
 h1, h2, h3, .h2, .h3 { font-family: var(--display); font-weight: 500; letter-spacing: -.035em; color: var(--ink); line-height: 1.02; }
 h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
@@ -469,7 +485,7 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .cap-body { font-size: .92rem; font-weight: 400; letter-spacing: .045em; text-transform: uppercase; line-height: 1.6; margin: 0; max-width: 46ch; }
 .cap-body em { font-family: var(--serif); font-style: italic; text-transform: none; font-size: 1.35em; letter-spacing: 0; }
 
-/* mnm44: the little film grain over the whole site. pointer-events none so it never blocks clicks */
+/* film grain over the whole site. pointer-events none so it never blocks clicks */
 .grain {
   position: fixed; inset: -50%; width: 200%; height: 200%; z-index: 300; pointer-events: none; opacity: .16;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.4 -.45'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -480,14 +496,14 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
   60% { transform: translate(-4%, -1%); } 80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); }
 }
 
-/* Tick bars */
+/* tick bars */
 .ticks { display: inline-flex; gap: 3px; height: 14px; align-items: stretch; flex: none; }
 .ticks i { width: 1px; background: currentColor; opacity: .3; transition: opacity .2s; }
 .ticks i.on { opacity: 1; }
 .nh-checks .ticks i { animation: tick 2.6s ease-in-out infinite; animation-delay: calc(var(--i) * 70ms); }
 @keyframes tick { 0%, 100% { opacity: .25; } 35% { opacity: 1; } }
 
-/* ---------- Buttons ---------- */
+/* buttons (home look) */
 .btn { border-radius: 999px; border: 1px solid transparent; box-shadow: none; font-family: var(--body); font-weight: 500; letter-spacing: .01em; min-height: 48px; padding: 12px 26px; transition: background-color .2s, color .2s, transform .2s var(--ease); }
 .btn:active:not(:disabled) { transform: scale(.98); }
 .btn-sm { min-height: 40px; padding: 8px 18px; font-size: .95rem; }
@@ -512,7 +528,7 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .text-link:hover { text-decoration-thickness: 2px; }
 .text-link .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
 
-/* ---------- Header ---------- */
+/* header (home) */
 .site-header { position: sticky; top: 0; z-index: 60; background: rgba(239, 232, 217, .88); color: var(--ink); backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1); border-bottom: 1px solid transparent; transition: background-color .35s, color .35s, border-color .35s; }
 .site-header.is-scrolled { border-bottom-color: var(--line); }
 .site-header .header-bar { max-width: 1680px; min-height: var(--hh); padding-left: clamp(16px, 2.6vw, 40px); padding-right: clamp(16px, 2.6vw, 40px); }
@@ -532,11 +548,11 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 }
 .menu-btn:hover { opacity: .7; }
 
-/* mnm44: pulls the hero up under the header so the green runs all the way to the top */
+/* pulls the hero up under the header so the green goes all the way to the top */
 #view-home { margin-top: calc(-1 * var(--hh)); }
 
-/* ---------- Home: hero ---------- */
-/* No photos for now: the hero, gallery and panels use soft gradients in the brand colours. */
+/* ===== HOME: hero ===== */
+/* no photos here yet, it's all soft gradients in the brand colors */
 .nh { position: relative; isolation: isolate; overflow: hidden; min-height: 100svh; display: flex; flex-direction: column; color: var(--beige); background: var(--night); padding-top: calc(var(--hh) + 18px); }
 .nh-bg {
   position: absolute; inset: -8%; z-index: -1; transform: scale(1.15); will-change: transform;
@@ -555,13 +571,26 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 }
 @keyframes drift { from { transform: translate(-18%, -6%); } to { transform: translate(22%, 12%); } }
 .nh-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding-top: 18px; }
-.nh-tag { margin-left: 18vw; }
+.nh-tag { margin-left: 0; }   /* lined up w the left edge now, it was floating in the middle before */
 .nh-clock { font-size: 1rem; letter-spacing: .02em; text-transform: none; }
-.nh-mid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 400px); gap: 32px 6vw; align-items: end; margin-top: auto; padding-top: 9vh; }
-.nh-title { color: var(--beige); font-weight: 400; font-size: clamp(2.3rem, 4.6vw, 4.6rem); letter-spacing: -.045em; line-height: .98; max-width: 15ch; margin: 0; }
+.nh-mid { display: grid; grid-template-columns: minmax(300px, 560px) minmax(0, 1fr); gap: 36px 6vw; align-items: end; margin-top: auto; padding-top: 9vh; }
+/* 80% stat lives on the right, right-aligned */
+.nh-lead { justify-self: end; text-align: right; }
+.nh-lead .nh-title { margin-left: auto; }
+/* left side: slogan then the "medical bills are often wrong" lines. kept it short on purpose */
+.nh-slogan { color: var(--ochre); font-size: .95rem; letter-spacing: .1em; font-weight: 600; }
+.nh-promise { margin: 0; color: var(--beige); font-size: clamp(1.45rem, 2.1vw, 2.15rem); line-height: 1.15; letter-spacing: -.03em; text-wrap: balance; }
+.nh-body { max-width: 44ch; opacity: .9; font-size: clamp(.95rem, 1.2vw, 1.1rem); }
+/* row under the big wordmark: what we do (left) + the buttons (right). stacks on phones */
+.nh-after { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; margin-top: 4vh; }
+.nh-title { color: var(--beige); font-weight: 400; font-size: clamp(2.1rem, 4vw, 4rem); letter-spacing: -.045em; line-height: 1; max-width: 17ch; margin: 0; text-wrap: balance; }
+/* the huge "up to 80%". it counts up from 0 on load (see home.js) */
+.nh-stat { display: block; margin-bottom: .12em; font-size: 2.15em; line-height: .88; letter-spacing: -.06em; color: var(--sage-pale); }
+.nh-src { margin-top: 18px; }
+.nh-src a { color: inherit; }
 .nh-side { display: grid; gap: 22px; padding-bottom: 6px; }
 .nh-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
-.nh-checks { margin-top: 7vh; }
+.nh-checks { position: relative; margin-top: 6vh; padding-bottom: 5vh; }   /* "what we check" sits under the candorify wordmark now */
 .nh-checks-head { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
 .nh-check-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 16px; }
 .nh-check-list button {
@@ -570,11 +599,11 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 }
 .nh-check-list button span { font-size: .8rem; opacity: .6; }
 .nh-check-list button:hover { opacity: 1; transform: translateY(-3px); }
-.nh-word { width: calc(100% - 2 * clamp(16px, 2.6vw, 40px)); height: auto; margin: 2vh auto -1.2vw; overflow: visible; pointer-events: none; }
+.nh-word { width: calc(100% - 2 * clamp(16px, 2.6vw, 40px)); height: auto; margin: 7vh auto 0; overflow: visible; pointer-events: none; }
 .nh-word text, .foot-word text { font-family: var(--body); font-weight: 500; font-size: 240px; letter-spacing: -.04em; }
 .nh-word text { fill: var(--sage-pale); }
 
-/* ---------- Home: about table ---------- */
+/* home - about table */
 .ninfo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 48px 8vw; padding-top: clamp(80px, 14vh, 160px); padding-bottom: clamp(40px, 8vh, 90px); }
 .ninfo-left { display: grid; gap: 22px; align-content: start; }
 .ninfo-left .cap-body { margin-top: 20px; }
@@ -584,16 +613,14 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .ninfo-table dt { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
 .ninfo-table dd { margin: 0; font-size: .86rem; letter-spacing: .06em; text-transform: uppercase; }
 
-/* ---------- Home: split statements ---------- */
+/* split statements (big 2-sided text, the dark "four steps" one uses it) */
 .nsay { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 24px; padding-top: clamp(50px, 10vh, 120px); padding-bottom: clamp(60px, 12vh, 140px); }
 .nsay-l, .nsay-r { margin: 0; font-size: clamp(3rem, 9.6vw, 9.4rem); font-weight: 400; letter-spacing: -.055em; line-height: .86; text-transform: uppercase; color: var(--green); }
 .nsay-r { text-align: right; }
-.nsay-src { grid-column: 1 / -1; margin-top: 14px; }
-.nsay-src a { color: inherit; }
 .nsay-dark { max-width: none; background: var(--night); }
 .nsay-dark .nsay-l, .nsay-dark .nsay-r { color: var(--sage); }
 
-/* ---------- Home: why list (like an awards list) ---------- */
+/* why it matters list. styled kinda like an awards list */
 .nlist { padding-bottom: clamp(70px, 12vh, 140px); }
 .nlist-rows { list-style: none; margin: 18px 0 0; padding: 0; border-top: 1px solid var(--line); }
 .nlist-rows li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 360px) 120px; gap: 24px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line); position: relative; }
@@ -606,36 +633,46 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .nlist-year a { color: inherit; }
 .nlist-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 30px; margin-top: 44px; }
 
-/* ---------- Home: sideways gallery ---------- */
-/* mnm44: the section is extra tall on purpose, scrolling thru it is what slides the cards */
+/* ===== sideways gallery (what we look for) ===== */
+/* section is extra tall on purpose, scrolling thru it is what slides the cards */
 .ngal { position: relative; background: var(--night); color: var(--beige); }
-.ngal-pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding: calc(var(--hh) + 14px) 0 26px; }
-.ngal-title { margin: 0; padding: 0 clamp(16px, 2.6vw, 40px); color: var(--sage-pale); font-size: clamp(2.2rem, 4.8vw, 4.4rem); font-weight: 400; letter-spacing: -.045em; text-transform: uppercase; line-height: 1; }
-.ngal-window { min-height: 0; display: flex; align-items: center; overflow: hidden; }
-.ngal-track { list-style: none; margin: 0; display: flex; align-items: center; gap: clamp(28px, 5vw, 96px); padding: 0 clamp(20px, 8vw, 140px) 0 38vw; will-change: transform; transform-origin: center; }
-.ngal-card { flex: none; width: clamp(210px, 20vw, 320px); transition: transform .8s var(--ease); }
-.ngal-card:nth-child(3n+1) { transform: translateY(9%) rotate(-1.4deg); }
-.ngal-card:nth-child(3n+2) { transform: translateY(-11%) rotate(1deg); }
-.ngal-card:nth-child(3n) { transform: translateY(4%) rotate(.5deg); }
+/* title, cards, caption right under. leftover space goes to the bottom so the caption never gets cut off */
+.ngal-pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); padding: calc(var(--hh) + 14px) 0 20px; }
+.ngal-title { margin: 0; padding: 0 clamp(16px, 2.6vw, 40px); color: var(--sage-pale); font-size: clamp(2rem, min(4.2vw, 6.5vh), 4rem); font-weight: 400; letter-spacing: -.045em; text-transform: uppercase; line-height: 1; }
+.ngal-window { min-height: 0; display: flex; align-items: center; overflow: hidden; padding: 5vh 0 4vh; }   /* padding = room for the tilted cards */
+.ngal-track { list-style: none; margin: 0; display: flex; align-items: center; gap: clamp(56px, 9vw, 170px); padding: 0 clamp(20px, 8vw, 140px) 0 38vw; will-change: transform; transform-origin: center; }
+/* card size goes off screen height. biggest we can get while the caption still fits on short laptops (tested 1080 / 900 / 720 tall) */
+.ngal-card { flex: none; width: clamp(190px, min(30vw, calc(50vh - 100px)), 460px); transition: transform .8s var(--ease); }
+.ngal-card:nth-child(3n+1) { transform: translateY(3%) rotate(-1.4deg); }
+.ngal-card:nth-child(3n+2) { transform: translateY(-5%) rotate(1deg); }
+.ngal-card:nth-child(3n) { transform: translateY(1%) rotate(.5deg); }
 .frame-card { margin: 0; padding: 12px; border: 1px solid rgba(239, 232, 217, .2); background: rgba(239, 232, 217, .02); transition: border-color .4s; }
 .ngal-card.is-active .frame-card { border-color: rgba(239, 232, 217, .55); }
-.ngal-img { aspect-ratio: 4 / 5; display: flex; align-items: flex-end; padding: 14px 16px; background: radial-gradient(70% 60% at 30% 25%, rgba(214, 190, 140, .35), transparent 70%), linear-gradient(150deg, #3A5A47, #1E2A22); }
+.ngal-img { aspect-ratio: 4 / 5; background: radial-gradient(70% 60% at 30% 25%, rgba(214, 190, 140, .35), transparent 70%), linear-gradient(150deg, #3A5A47, #1E2A22); }
 .ngal-card:nth-child(2) .ngal-img { background: radial-gradient(70% 60% at 70% 30%, rgba(167, 191, 162, .4), transparent 70%), linear-gradient(160deg, #2C4436, #141A15); }
 .ngal-card:nth-child(3) .ngal-img { background: radial-gradient(70% 60% at 40% 70%, rgba(221, 182, 95, .3), transparent 70%), linear-gradient(140deg, #34503F, #18211B); }
 .ngal-card:nth-child(4) .ngal-img { background: radial-gradient(70% 60% at 65% 65%, rgba(214, 190, 140, .3), transparent 70%), linear-gradient(170deg, #263B2F, #121511); }
 .ngal-card:nth-child(5) .ngal-img { background: radial-gradient(70% 60% at 25% 70%, rgba(167, 191, 162, .35), transparent 70%), linear-gradient(130deg, #3A5A47, #18211B); }
 .ngal-card:nth-child(6) .ngal-img { background: radial-gradient(70% 60% at 75% 25%, rgba(221, 182, 95, .28), transparent 70%), linear-gradient(155deg, #2E4A3A, #141A15); }
-.ngal-img span { font-family: var(--serif); font-style: italic; font-size: clamp(4rem, 7vw, 6.5rem); line-height: .8; color: var(--beige); opacity: .85; }
-.frame-card figcaption { margin-top: 12px; }
-.frame-card figcaption i { font-family: var(--serif); font-size: 1.05rem; letter-spacing: 0; margin-right: 4px; }
+/* number top corner, title at the bottom, middle stays empty for a photo later */
+.ngal-img { position: relative; overflow: hidden; display: grid; align-content: end; align-items: flex-end; justify-items: center; padding: 20px 16px 22px; text-align: center; }
+.ngal-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ngal-img::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 45%; background: linear-gradient(transparent, rgba(18, 21, 17, .7)); pointer-events: none; }   /* dark fade so the title's still readable once a photo is behind it */
+.ngal-num { z-index: 1; position: absolute; top: 14px; left: 16px; font-family: var(--serif); font-style: italic; font-size: clamp(1.8rem, 2.6vw, 2.6rem); line-height: 1; color: var(--beige); opacity: .85; }
+.ngal-card-title { position: relative; z-index: 1; font-size: clamp(1.15rem, 1.9vw, 1.8rem); font-weight: 500; letter-spacing: .06em; line-height: 1.2; text-transform: uppercase; color: var(--beige); }
+.frame-card figcaption { margin-top: 0; }
 .ngal-card-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.ngal-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; padding: 0 clamp(16px, 2.6vw, 40px); }
-.ngal-cap { text-align: right; max-width: 430px; }
+/* caption under the cards = centered + bigger. professors said it was hard to read before */
+/* tick bar shows how far thru the 6 cards u are. its own row under the caption so it doesnt crash into the text */
+.ngal-foot { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 0 clamp(16px, 2.6vw, 40px); }
+.ngal-foot .ticks { order: 2; width: 100%; justify-content: space-between; margin-top: 4px; }   /* under the caption */
+.ngal-cap { text-align: center; max-width: 680px; }
 .ngal-cap p { margin: 0; }
-.ngal-name { font-family: var(--serif); font-size: clamp(2.1rem, 3.4vw, 3.3rem); line-height: 1; letter-spacing: -.01em; margin: 6px 0 10px !important; color: var(--beige); }
-.ngal-text { font-size: .98rem; line-height: 1.5; opacity: .88; }
-.ngal-ex { margin-top: 10px !important; font-size: .95rem; color: var(--ochre); }
-.ngal-ex .cap { color: var(--beige); opacity: .7; margin-right: 6px; }
+.ngal-cap .cap { font-size: .9rem; }
+.ngal-name { font-family: var(--serif); font-size: clamp(2.2rem, min(3.6vw, 5.5vh), 3.6rem); line-height: 1; letter-spacing: -.01em; margin: 6px 0 12px !important; color: var(--beige); }
+.ngal-text { font-size: clamp(1.1rem, 1.4vw, 1.3rem); line-height: 1.5; opacity: .92; text-wrap: balance; }
+.ngal-ex { margin-top: 12px !important; font-size: clamp(1.05rem, 1.3vw, 1.2rem); color: var(--ochre); }
+.ngal-ex .cap { color: var(--beige); opacity: .75; margin-right: 6px; }
 .ngal-cap.swap > * { animation: capIn .55s var(--ease) both; }
 .ngal-cap.swap > *:nth-child(2) { animation-delay: .05s; }
 .ngal-cap.swap > *:nth-child(3) { animation-delay: .1s; }
@@ -647,7 +684,7 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .ngal.is-static .ngal-card { transform: none; scroll-snap-align: start; }
 .ngal.is-static .ngal-card-text { position: static; width: auto; height: auto; clip: auto; white-space: normal; display: block; margin-top: 8px; font-size: .92rem; line-height: 1.5; }
 
-/* ---------- Home: turning glass box ---------- */
+/* home - spinning glass box */
 .nbox { position: relative; height: 420vh; color: var(--beige); background: radial-gradient(70% 60% at 72% 45%, #2C4A38 0%, #1A2820 55%, var(--night) 100%); }
 .nbox-pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .nbox-side { position: absolute; left: clamp(16px, 2.6vw, 40px); top: calc(var(--hh) + 16px); display: grid; gap: 12px; z-index: 2; }
@@ -685,7 +722,7 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .nbox.is-static .nbox-cube { height: auto; margin: 0 auto; display: grid; gap: 18px; transform: none !important; }
 .nbox.is-static .nbox-face { position: relative; transform: none; opacity: 1; min-height: 230px; }
 
-/* ---------- Home: what you get back ---------- */
+/* ===== what you get back ===== */
 .ncases { padding-top: clamp(80px, 14vh, 160px); background: var(--beige); }
 .ncases > h2 { margin-bottom: 8vh; }
 .ncase { position: relative; }
@@ -697,9 +734,9 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
   content: ""; position: absolute; inset: 0;
   background: radial-gradient(60% 70% at 25% 30%, rgba(214, 190, 140, .28), transparent 70%), radial-gradient(55% 60% at 80% 75%, rgba(167, 191, 162, .22), transparent 70%), linear-gradient(150deg, #2E4A3A, #16201A);
 }
-.ncase-inner { position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; justify-content: flex-end; padding-top: 80px; padding-bottom: 80px; }
+.ncase-inner { position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; justify-content: center; padding-top: 80px; padding-bottom: 80px; }
 
-/* Code and language card */
+/* code + language card */
 .lang-card { width: 100%; max-width: 460px; padding: 30px; color: var(--beige); background: rgba(18, 21, 17, .72); border: 1px solid rgba(239, 232, 217, .25); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: grid; gap: 18px; }
 .lang-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .code-pick { min-height: 40px; padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(239, 232, 217, .45); background: transparent; color: var(--beige); font: inherit; font-size: .92rem; cursor: pointer; letter-spacing: .04em; }
@@ -709,7 +746,7 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .lang-tabs button { background: none; border: 0; color: var(--beige); opacity: .65; cursor: pointer; padding: 8px 0; min-height: 40px; font: inherit; font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; }
 .lang-tabs button[aria-checked="true"] { opacity: 1; text-decoration: underline; text-underline-offset: 7px; }
 
-/* Product example */
+/* the example review card */
 .review-mock { width: min(440px, 100%); margin: 0; background: var(--cream); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .6); }
 .mock-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: var(--black); color: var(--beige); }
 .mock-brand { font-weight: 500; letter-spacing: -.04em; font-size: 1.1rem; }
@@ -720,14 +757,19 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .mock-flag p { margin: 2px 0 8px; font-size: .92rem; color: var(--muted); }
 .mock-kind { display: inline-block; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; background: var(--marker-soft); padding: 2px 8px; margin-bottom: 6px; }
 .mock-line { display: flex; justify-content: space-between; gap: 12px; font-size: .98rem; }
-.mock-check { display: flex; align-items: center; gap: 8px; font-size: .88rem; font-weight: 500; }
-.mock-check .box { width: 16px; height: 16px; border-radius: 3px; background: var(--forest); position: relative; }
-.mock-check .box::after { content: ""; position: absolute; left: 5px; top: 2px; width: 4px; height: 8px; border: solid var(--beige); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+/* "include in my letter" boxes are real checkboxes now so ppl can click em. just for show, they dont do anything */
+.mock-check { position: relative; display: inline-flex; align-items: center; gap: 8px; font-size: .88rem; font-weight: 500; cursor: pointer; user-select: none; }
+.mock-check input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+.mock-check .box { flex: none; width: 16px; height: 16px; border-radius: 3px; border: 1.5px solid var(--forest); background: transparent; position: relative; transition: background-color .15s; }
+.mock-check:hover .box { background: var(--marker-soft); }
+.mock-check input:checked + .box { background: var(--forest); }
+.mock-check input:checked + .box::after { content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid var(--beige); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.mock-check input:focus-visible + .box { box-shadow: var(--ring); }
 .mock-flag.is-faded { opacity: .5; }
 .mock-flag.is-faded::before { background: var(--line-strong); }
 .mock-caption { margin: 0; padding: 12px 18px 16px; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--line); }
 
-/* Letter demo */
+/* letter demo */
 .ask-card { width: 100%; max-width: 460px; padding: 30px; background: var(--cream); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .6); }
 .ask-list { border: 0; margin: 0 0 8px; padding: 0; }
 .ask-list legend { margin-bottom: 14px; padding: 0; }
@@ -738,14 +780,14 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .demo-letter li { margin-bottom: 6px; }
 .demo-letter .muted { font-family: var(--body); font-size: .95rem; list-style: none; margin-left: -1.1em; }
 
-/* Closing */
+/* closing banner */
 .ncta { background: var(--forest); color: var(--beige); padding: clamp(90px, 16vh, 180px) 0; }
 .ncta-inner { display: grid; gap: 40px; }
 .nsay-pair { margin: 0; display: flex; flex-direction: column; color: var(--beige); font-size: clamp(2.6rem, 7.6vw, 7.4rem); font-weight: 400; letter-spacing: -.055em; line-height: .9; text-transform: uppercase; }
 .nsay-pair span:last-child { align-self: flex-end; text-align: right; color: var(--sage-pale); }
 .ncta .btn { justify-self: end; }
 
-/* ---------- Footer ---------- */
+/* footer */
 .site-footer { background: var(--black); color: var(--beige); padding: 56px 0 30px; font-size: .9rem; }
 .foot-nav { display: flex; align-items: center; gap: 18px; }
 .foot-nav button { background: none; border: 0; color: inherit; cursor: pointer; padding: 10px 0; min-height: 44px; font: inherit; font-size: 1rem; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; opacity: .9; }
@@ -757,7 +799,7 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .site-footer .disclaimer-text, .foot-copy { text-align: center; max-width: 760px; margin: 0 auto 10px; color: rgba(239, 232, 217, .72); font-size: .82rem; }
 .foot-copy { margin-top: 18px; }
 
-/* ---------- Full-screen menu ---------- */
+/* full screen menu */
 .menu-backdrop { background: transparent; }
 .site-menu {
   position: fixed; inset: 0; z-index: 120; width: auto; max-width: none; height: auto; transform: none; border: 0; border-radius: 0; box-shadow: none;
@@ -796,7 +838,7 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .menu-foot > div { display: flex; }
 .menu-auth { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 26px; }
 
-/* ---------- Floating sign-up pill + progress ---------- */
+/* floating sign up pill + the progress bar at the very top */
 .scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 70; pointer-events: none; }
 .scroll-progress span { display: block; height: 100%; background: var(--ochre); transform-origin: left; transform: scaleX(0); }
 .float-cta {
@@ -807,11 +849,11 @@ mark { background: var(--marker-soft); color: inherit; padding: 0 .15em; }
 .float-cta.is-on { transform: translate(-50%, 0); opacity: 1; }
 .float-cta span { font-size: .78rem; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
 
-/* ---------- Reveal on scroll ---------- */
+/* reveal on scroll */
 html.js-reveal [data-reveal], html.js-reveal [data-reveal-group] > * { opacity: 0; transform: translateY(34px); filter: blur(6px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: var(--delay, 0s); }
 html.js-reveal [data-reveal].is-in, html.js-reveal [data-reveal-group] > .is-in { opacity: 1; transform: none; filter: none; }
 
-/* ---------- Team ---------- */
+/* team page */
 .view-team { background: var(--beige); }
 .team-hero { background: var(--night); color: var(--beige); padding: clamp(70px, 14vh, 150px) 0 clamp(50px, 9vh, 100px); }
 .team-hero h1 { color: var(--sage-pale); margin: 14px 0 26px; font-size: clamp(3.4rem, 13vw, 12.5rem); font-weight: 400; letter-spacing: -.06em; line-height: .84; text-transform: uppercase; }
@@ -832,7 +874,7 @@ html.js-reveal [data-reveal].is-in, html.js-reveal [data-reveal-group] > .is-in 
 .member:nth-child(3) .frame { transform: rotate(-.6deg); }
 .member h2 { margin: 22px 0 6px; font-size: clamp(1.6rem, 2.6vw, 2.4rem); font-weight: 400; letter-spacing: -.045em; text-transform: uppercase; }
 
-/* ---------- Terms and Privacy ---------- */
+/* terms + privacy */
 .view-legal { background: var(--beige); padding: 0; }
 .legal-hero h1 { font-size: clamp(3rem, 10vw, 9.5rem); }
 .legal-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 40px 6vw; padding-top: clamp(50px, 9vh, 100px); padding-bottom: clamp(70px, 12vh, 140px); }
@@ -859,8 +901,8 @@ html.js-reveal [data-reveal].is-in, html.js-reveal [data-reveal-group] > .is-in 
 #terms-text .legal-sec p, #terms-text .legal-sec li { font-size: .98rem; }
 .dialog-foot { padding: 4px 24px 18px; border-top: 1px solid var(--line); }
 
-/* ---------- Our results ---------- */
-/* mnm44: the yellow line on each bar is the goal (95% / 5%) */
+/* ===== our results page ===== */
+/* yellow line on each bar = our goal (95% / 5%) */
 .view-results { background: var(--beige); padding: 0; }
 .results-hero h1 { font-size: clamp(3rem, 11vw, 10rem); }
 .results-body { padding-top: clamp(50px, 9vh, 100px); padding-bottom: clamp(70px, 12vh, 140px); }
@@ -892,7 +934,7 @@ html.js-reveal [data-reveal].is-in, html.js-reveal [data-reveal-group] > .is-in 
 .center-row { justify-content: center; margin-top: 8px; }
 .nlist-cta-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
 
-/* ---------- App screens ---------- */
+/* app screens w the home look */
 .view:not(.view-home):not(.view-team) { background: var(--beige); }
 .panel, #account-detail .card { background: var(--cream); border: 1px solid var(--line); border-radius: 0; box-shadow: none; }
 .auth-wrap { background: var(--cream); border: 1px solid var(--line); box-shadow: none; }
@@ -929,13 +971,25 @@ dialog { border: 1px solid var(--line); border-radius: 0; box-shadow: 0 40px 90p
 .stat { background: var(--mist-2); border: 0; }
 .price-card-paid { outline: 1px solid var(--ink); }
 
-/* Number questions: "Not sure" beside the field */
+/* number qs - "not sure" next to the field */
 .num-row input[type="number"]:disabled { opacity: .45; }
 
-/* ---------- Phones and tablets ---------- */
-/* mnm44: everything below is just making it fit on phones */
+/* "what you'll need" box on the upload step (bill.html). photo upload is coming later so it's pdf only rn */
+.need-card { background: var(--cream); border: 1px solid var(--line); padding: 26px 28px 20px; margin-bottom: 22px; }
+.need-title { margin: 0 0 18px; font-size: 1.35rem; }
+.need-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 32px; }
+.need-steps li { display: grid; gap: 6px; align-content: start; padding-top: 14px; border-top: 1px solid var(--line); }
+.need-n { font-family: var(--serif); font-style: italic; font-size: 1.5rem; line-height: 1; color: var(--green); }
+.need-steps strong { font-size: 1.08rem; }
+.need-steps p { margin: 0; color: var(--muted); font-size: .98rem; line-height: 1.55; }
+.need-steps .link-btn { justify-self: start; margin-top: 4px; font-weight: 600; }
+.need-soon { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 20px 0 0; padding-top: 14px; border-top: 1px dashed var(--line); color: var(--muted); font-size: .95rem; }
+@media (max-width: 760px) { .need-steps { grid-template-columns: 1fr; } .need-card { padding: 20px; } }
+
+/* ========= phones + tablets ========= */
+/* everything below is just making stuff fit on smaller screens */
 @media (max-width: 760px) {
-  /* the blur would trap the bottom tab bar inside the header, so phones get a plain header */
+  /* the blur trapped the bottom tab bar inside the header on phones, so phones get a plain header */
   .site-header { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--beige); }
   .site-header.is-over-hero { background: transparent; }
   .app-nav { background: var(--black); color: var(--beige); }
@@ -952,6 +1006,8 @@ dialog { border: 1px solid var(--line); border-radius: 0; box-shadow: 0 40px 90p
   .upload-layout .panel { border-right: 0; border-bottom: 1px solid var(--line); }
   .nh-tag { margin-left: 0; }
   .nh-mid { grid-template-columns: 1fr; padding-top: 6vh; }
+  .nh-lead { order: -1; justify-self: start; text-align: left; }   /* phones: 80% goes first */
+  .nh-lead .nh-title { margin-left: 0; }
   .ninfo { grid-template-columns: 1fr; }
   .ninfo-table div { grid-template-columns: 120px 1fr; }
   .ncase-head { grid-template-columns: 1fr; top: 18vh; }
@@ -977,12 +1033,12 @@ dialog { border: 1px solid var(--line); border-radius: 0; box-shadow: 0 40px 90p
   .nlist-rows li { grid-template-columns: 1fr; gap: 8px; }
   .nlist-meta { grid-row: auto; }
   .nlist-year { grid-row: auto; grid-column: auto; text-align: left; }
-  .ngal-card { width: 64vw; }
-  .ngal-track { padding-left: 18vw; }
-  .ngal-foot { flex-direction: column; align-items: stretch; gap: 14px; }
-  .ngal-cap { text-align: left; max-width: none; }
-  .ngal-name { font-size: 2rem; margin: 4px 0 6px !important; }
-  .ngal-text { font-size: .92rem; }
+  .ngal-card { width: 74vw; }
+  .ngal-foot { gap: 14px; }
+  .ngal-cap { max-width: none; }
+  .ngal-name { font-size: 2.3rem; margin: 4px 0 8px !important; }
+  .ngal-text { font-size: 1.05rem; }
+  .ngal-ex { font-size: 1rem; }
   .nbox-cube { --h: clamp(270px, 44vh, 330px); width: 80vw; }
   .nbox-side { right: clamp(16px, 2.6vw, 40px); grid-template-columns: 1fr auto; align-items: baseline; }
   .nbox-side .vticks { display: none; }
@@ -1009,3 +1065,5 @@ dialog { border: 1px solid var(--line); border-radius: 0; box-shadow: 0 40px 90p
   html.js-reveal [data-reveal], html.js-reveal [data-reveal-group] > * { opacity: 1; transform: none; filter: none; }
   .nh-bg { transform: none !important; }
 }
+
+/* fyi: some AI was used to help assist writing a few of these features */
