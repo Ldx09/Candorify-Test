@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- extra days: 6 nights stayed, 7 days billed -->
+  <rect x="70" y="112" width="260" height="226" rx="8" fill="rgba(239,232,217,.07)" stroke="#EFE8D9" stroke-width="2.5"/>
+  <path d="M70 152h260" stroke="#EFE8D9" stroke-width="2.5"/>
+  <path d="M120 100v24M280 100v24" stroke="#EFE8D9" stroke-width="2.5" stroke-linecap="round"/>
+  <g stroke="#EFE8D9" stroke-width="1.5" opacity=".35">
+    <path d="M135 152v186M200 152v186M265 152v186M70 214h260M70 276h260"/>
+  </g>
+  <!-- 6 nights: little moons -->
+  <g fill="#C9D8C2">
+    <path d="M110 172a14 14 0 1 0 12 22 11 11 0 1 1-12-22z"/>
+    <path d="M175 172a14 14 0 1 0 12 22 11 11 0 1 1-12-22z"/>
+    <path d="M240 172a14 14 0 1 0 12 22 11 11 0 1 1-12-22z"/>
+    <path d="M305 172a14 14 0 1 0 12 22 11 11 0 1 1-12-22z"/>
+    <path d="M110 234a14 14 0 1 0 12 22 11 11 0 1 1-12-22z"/>
+    <path d="M175 234a14 14 0 1 0 12 22 11 11 0 1 1-12-22z"/>
+  </g>
+  <!-- the 7th day that got billed anyway -->
+  <rect x="207" y="221" width="52" height="48" rx="6" fill="rgba(221,182,95,.2)" stroke="#DDB65F" stroke-width="2.5" stroke-dasharray="6 5"/>
+  <text x="233" y="255" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-size="32" fill="#DDB65F">?</text>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- double charges: two identical receipts, same line highlighted on both -->
+  <g stroke="#EFE8D9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="rotate(-7 175 225)" opacity=".55">
+      <path d="M105 110h140v215l-14-10-14 10-14-10-14 10-14-10-14 10-14-10-14 10-14-10-14 10z" fill="rgba(239,232,217,.06)"/>
+      <path d="M125 145h80M125 175h100M125 235h70M125 265h90"/>
+      <rect x="117" y="194" width="116" height="24" rx="3" fill="rgba(221,182,95,.35)" stroke="#DDB65F"/>
+    </g>
+    <g transform="rotate(5 230 235)">
+      <path d="M160 120h140v215l-14-10-14 10-14-10-14 10-14-10-14 10-14-10-14 10-14-10-14 10z" fill="rgba(239,232,217,.1)"/>
+      <path d="M180 155h80M180 185h100M180 245h70M180 275h90"/>
+      <rect x="172" y="204" width="116" height="24" rx="3" fill="rgba(221,182,95,.35)" stroke="#DDB65F"/>
+    </g>
+  </g>
+  <circle cx="312" cy="128" r="30" fill="#DDB65F"/>
+  <text x="312" y="138" text-anchor="middle" font-family="Inter Tight, Inter, Arial, sans-serif" font-size="26" font-weight="600" fill="#1E2A22">&#215;2</text>
+</svg>

@@ -21,7 +21,7 @@
 
   // site is split into separate pages now, this is just which file each one lives in
   const PAGES = {
-    home: "home.html", check: "bill.html", letters: "dispute.html", lookup: "look_up.html", pricing: "plans.html",
+    home: "home.html", check: "bill.html", letters: "dispute.html", lookup: "lookUp.html", pricing: "plans.html",
     account: "profile.html", results: "performance.html", team: "team.html", legal: "terms.html",
   };
   const onThisPage = (view) => !!document.getElementById("view-" + view);

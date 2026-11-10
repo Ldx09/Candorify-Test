@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- confusing codes: a billing code turned into plain words -->
+  <path d="M70 118h120l26 26-26 26H70z" fill="rgba(239,232,217,.08)" stroke="#EFE8D9" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="88" cy="144" r="5" fill="#EFE8D9"/>
+  <text x="104" y="153" font-family="Inter Tight, Inter, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="1" fill="#EFE8D9">J1100</text>
+  <path d="M150 182c0 40 40 56 82 62" stroke="#DDB65F" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 8"/>
+  <path d="M222 234l14 10-16 6" stroke="#DDB65F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M142 250h196a12 12 0 0 1 12 12v58a12 12 0 0 1-12 12H196l-20 18v-18h-34a12 12 0 0 1-12-12v-58a12 12 0 0 1 12-12z" fill="rgba(221,182,95,.16)" stroke="#DDB65F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M152 276h120M152 300h170M152 316h80" stroke="#EFE8D9" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>
+  <text x="318" y="290" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-size="24" fill="#DDB65F">Aa</text>
+</svg>

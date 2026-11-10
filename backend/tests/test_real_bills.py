@@ -246,3 +246,49 @@ def test_upload_unreadable_pdf(c):
     cv.save()
     r = c.post("/api/upload/pdf", files={"file": ("x.pdf", buf.getvalue(), "application/pdf")})
     assert r.status_code == 400 and "couldn't find any charges" in r.json()["detail"]
+    
+    
+    
+
+# ---------- MyChart-style "account details": department subtotal lines, then the items under them ----------
+
+def mychart_pdf() -> bytes:
+    rows = [
+        ("Billed to Insurance", "$1,402.12"), ("Insurance covered", "-$1,000.00"), ("Copay", "$402.12"),
+        ("Detailed Account Information", None),
+        ("Pharmacy - General Classification", "$933.10"),
+        ("Lactated Ringer's Parenteral Solution (0264-7750-00)", "$0.02"),
+        ("Sugammadex 100 Mg/Ml Solution (0006-5423-12) - quantity: 2", "$933.08"),
+        ("Laboratory - General Classification", "$287.00"),
+        ("HC Glucose Blood Test With Device - 82962 (CPT®)", "$87.00"),
+        ("HC Thromboplas Time Partial - Aptt - 85730 (CPT®)", "$140.00"),
+        ("HC Venipuncture - 36415 (CPT®)", "$60.00"),
+        ("Medical/Surgical Supplies and Devices - General Classification", "$182.02"),
+        ("Trocar Laparoscopic 100mm 12mm Sterile Latex Free Optical", "$170.00"),
+        ("Access System Abdominal", None),
+        ("Metronidazole 500 Mg/100 Ml Piggyback (0409-0152-24) - quantity:", "$12.02"),
+        ("50 - J1836 (HCPCS)", None),
+        ("Payments and Adjustments", None), ("Test Plan", "-$1,000.00"),
+    ]
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter)
+    y = 740
+    for desc, amount in rows:
+        c.drawString(40, y, desc)
+        if amount:
+            c.drawRightString(570, y, amount)
+        y -= 18
+    c.save()
+    return buf.getvalue()
+
+
+def test_mychart_department_lines_are_not_double_counted():
+    r = _read(mychart_pdf())
+    b = r.bill
+    assert r.has_total and b.stated_subtotal == Decimal("1402.12")
+    assert sum(ln.line_total for ln in b.lines) == Decimal("1402.12")       # departments dropped, items kept
+    assert not any("Classification" in ln.description for ln in b.lines)
+    assert [ln.code for ln in b.lines] == ["", "", "82962", "85730", "36415", "", "J1836"]
+    assert b.lines[5].description.endswith("Access System Abdominal")        # wrapped line joined
+    assert b.lines[3].description == "HC Thromboplas Time Partial - Aptt"     # code removed from the text
+    assert run_checks(b).flag_count == 0

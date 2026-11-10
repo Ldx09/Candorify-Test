@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- odd quantities: a whole rack of blood tubes for a 3 day stay -->
+  <g stroke="#EFE8D9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <g opacity=".35">
+      <path d="M96 150v70a9 9 0 0 0 18 0v-70M126 150v70a9 9 0 0 0 18 0v-70M156 150v70a9 9 0 0 0 18 0v-70M186 150v70a9 9 0 0 0 18 0v-70M216 150v70a9 9 0 0 0 18 0v-70M246 150v70a9 9 0 0 0 18 0v-70M276 150v70a9 9 0 0 0 18 0v-70"/>
+      <path d="M96 252v70a9 9 0 0 0 18 0v-70M126 252v70a9 9 0 0 0 18 0v-70M156 252v70a9 9 0 0 0 18 0v-70M186 252v70a9 9 0 0 0 18 0v-70M216 252v70a9 9 0 0 0 18 0v-70M246 252v70a9 9 0 0 0 18 0v-70M276 252v70a9 9 0 0 0 18 0v-70"/>
+    </g>
+    <g fill="rgba(239,232,217,.08)">
+      <path d="M96 150v70a9 9 0 0 0 18 0v-70zM126 150v70a9 9 0 0 0 18 0v-70zM156 150v70a9 9 0 0 0 18 0v-70z"/>
+    </g>
+    <path d="M98 196h14v24a7 7 0 0 1-14 0zM128 196h14v24a7 7 0 0 1-14 0zM158 196h14v24a7 7 0 0 1-14 0z" fill="#DDB65F" stroke="none" opacity=".8"/>
+    <path d="M84 150h224M84 252h224" opacity=".8"/>
+  </g>
+  <rect x="246" y="100" width="92" height="44" rx="22" fill="#DDB65F"/>
+  <text x="292" y="130" text-anchor="middle" font-family="Inter Tight, Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#1E2A22">&#215;30</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- wrong totals: the lines add up to 355 but the bill says 455 -->
+  <path d="M110 100h180v250l-15-11-15 11-15-11-15 11-15-11-15 11-15-11-15 11-15-11-15 11-15-11z" fill="rgba(239,232,217,.08)" stroke="#EFE8D9" stroke-width="2.5" stroke-linejoin="round"/>
+  <g stroke="#EFE8D9" stroke-width="2.5" stroke-linecap="round" opacity=".7">
+    <path d="M132 136h60M132 166h75M132 196h50M132 226h68"/>
+  </g>
+  <g font-family="Inter Tight, Inter, Arial, sans-serif" font-size="17" fill="#EFE8D9" opacity=".85" text-anchor="end">
+    <text x="270" y="142">120</text><text x="270" y="172">95</text><text x="270" y="202">80</text><text x="270" y="232">60</text>
+  </g>
+  <path d="M132 252h138" stroke="#EFE8D9" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="132" y="292" font-family="Inter Tight, Inter, Arial, sans-serif" font-size="15" letter-spacing="2" fill="#EFE8D9" opacity=".7">DUE</text>
+  <text x="270" y="294" text-anchor="end" font-family="Inter Tight, Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#DDB65F">$455</text>
+  <ellipse cx="240" cy="285" rx="46" ry="24" stroke="#DDB65F" stroke-width="2.5" transform="rotate(-5 240 285)"/>
+  <text x="330" y="292" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-size="28" fill="#C9D8C2">&#8800;</text>
+  <text x="330" y="322" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-size="22" fill="#C9D8C2">355</text>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" fill="none">
+  <!-- bad math: 1 x $260 should be $260, bill says $620 -->
+  <rect x="62" y="150" width="276" height="120" rx="6" fill="rgba(239,232,217,.08)" stroke="#EFE8D9" stroke-width="2.5"/>
+  <g font-family="Inter Tight, Inter, Arial, sans-serif" fill="#EFE8D9">
+    <text x="80" y="222" font-size="30" opacity=".9">1 &#215; $260</text>
+    <text x="220" y="222" font-size="30" opacity=".6">=</text>
+  </g>
+  <text x="300" y="222" text-anchor="middle" font-family="Inter Tight, Inter, Arial, sans-serif" font-size="30" font-weight="600" fill="#DDB65F">$620</text>
+  <ellipse cx="300" cy="211" rx="44" ry="28" stroke="#DDB65F" stroke-width="2.5" transform="rotate(-6 300 211)"/>
+  <path d="M266 226l68-24" stroke="#DDB65F" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M300 168v-36" stroke="#C9D8C2" stroke-width="2" stroke-dasharray="4 6" stroke-linecap="round"/>
+  <text x="300" y="120" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-style="italic" font-size="30" fill="#C9D8C2">$260</text>
+</svg>

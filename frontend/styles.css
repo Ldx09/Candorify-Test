@@ -1067,3 +1067,16 @@ dialog { border: 1px solid var(--line); border-radius: 0; box-shadow: 0 40px 90p
 }
 
 /* fyi: some AI was used to help assist writing a few of these features */
+/* What we look for: one picture per card (pictures live in frontend/img/).
+   Drawn on a layer under the card's number and title, on top of the green background. */
+.ngal-img { position: relative; }
+.ngal-img::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-position: center 40%; background-size: 82% auto; background-repeat: no-repeat;
+}
+.ngal-card:nth-child(1) .ngal-img::before { background-image: url("img/double.svg"); }
+.ngal-card:nth-child(2) .ngal-img::before { background-image: url("img/math.svg"); }
+.ngal-card:nth-child(3) .ngal-img::before { background-image: url("img/total.svg"); }
+.ngal-card:nth-child(4) .ngal-img::before { background-image: url("img/quantities.svg"); }
+.ngal-card:nth-child(5) .ngal-img::before { background-image: url("img/days.svg"); }
+.ngal-card:nth-child(6) .ngal-img::before { background-image: url("img/codes.svg"); }

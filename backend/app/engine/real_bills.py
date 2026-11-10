@@ -227,28 +227,87 @@ def _read_tables(pdf) -> tuple[list[_Charge], Decimal | None]:
 
 
 _LINE_END_MONEY = re.compile(r"^(?P<desc>.*?[A-Za-z].*?)\s+(?P<amt>\$?[\d,]*\d\.\d{2})$")
+# "HC Venipuncture - 36415 (CPT®)" or "... - J1836 (HCPCS)": a code printed inside the description
+_CODE_IN_TEXT = re.compile(r"\s*-\s*([A-Z]\d{4}|\d{4}[0-9A-Z])\s*\((?:CPT|HCPCS)[^)]*\)", re.IGNORECASE)
+_QTY_IN_TEXT = re.compile(r"\bquantity:\s*\d*", re.IGNORECASE)
+# Statements that print the full billed amount as "Billed to insurance $36,780.56" instead of a total line
+BILLED_TOTAL = re.compile(r"\bbilled to insurance\b|\btotal charges\b", re.IGNORECASE)
+MAX_CONTINUATION = 2     # wrapped description lines that may follow one charge line
+
+
+def _is_group(desc: str) -> bool:
+    """A department heading like "Laboratory - General Classification": a hospital department name,
+    words only (no numbers, codes or quantities)."""
+    from app.engine.code_matching import match_code
+    if " - " not in desc or re.search(r"\d", desc):
+        return False
+    return "classification" in desc.lower() or match_code(desc).startswith("0")
+
+
+def _drop_group_totals(charges: list[_Charge]) -> list[_Charge]:
+    """Some statements (e.g. MyChart account details) print a department line with its subtotal and then
+    the items under it. Keep the items and drop the department line, but ONLY when its items add up to
+    exactly its amount, so nothing is ever counted twice and nothing is silently lost."""
+    kept: list[_Charge] = []
+    i = 0
+    while i < len(charges):
+        head = charges[i]
+        if _is_group(" ".join(head.description)):
+            total, j = Decimal("0"), i + 1
+            while j < len(charges) and total < head.amount and not _is_group(" ".join(charges[j].description)):
+                total += charges[j].amount
+                j += 1
+            if j > i + 1 and abs(total - head.amount) <= Decimal("0.01"):
+                kept.extend(charges[i + 1:j])
+                i = j
+                continue
+        kept.append(head)
+        i += 1
+    return kept
 
 
 def _read_lines(pdf) -> tuple[list[_Charge], Decimal | None]:
-    """Fallback for bills without a recognizable table: lines like 'Emergency Room ... $5,249.00'."""
+    """Fallback for bills without a recognizable table: lines like 'Emergency Room ... $5,249.00'.
+    A line with no amount right after a charge continues its description (wrapped text)."""
     charges: list[_Charge] = []
     total = None
+    last: _Charge | None = None
+    extra = 0
     for page_no, page in enumerate(pdf.pages):
         for raw in (page.extract_text() or "").splitlines():
             line = raw.strip()
             m = _LINE_END_MONEY.match(line)
             if not m:
+                if (last is not None and extra < MAX_CONTINUATION and _LETTERS.search(line)
+                        and not (SKIP_WORDS.search(line) or TOTAL_WORDS.search(line) or "$" in line)):
+                    last.description.append(line)
+                    extra += 1
+                    continue
+                if not _MONEY.match(line):  # a lone amount (e.g. a page header) doesn't end a charge
+                    last = None
                 continue
             desc, amount = m["desc"].strip(" :-"), _money(m["amt"])
+            last = None
             if amount is None or amount <= 0:
+                continue
+            if BILLED_TOTAL.search(desc):
+                total = amount
                 continue
             if TOTAL_WORDS.search(desc):
                 if TOTAL_CHARGES.search(desc):
                     total = amount
                 continue
-            if SKIP_WORDS.search(desc) or not _LETTERS.search(desc) or ":" in desc:
+            if SKIP_WORDS.search(desc) or not _LETTERS.search(desc) or ":" in _QTY_IN_TEXT.sub("", desc):
                 continue
-            charges.append(_Charge(description=[desc], amount=amount, page=page_no))
+            last, extra = _Charge(description=[desc], amount=amount, page=page_no), 0
+            charges.append(last)
+    charges = _drop_group_totals(charges)   # before codes are pulled out, so headings are judged as printed
+    for ch in charges:  # pull printed codes ("- 96374 (CPT®)") out of the description
+        text = " ".join(ch.description)
+        found = _CODE_IN_TEXT.search(text)
+        if found:
+            ch.code = found[1].upper()
+            ch.description = [_CODE_IN_TEXT.sub("", text)]
     return charges, total
 
 
@@ -257,11 +316,32 @@ def _clean(words: list[str]) -> str:
     return re.sub(r"\s+", " ", text)[:500]
 
 
+# Where a bill names the facility. Only the facility is taken, never the patient
+# ("Charges for JANE DOE in Sample Pediatrics" -> "Sample Pediatrics").
+_FACILITY = [
+    re.compile(r"^\s*Facility(?: Location| Name)?:\s*(?P<name>.+?)(?:\s+(?:Parent\s+)?Hospital Location)?\s*$", re.I),
+    re.compile(r"^\s*(?:Hospital|Practice|Clinic)(?: Name)?:\s*(?P<name>.+?)\s*$", re.I),
+    re.compile(r"^\s*Charges for .+? in (?P<name>.+?)\s*$", re.I),
+]
+
+
+def _facility(pdf) -> str | None:
+    """The medical facility's name, if the bill prints it on a labeled line. None if not found."""
+    for page in pdf.pages:
+        for line in (page.extract_text() or "").splitlines():
+            for pattern in _FACILITY:
+                m = pattern.match(line)
+                if m and _LETTERS.search(m["name"]) and not re.search(r"\d{3}", m["name"]):
+                    return m["name"].strip(" ,;-")[:100]
+    return None
+
+
 @dataclass
 class RealBill:
     bill: Bill
     has_total: bool        # the bill printed a total we could compare against
     from_table: bool       # read from a charges table (vs. the line-by-line fallback)
+    provider_name: str | None = None   # the facility, when the bill prints it (shown, not stored)
 
 
 def read_real_bill(path) -> RealBill | None:
@@ -273,6 +353,7 @@ def read_real_bill(path) -> RealBill | None:
         from_table = bool(charges)
         if not charges:
             charges, total = _read_lines(pdf)
+        provider_name = _facility(pdf)
     if not charges:
         return None
     lines = []
@@ -286,4 +367,4 @@ def read_real_bill(path) -> RealBill | None:
     service_date = next((c.service_date for c in charges if c.service_date), None)
     bill = Bill(bill_id="UPLOAD", lines=lines, stated_subtotal=total if total is not None else summed,
                 date_of_service=service_date)
-    return RealBill(bill=bill, has_total=total is not None, from_table=from_table)
+    return RealBill(bill=bill, has_total=total is not None, from_table=from_table, provider_name=provider_name)
