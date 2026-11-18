@@ -35,6 +35,16 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-2.5-flash"
     GEMINI_TIMEOUT_SECONDS: float = 20.0
 
+    # Stripe (Premium plan). Leave the keys empty and Premium simply shows as unavailable.
+    # Test keys start with sk_test_ / pk_test_ (Stripe Dashboard > Developers > API keys).
+    STRIPE_SECRET_KEY: str | None = None
+    STRIPE_PUBLISHABLE_KEY: str | None = None
+    STRIPE_WEBHOOK_SECRET: str | None = None     # whsec_..., from the webhook endpoint (or `stripe listen`)
+    STRIPE_PRICE_ID: str | None = None           # optional price_...; without it the yearly price below is used
+    PREMIUM_PRICE_CENTS: int = 4999              # $49.99
+    PREMIUM_INTERVAL: Literal["month", "year"] = "year"
+    FRONTEND_URL: str = "http://localhost:5500"  # where Stripe sends people back after paying
+
     # Interactive API docs at /docs. Default: on in development, off in production.
     DOCS_ENABLED: bool | None = None
 
@@ -60,6 +70,8 @@ class Settings(BaseSettings):
                 raise ValueError("In production JWT_SECRET must be a random string of at least 32 characters")
             if self.DATABASE_URL.startswith("sqlite"):
                 raise ValueError("In production DATABASE_URL must point to PostgreSQL (SQLite data is lost on redeploy)")
+            if self.STRIPE_SECRET_KEY and self.STRIPE_SECRET_KEY.startswith("sk_") and not self.STRIPE_WEBHOOK_SECRET:
+                raise ValueError("In production STRIPE_WEBHOOK_SECRET is required when Stripe is turned on")
             if any(o == "*" for o in self.CORS_ORIGINS):
                 raise ValueError("In production CORS_ORIGINS must list the real frontend origins, not '*'")
         return self

@@ -2,11 +2,13 @@
 Deterministic: plain rules and arithmetic only, no AI. Same bill in -> same flags out."""
 from app.engine.checks.arithmetic import check_line_math, check_subtotal
 from app.engine.checks.duplicates import check_duplicates
+from app.engine.checks.eob import check_eob
+from app.engine.checks.payments import check_payments
 from app.engine.models import FlagReport
 from app.models.bill import Bill
 
 # Every detector takes a Bill and returns a list of Flags. Add new detectors here.
-DETECTORS = [check_duplicates, check_line_math, check_subtotal]
+DETECTORS = [check_duplicates, check_line_math, check_subtotal, check_payments, check_eob]
 
 
 def run_checks(bill: Bill) -> FlagReport:

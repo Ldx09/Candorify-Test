@@ -37,9 +37,22 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
     full_name: str | None
+    plan: str = "free"                         # "free" | "premium"
+    plan_status: str | None = None             # Stripe's status, e.g. "active", "past_due"
+    plan_renews_at: datetime | None = None     # when the paid year ends (renews, or ends if canceled)
+    plan_cancel_at_period_end: bool = False    # True: canceled, Premium stays until plan_renews_at
 
     model_config = {"from_attributes": True}
 
+    @field_validator("plan", mode="before")
+    @classmethod
+    def _plan(cls, v):
+        return v or "free"
+
+    @field_validator("plan_cancel_at_period_end", mode="before")
+    @classmethod
+    def _cancel(cls, v):
+        return bool(v)
 
 class SignupResponse(UserOut):
     """The new user plus a token, so the user is signed in right after creating the account."""

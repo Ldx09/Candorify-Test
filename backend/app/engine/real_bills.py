@@ -354,8 +354,8 @@ def read_real_bill(path) -> RealBill | None:
         if not charges:
             charges, total = _read_lines(pdf)
         provider_name = _facility(pdf)
-    if not charges:
-        return None
+        page_lines = [(page.extract_text() or "").splitlines() for page in pdf.pages]
+    if not charges:        return None
     lines = []
     for n, ch in enumerate(charges, start=1):
         description = _clean(ch.description) or "Charge"
@@ -367,4 +367,6 @@ def read_real_bill(path) -> RealBill | None:
     service_date = next((c.service_date for c in charges if c.service_date), None)
     bill = Bill(bill_id="UPLOAD", lines=lines, stated_subtotal=total if total is not None else summed,
                 date_of_service=service_date)
+    from app.engine.payments import extract_payments   # local import: payments.py imports this module
+    bill.payments = extract_payments(page_lines, bill.stated_subtotal)
     return RealBill(bill=bill, has_total=total is not None, from_table=from_table, provider_name=provider_name)

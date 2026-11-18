@@ -3,14 +3,14 @@
 from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import Date, DateTime, ForeignKey, Integer, Numeric, String, func
+from sqlalchemy import Date, DateTime, ForeignKey, Integer, Numeric, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
 from app.models.bill import Bill
 from app.models.line_item import LineItem
-
-
+from app.models.eob import EobSummary
+from app.models.payments import Payments
 class BillRecord(Base):
     __tablename__ = "bills"
 
@@ -20,7 +20,9 @@ class BillRecord(Base):
     stated_subtotal: Mapped[Decimal] = mapped_column(Numeric(12, 2))
     date_of_service: Mapped[date | None] = mapped_column(Date)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-
+    payments: Mapped[str | None] = mapped_column(Text, nullable=True)  # JSON: who paid what (see Payments)
+    eob: Mapped[str | None] = mapped_column(Text, nullable=True)       # JSON: insurance EOB totals (see EobSummary)
+    
     lines: Mapped[list["BillLineRecord"]] = relationship(
         back_populates="bill", cascade="all, delete-orphan", order_by="BillLineRecord.line_no")
 
@@ -30,6 +32,8 @@ class BillRecord(Base):
             bill_id=str(self.id),
             stated_subtotal=self.stated_subtotal,
             date_of_service=self.date_of_service,
+            payments=Payments.from_json(self.payments),
+            eob=EobSummary.from_json(self.eob),            
             lines=[LineItem(line_no=ln.line_no, code=ln.code, description=ln.description,
                             quantity=ln.quantity, unit_price=ln.unit_price, line_total=ln.line_total)
                    for ln in self.lines],

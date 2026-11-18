@@ -33,6 +33,11 @@ FLAG_TITLES = {
     "line_math": "Line total doesn't match quantity x price",
     "subtotal_mismatch": "Total doesn't match the charges",
     "answer_mismatch": "Doesn't match what you told us",
+    "payment_mismatch": "Payments don't add up",
+    "overpaid": "You may have overpaid",
+    "eob_owe_mismatch": "Bill asks for more than your EOB",
+    "eob_paid_mismatch": "Insurance payment doesn't match your EOB",
+    "eob_billed_mismatch": "Billed total doesn't match your EOB",
 }
 HIGHLIGHT = (1.0, 0.82, 0.25)   # marker yellow
 BADGE = (0.12, 0.23, 0.18)      # Candorify forest green

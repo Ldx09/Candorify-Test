@@ -7,9 +7,10 @@ from pydantic import BaseModel, Field
 from app.models.bill import Bill  # noqa: F401  (re-exported for convenience)
 from app.models.line_item import LineItem  # noqa: F401
 
-Rule = Literal["duplicate_line", "line_math", "subtotal_mismatch", "answer_mismatch"]
-ENGINE_RULES = ("duplicate_line", "line_math", "subtotal_mismatch")  # decided by the check engine itself
-
+Rule = Literal["duplicate_line", "line_math", "subtotal_mismatch", "answer_mismatch", "payment_mismatch", "overpaid",
+               "eob_owe_mismatch", "eob_paid_mismatch", "eob_billed_mismatch"]
+ENGINE_RULES = ("duplicate_line", "line_math", "subtotal_mismatch", "payment_mismatch", "overpaid",
+                "eob_owe_mismatch", "eob_paid_mismatch", "eob_billed_mismatch")  # decided by the check engine itself
 
 class Flag(BaseModel):
     id: int | None = None       # set once the flag is saved for a stored bill

@@ -11,14 +11,16 @@ real-bill reader (app/engine/real_bills.py) for hospital and doctor statements.
 """
 import os
 import tempfile
-
+from typing import Annotated
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
 from app.api.routes.bills import check_language, get_own_bill, make_sample_bill, save_bill
 from app.core.database import get_db
 from app.engine.loader import load_bills_pdf
+from app.engine.photo_bills import MAX_PAGES, read_photo_text
 from app.engine.real_bills import read_real_bill
 from app.models.bill import Bill
 from app.models.user import User
@@ -33,6 +35,10 @@ router = APIRouter(prefix="/upload", tags=["upload"])
 
 MAX_PDF_BYTES = 5 * 1024 * 1024
 
+class PhotoTextIn(BaseModel):
+    """The text the user's phone read from up to 5 photos: one list of lines per photo."""
+    pages: list[list[Annotated[str, Field(max_length=300)]]] = Field(min_length=1, max_length=MAX_PAGES)
+    language: str | None = Field(default=None, max_length=10)
 
 class SampleUploadRequest(SampleBillRequest):
     language: str | None = None
@@ -43,19 +49,24 @@ SUMMARY_NOTICE = ("This looks like a summary bill: it lists charges but not the 
                   "for a fully itemized bill (you can use our request letter).")
 NO_TOTAL_NOTICE = " We couldn't find a total on this bill, so we added up the charges ourselves."
 REAL_BILL_LABEL = "Uploaded bill"
+PHOTO_NOTICE = ("Read from your photos. Please check every charge and amount against your bill and fix "
+                "anything we misread before you continue.")
+PHOTO_LABEL = "Uploaded photo"
+PHOTO_UNREADABLE = ("We couldn't find any charges in these photos. Try again with the bill flat, in good light, "
+                    "and the charges filling the photo. Or enter the charges by hand.")
 UNREADABLE = ("We couldn't find any charges in this PDF. Make sure it's a bill with a list of charges "
               "(not a scanned photo), or enter the charges by hand.")
 
 
 def _result(db: Session, user: User, bill: Bill, label: str, language: str | None,
-            bill_format: str = "itemized", notice: str | None = None) -> UploadResult:
+            bill_format: str = "itemized", notice: str | None = None,
+            provider_name: str | None = None) -> UploadResult:
     record = save_bill(db, user, bill, label)
     flags = sync_flags(db, record)
     loc = localize_questions(bill_questions(record), language)
     return UploadResult(bill=BillOut.model_validate(record), flags=flags, questions=loc.questions,
                         language=loc.language, rtl=loc.rtl, translation_note=loc.note,
-                        bill_format=bill_format, notice=notice)
-
+                        bill_format=bill_format, notice=notice, provider_name=provider_name)
 
 def _read_pdf(data: bytes) -> tuple[list[Bill], str | None]:
     """Returns (bills, notice). notice is None for our itemized layout and set for real summary bills."""
@@ -109,6 +120,19 @@ async def upload_pdf(file: UploadFile = File(..., description="Itemized bill, PD
     return _result(db, user, bills[0], bills[0].bill_id, language)
 
 
+@router.post("/photo-text", response_model=UploadResult, status_code=status.HTTP_201_CREATED)
+def upload_photo_text(body: PhotoTextIn, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Bill photos read on the user's phone: only their text arrives here, never the images."""
+    check_language(body.language)
+    if any(len(page) > 400 for page in body.pages):
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Too much text in one photo. Use one photo per page.")
+    real = read_photo_text(body.pages)
+    if real is None:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, PHOTO_UNREADABLE)
+    notice = PHOTO_NOTICE + ("" if real.has_total else NO_TOTAL_NOTICE)
+    return _result(db, user, real.bill, PHOTO_LABEL, body.language, bill_format="photo", notice=notice,
+                   provider_name=real.provider_name)
+    
 @router.post("/sample", response_model=UploadResult, status_code=status.HTTP_201_CREATED)
 def upload_sample(body: SampleUploadRequest | None = None, user: User = Depends(get_current_user),
                   db: Session = Depends(get_db)):

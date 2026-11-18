@@ -38,7 +38,7 @@ class UploadResult(BaseModel):
     translation_note: str | None = None
     bill_format: str = "itemized"   # "itemized" (codes, quantities, prices) or "summary" (a real summary bill)
     notice: str | None = None       # shown to the user, e.g. how to get a fully itemized bill
-
+    provider_name: str | None = None  # the facility named on the bill, to pre-fill the form (not stored)
 
 class AnswerIn(BaseModel):
     question_id: str = Field(min_length=1, max_length=80)

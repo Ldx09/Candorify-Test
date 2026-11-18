@@ -2,11 +2,12 @@
 so no cents are lost to floating-point rounding; the frontend can display them as-is."""
 from datetime import date, datetime
 from decimal import Decimal
-
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_serializer
+from pydantic import BaseModel, Field, field_serializer, field_validator
 
+from app.models.eob import EobSummary
+from app.models.payments import Payments
 from app.translation.service import CodeInfo
 
 
@@ -17,11 +18,14 @@ class LineIn(BaseModel):
     unit_price: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
     line_total: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
 
+
 class BillIn(BaseModel):
     label: str | None = Field(default=None, max_length=100)
     stated_subtotal: Decimal = Field(ge=0, max_digits=12, decimal_places=2)
     date_of_service: date | None = None  # "2026-09-01"
     lines: list[LineIn] = Field(min_length=1, max_length=500)  # line numbers are assigned 1, 2, 3... in order
+    payments: Payments | None = None  # who paid what, as checked by the user (optional)
+    eob: EobSummary | None = None     # insurance EOB totals, kept when the charges are edited (optional)
 
 
 class LineOut(BaseModel):
@@ -46,8 +50,20 @@ class BillOut(BaseModel):
     date_of_service: date | None = None
     created_at: datetime
     lines: list[LineOut]
+    payments: Payments | None = None   # who paid what, when the bill shows it
+    eob: EobSummary | None = None      # insurance EOB totals, when the user added an EOB
 
     model_config = {"from_attributes": True}
+
+    @field_validator("payments", mode="before")
+    @classmethod
+    def _payments(cls, v):   # stored as JSON text in the database
+        return Payments.from_json(v) if isinstance(v, str) or v is None else v
+
+    @field_validator("eob", mode="before")
+    @classmethod
+    def _eob(cls, v):        # stored as JSON text in the database
+        return EobSummary.from_json(v) if isinstance(v, str) or v is None else v
 
 
 class TranslatedLineOut(LineOut):

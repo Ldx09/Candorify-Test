@@ -7,7 +7,8 @@ from app.schemas.translation import check_language
 
 
 class FlagSelector(BaseModel):
-    rule: Literal["duplicate_line", "line_math", "subtotal_mismatch", "answer_mismatch"]
+    rule: Literal["duplicate_line", "line_math", "subtotal_mismatch", "answer_mismatch", "payment_mismatch", "overpaid",
+                  "eob_owe_mismatch", "eob_paid_mismatch", "eob_billed_mismatch"]
     line_no: int | None = None  # None for the subtotal flag
 
 

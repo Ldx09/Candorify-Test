@@ -11,6 +11,6 @@ httpx>=0.27
 python-multipart>=0.0.9
 pypdf>=4.0            # marked-up bill PDF
 reportlab>=4.0        # marked-up bill PDF + scripts/make_demo_pdf.py
-
 # dev / scripts only
 pytest>=8.0         # tests/
+stripe>=17.0          # Premium plan payments (app/services/billing.py)

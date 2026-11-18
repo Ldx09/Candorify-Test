@@ -48,7 +48,8 @@ def get_own_bill(db: Session, bill_id: int, user: User) -> BillRecord:
 
 def save_bill(db: Session, user: User, bill: Bill, label: str | None) -> BillRecord:
     record = BillRecord(user_id=user.id, label=label, stated_subtotal=bill.stated_subtotal,
-                        date_of_service=bill.date_of_service)
+                        date_of_service=bill.date_of_service,
+                        payments=bill.payments.to_json() if bill.payments else None)
     record.lines = [BillLineRecord(line_no=i, code=ln.code, description=ln.description, quantity=ln.quantity,
                                    unit_price=ln.unit_price, line_total=ln.line_total)
                     for i, ln in enumerate(bill.lines, start=1)]
@@ -101,7 +102,9 @@ def list_bills(user: User = Depends(get_current_user), db: Session = Depends(get
 def create_bill(body: BillIn, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Stores a bill for the logged-in user. Lines are numbered 1, 2, 3... in the order sent."""
     bill = BillRecord(user_id=user.id, label=body.label, stated_subtotal=body.stated_subtotal,
-                      date_of_service=body.date_of_service)
+                      date_of_service=body.date_of_service,
+                      payments=body.payments.to_json() if body.payments else None,
+                      eob=body.eob.to_json() if body.eob else None)
     bill.lines = [BillLineRecord(line_no=i, **line.model_dump()) for i, line in enumerate(body.lines, start=1)]
     db.add(bill)
     db.commit()

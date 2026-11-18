@@ -2,7 +2,7 @@
 Column names must match Nathalie's schema exactly."""
 from datetime import datetime
 
-from sqlalchemy import DateTime, String, func, select
+from sqlalchemy import Boolean, DateTime, String, func, select
 from sqlalchemy.orm import Mapped, Session, mapped_column
 
 from app.core.database import Base
@@ -17,6 +17,17 @@ class User(Base):
     full_name: Mapped[str | None] = mapped_column(String(255))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
+    # Premium plan (Stripe). Card details are never stored here: Stripe keeps them.
+    plan: Mapped[str | None] = mapped_column(String(20), default="free")            # "free" | "premium"
+    plan_status: Mapped[str | None] = mapped_column(String(30))                      # Stripe status: active, past_due, canceled...
+    plan_renews_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))  # end of the paid year
+    plan_cancel_at_period_end: Mapped[bool | None] = mapped_column(Boolean, default=False)
+    stripe_customer_id: Mapped[str | None] = mapped_column(String(255), index=True)
+    stripe_subscription_id: Mapped[str | None] = mapped_column(String(255))
+
+    @property
+    def is_premium(self) -> bool:
+        return self.plan == "premium"
 
 def create_user(db: Session, email: str, password_hash: str, full_name: str | None = None) -> User:
     """Inserts a new user. Raises sqlalchemy IntegrityError if the email already exists."""

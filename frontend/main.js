@@ -17,17 +17,22 @@
   const PUBLIC_VIEWS = new Set(["home", "pricing", "auth", "team", "legal", "results"]);
   const STEPS = ["start", "charges", "questions", "flags", "letter", "finish"];
   const STEP_LABELS = { start: "Upload", charges: "Charges", questions: "Questions", flags: "Review", letter: "Letter", finish: "Finish" };
-  const VIEW_PURPOSE = { check: "check a bill", letters: "write a letter", account: "see your account", lookup: "look up a code" };
-
+  const VIEW_PURPOSE = { check: "check a bill", letters: "write a letter", account: "see your account", lookup: "look up a code", checkout: "upgrade to Premium" };
   // site is split into separate pages now, this is just which file each one lives in
   const PAGES = {
     home: "home.html", check: "bill.html", letters: "dispute.html", lookup: "lookUp.html", pricing: "plans.html",
     account: "profile.html", results: "performance.html", team: "team.html", legal: "terms.html",
+    checkout: "checkout.html",
   };
   const onThisPage = (view) => !!document.getElementById("view-" + view);
 
   // flag types from the backend (matched by part of the name)
   const KIND_LABELS = [
+    [/eob_owe/, "Bill asks for more than your EOB"],
+    [/eob_paid/, "Insurance payment doesn't match your EOB"],
+    [/eob_billed/, "Billed total doesn't match your EOB"],
+    [/payment/, "Payments don't add up"],
+    [/overpaid/, "You may have overpaid"],
     [/dup/, "Possible duplicate charge"],
     [/arith|math/, "Math doesn't add up"],
     [/quantit/, "Unusual quantity"],
@@ -69,6 +74,9 @@
       step: "start",
       editing: new Set(),
       finished: false,
+      payments: null,        // who paid what: { insurance_paid, adjustments, patient_responsibility, patient_paid, other_payments, balance_due }
+      notice: null,          // shown under "Check the charges" (summary bills, photos)
+      eob: null,             // insurance EOB totals (billed, allowed, plan_paid, you_owe) and service_dates
     };
   }
 
@@ -153,7 +161,7 @@
     if (view === "letters") mountLetter("letters");
     if (view === "check" && flow.step === "letter") mountLetter("flow");
     if (view === "pricing") renderPricing();
-    if (view === "account") renderAccount();
+    if (view === "checkout" && window.CandorifyBilling) window.CandorifyBilling.show(state.user);
     if (view === "results") renderResults(); else stopStatsRefresh();
     window.scrollTo(0, 0);
     if (view === "check") focusHeading($("#step-" + flow.step));
@@ -170,7 +178,7 @@
     $("#header-user").hidden = !inApp;
     if (inApp) {
       const badge = $("#plan-badge");
-      badge.textContent = isPaid() ? "Paid" : "Free";
+      badge.textContent = isPaid() ? "Premium" : "Free";
       badge.className = "badge" + (isPaid() ? " badge-brand" : "");
       $("#user-email").textContent = state.user.email || "Account";
     }
@@ -304,7 +312,8 @@
   function resetFlow() {
     flow = newFlow();
     selectedFile = null;
-    const input = $("#pdf-file");
+    if (window.CandorifyPhoto) window.CandorifyPhoto.clear();
+    setChargesIntro(null);    const input = $("#pdf-file");
     if (input) input.value = "";
     $("#file-name").hidden = true;
     $("#btn-upload").disabled = true;
@@ -334,10 +343,20 @@
     if (file.size > MAX_PDF_MB * 1024 * 1024) { toast(`That PDF is over ${MAX_PDF_MB} MB. Try a smaller file, or only the itemized pages.`, true); return; }
     if (file.size === 0) { toast("That file is empty. Please choose another PDF.", true); return; }
     selectedFile = file;
+    if (window.CandorifyPhoto) window.CandorifyPhoto.clear();   // NEW: a PDF replaces any photos
     $("#file-name").innerHTML = ICON_FILE + "<span>" + esc(file.name) + "</span>";
     $("#file-row").hidden = false;
     $("#btn-upload").disabled = false;
     $("#upload-status").textContent = "";
+  }
+  
+    // The line under "Check the charges": a notice for summary bills and photos, otherwise the usual text.
+  const CHARGES_INTRO = "Tap a code to see what it means. Fix anything we misread.";
+  function setChargesIntro(notice) {
+    const intro = $("#charges-intro");
+    if (!intro) return;
+    intro.textContent = notice || CHARGES_INTRO;
+    intro.classList.toggle("charges-notice", !!notice);
   }
 
   function clearFile() {
@@ -383,14 +402,16 @@
   }
 
   async function doUpload() {
-    if (!selectedFile) { toast("Choose your PDF first.", true); return; }
-    const btn = $("#btn-upload");
+    const usePhotos = !!(window.CandorifyPhoto && window.CandorifyPhoto.has());
+    if (!selectedFile && !usePhotos) { toast("Choose your PDF or add a photo first.", true); return; }    const btn = $("#btn-upload");
     setBusy(btn, true, "Reading your bill…");
     $("#upload-status").textContent = "This can take up to a minute.";
     try {
-      const res = await API.uploadPdf(selectedFile, prefLang());
-      const keepFile = selectedFile;
-      flow = newFlow();
+      // photos are read here on the device; only their text goes to the server
+      const res = usePhotos
+        ? await API.uploadPhotoText(await window.CandorifyPhoto.readPages((msg) => { $("#upload-status").textContent = msg; }), prefLang())
+        : await API.uploadPdf(selectedFile, prefLang());
+      const keepFile = usePhotos ? null : selectedFile;   // the marked-up PDF needs the original PDF      flow = newFlow();
       selectedFile = keepFile;
       flow.source = "upload";
       flow.billId = res.bill_id;
@@ -399,15 +420,17 @@
       flow.date = res.service_date || "";
       flow.total = num(res.stated_total);
       flow.lines = (res.line_items || []).map(normalizeLine);
+      flow.payments = res.payments || null;
+      flow.notice = res.notice || null;
       if (Array.isArray(res.questions) && res.questions.length) {
         flow.questions = res.questions.map(normalizeQuestion).filter((q) => q.text);
         flow.questionsFromServer = true;
       }
       $("#upload-status").textContent = "";
-      toast("Found " + flow.lines.length + " " + plural(flow.lines.length, "charge") + "." + (res.notice ? " " + res.notice : ""));
+      toast("Found " + flow.lines.length + " " + plural(flow.lines.length, "charge") + ".");
       setStep("charges");
       renderCharges();
-    } catch (err) {
+      setChargesIntro(res.notice);    } catch (err) {
       $("#upload-status").textContent = err.message;
       toast(err.message, true);
     } finally { setBusy(btn, false); }
@@ -449,8 +472,24 @@
     ["#rev-provider", "#rev-date", "#rev-total"].forEach((s) => { $(s).disabled = sample; });
     $("#btn-add-line").hidden = sample;
     renderLines();
+    if (flow.notice && !sample) setChargesIntro(flow.notice);
+    else $("#charges-intro").classList.remove("charges-notice");
+    renderPaymentsEditor();
   }
 
+  // "Who paid what" card under the charges (not for sample bills). Edits are saved with the charges.
+  function renderPaymentsEditor() {
+    let box = $("#payments-card");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "payments-card";
+      $("#totals-bar").insertAdjacentElement("afterend", box);
+    }
+    box.hidden = flow.source === "sample" || !window.CandorifyPayments;
+    if (box.hidden) { box.innerHTML = ""; return; }
+    window.CandorifyPayments.editor(box, flow.payments, (p) => { flow.payments = p; });
+  }
+  
   function renderLines(focusIndex) {
     const readOnly = flow.source === "sample";
     $("#lines").innerHTML = flow.lines.length
@@ -555,7 +594,7 @@
       const btn = $("#btn-charges-next");
       setBusy(btn, true, "Saving your changes…");
       try {
-        const r = await API.syncBill(flow.billId, { lines: flow.lines, total: flow.total, date: flow.date, label: flow.label, language: prefLang() });
+        const r = await API.syncBill(flow.billId, { lines: flow.lines, total: flow.total, date: flow.date, label: flow.label, language: prefLang(), payments: flow.payments, eob: flow.eob });
         if (r.changed) {
           flow.billId = r.bill_id;
           flow.answers = {};
@@ -720,11 +759,77 @@
     finally { setBusy(btn, false); }
   }
 
+  function renderReviewExtras() {
+    const after = $("#flags-list");
+    const box = (id) => {
+      let el = document.getElementById(id);
+      if (!el) { el = document.createElement("div"); el.id = id; after.insertAdjacentElement("afterend", el); }
+      return el;
+    };
+    const assist = box("assist-card");
+    const eob = box("eob-card");          // inserted last, so it sits right under the flags, above assistance
+    const upload = flow.source === "upload" && flow.billId;
+
+    // Compare with the insurance EOB
+    eob.hidden = !(upload && window.CandorifyEob);
+    const eobKey = eob.hidden ? "" : flow.billId + "|" + JSON.stringify(flow.eob) + "|" + (flow.eobResult ? flow.eobResult.note : "");
+    if (!eob.hidden && eob.dataset.key !== eobKey) {   // redraw only when the bill or its EOB changed
+      eob.dataset.key = eobKey;
+      window.CandorifyEob.render(eob, {
+        billId: () => flow.billId, eob: flow.eob, result: flow.eobResult || null,
+        onResult: (res) => { flow.eob = res.eob; flow.eobResult = res.eob ? res : null; applyServerFlags(res.flags); },
+      });
+    }
+
+    // Financial assistance: shown for every uploaded bill (people who qualify can also get refunds of what they paid)
+    assist.hidden = !(upload && window.CandorifyAssist);
+    if (upload && !window.CandorifyAssist && document.readyState !== "complete") {   // assistance.js loads after main.js
+      window.addEventListener("load", renderReviewExtras, { once: true });
+    }
+    if (!assist.hidden && assist.dataset.bill !== String(flow.billId)) {   // keep what they typed while on this bill
+      assist.dataset.bill = String(flow.billId);
+      window.CandorifyAssist.render(assist, {
+        amount: billAskedAmount,              // fills in "Amount you owe"
+        hospital: () => flow.provider,        // used in the letter
+        date: () => flow.date,
+      });
+    }
+  }
+
+  // What the bill asks the patient to pay: their share, or what's still owed plus what they already paid.
+  function billAskedAmount() {
+    const p = flow.payments || {};
+    const num = (v) => (v === null || v === undefined || String(v).trim() === "" ? null : Number(v));
+    const share = num(p.patient_responsibility);
+    if (share !== null && share > 0) return share;
+    const owed = num(p.balance_due);
+    if (owed !== null && owed > 0) return owed + (num(p.patient_paid) || 0);
+    return null;
+  }
+    // New flags from the server (e.g. after adding an EOB): keep what the user already chose for each one.
+  function applyServerFlags(serverFlags) {
+    const prev = new Map(flow.flags.map((f) => [f.key, f]));
+    flow.flags = (serverFlags || []).map(normalizeFlag)
+      .filter((f) => !(f.questionId && isNotSure(flow.answers[f.questionId])))
+      .concat(flow.flags.filter((f) => f.local))
+      .map((f) => { const old = prev.get(f.key); return old ? { ...f, status: old.status, include: old.include } : f; });
+    renderFlags();
+  }
+
+  
   // step 4 - flags (review)
   function renderFlags() {
     const open = flow.flags.filter((f) => f.status !== "dismissed").length;
     const summary = $("#flag-summary");
-    if (!flow.flags.length) {
+    if (window.CandorifyPayments) {   // "Who paid what" at the top of the review, when the bill shows payments
+      let box = $("#payments-summary");
+      if (!box) {
+        box = document.createElement("div");
+        box.id = "payments-summary";
+        summary.insertAdjacentElement("beforebegin", box);
+      }
+      window.CandorifyPayments.summary(box, flow.source === "sample" ? null : flow.payments, flow.total);
+    }    if (!flow.flags.length) {
       summary.className = "flag-summary is-ok";
       summary.textContent = "Nothing looks off. It's still worth a quick read.";
     } else {
@@ -733,6 +838,7 @@
         (open !== flow.flags.length ? ` · ${flow.flags.length - open} marked fine` : "");
     }
     $("#flags-list").innerHTML = flow.flags.map(flagCardHTML).join("");
+    renderReviewExtras();
     updateFlagsNext();
   }
 
@@ -880,9 +986,9 @@
       setLetterType(itemsFromFlags().length ? "dispute" : "request");
       if (flow.provider) $("#tpl-provider").value = flow.provider;
       if (flow.date) $("#tpl-date").value = flow.date;
-      $("#btn-download-annotated").hidden = !(API.features.annotatedPdf && flow.source === "upload" && flow.billId);
-      if (changedMode) { $("#tpl-subject").value = ""; $("#tpl-body").value = ""; }
-    } else {
+      $("#btn-download-annotated").hidden = !(API.features.annotatedPdf && flow.source === "upload" && flow.billId
+        && flow.flags.some((f) => f.status !== "dismissed"));
+      if (changedMode) { $("#tpl-subject").value = ""; $("#tpl-body").value = ""; }    } else {
       $("#btn-download-annotated").hidden = true;
       setLetterType(letterType());
     }
@@ -997,7 +1103,7 @@
     const btn = $("#btn-download-annotated");
     setBusy(btn, true, "Making your PDF…");
     try {
-      const blob = await API.fetchAnnotatedPdf(flow.billId, prefLang());
+      const blob = await API.fetchAnnotatedPdf(flow.billId, selectedFile);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url; a.download = "candorify-review.pdf";
@@ -1199,36 +1305,44 @@
 
   // PRICING
   async function renderPricing() {
-    let cfg = { paid_features: [], mock_mode: true };
-    try { cfg = await API.paymentConfig(); } catch (e) { /* keep defaults */ }
-    // basic / premium / business lists live in plans.html now. only swap the premium list if the backend sends its own
-    if (cfg.paid_features && cfg.paid_features.length) $("#paid-features").innerHTML = cfg.paid_features.map((f) => `<li>${esc(f)}</li>`).join("");
-    $("#pay-mode-note").textContent = cfg.mock_mode ? "Test mode: no real charge is made." : "Secure checkout with Stripe.";
-    const btn = $("#btn-upgrade");
-    btn.textContent = isPaid() ? "You're on the paid plan" : (API.features.payments ? "Upgrade" : "Coming soon");
-    btn.disabled = isPaid() || !API.features.payments;
-    if (!API.features.payments) $("#pay-mode-note").textContent = "Paid plans are coming soon. Everything here is free for now.";
+    const btn = $("#btn-upgrade"), note = $("#pay-mode-note");
+    if (!btn) return;
+    if (isPaid()) {
+      btn.textContent = "You're on Premium";
+      btn.disabled = true;
+      if (note) note.textContent = "Thanks for supporting Candorify. Manage your plan from your account.";
+      return;
+    }
+    let cfg = null;
+    try { cfg = await API.billingConfig(); } catch (e) { /* server unreachable: shown as unavailable */ }
+    btn.textContent = "Get Premium";
+    btn.disabled = !(cfg && cfg.enabled);
+    if (note) {
+      note.textContent = !(cfg && cfg.enabled) ? "Premium isn't available right now. Everything in Basic is free."
+        : cfg.test_mode ? "Test mode: no real charges. Secure checkout by Stripe."
+        : "Secure checkout by Stripe. Cancel anytime.";
+    }
   }
 
-  async function startUpgrade() {
-    if (!API.isLoggedIn()) { state.pendingView = "pricing"; showAuth("register", "Create a free account first, then you can upgrade."); return; }
-    const btn = $("#btn-upgrade");
-    setBusy(btn, true, "Starting checkout…");
+  function startUpgrade() {
+    if (!API.isLoggedIn()) { state.pendingView = "checkout"; showAuth("register", "Create a free account first, then you can get Premium."); return; }
+    go("checkout");
+  }
+
+  function planDate(iso) {
+    return iso ? new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "";
+  }
+
+  async function changeRenewal(cancel, btn) {
+    if (cancel && !confirm("Cancel your Premium renewal? You'll keep Premium until " + planDate(state.user.plan_renews_at) + ".")) return;
+    setBusy(btn, true, cancel ? "Canceling…" : "Turning renewal back on…");
     try {
-      const res = await API.startCheckout();
-      if (res.mock) {
-        const sid = new URL(res.checkout_url, window.location.origin).searchParams.get("session_id");
-        await API.confirmCheckout(sid);
-        await refreshUser();
-        toast("Upgraded (test mode). Paid features are unlocked.");
-        go("account");
-      } else {
-        window.location.href = res.checkout_url;
-      }
+      const u = cancel ? await API.cancelPremium() : await API.resumePremium();
+      Object.assign(state.user, u);
+      toast(cancel ? "Renewal canceled. Premium stays on until " + planDate(u.plan_renews_at) + "." : "Renewal is back on.");
     } catch (err) { toast(err.message, true); }
-    finally { setBusy(btn, false); renderPricing(); }
+    finally { setBusy(btn, false); renderAccount(); }
   }
-
   // account
   async function renderAccount() {
     const wrap = $("#account-detail");
@@ -1239,10 +1353,15 @@
     wrap.innerHTML = `
       <div class="card">
         <div class="account-row"><span class="muted">Email</span><strong>${esc(state.user.email)}</strong></div>
-        <div class="account-row"><span class="muted">Plan</span><span class="badge ${isPaid() ? "badge-brand" : ""}">${isPaid() ? "Paid" : "Free"}</span></div>
+        <div class="account-row"><span class="muted">Plan</span><span class="badge ${isPaid() ? "badge-brand" : ""}">${isPaid() ? "Premium" : "Free"}</span></div>
+        ${isPaid() && state.user.plan_renews_at ? `<div class="account-row"><span class="muted">${state.user.plan_cancel_at_period_end ? "Premium ends" : "Renews"}</span><strong>${esc(planDate(state.user.plan_renews_at))}</strong></div>` : ""}
+        ${isPaid() && state.user.plan_status === "past_due" ? '<p class="form-error" style="margin:8px 0 0">Your last payment didn\'t go through. Stripe will try again; check your card to keep Premium.</p>' : ""}
         <div class="account-row"><span class="muted">Explanations in</span><strong>${esc(lang)}</strong></div>
         <div class="row" style="margin-top:16px">
-          ${isPaid() ? "" : '<button type="button" class="btn btn-primary" id="acc-upgrade">See paid plan</button>'}
+          ${isPaid() ? (state.user.plan_cancel_at_period_end
+            ? '<button type="button" class="btn btn-primary" id="acc-resume">Keep Premium</button>'
+            : '<button type="button" class="btn btn-secondary" id="acc-cancel">Cancel renewal</button>')
+            : '<button type="button" class="btn btn-primary" id="acc-upgrade">Get Premium</button>'}
           <button type="button" class="btn btn-secondary" id="acc-signout">Sign out</button>
         </div>
       </div>
@@ -1256,7 +1375,9 @@
         <p class="muted">This permanently deletes your account and everything connected to it. It can't be undone.</p>
         <button type="button" class="btn btn-danger" id="acc-delete">Delete my account and data</button>
       </div>`;
-    if ($("#acc-upgrade")) $("#acc-upgrade").onclick = () => go("pricing");
+    if ($("#acc-upgrade")) $("#acc-upgrade").onclick = () => go("checkout");
+    if ($("#acc-cancel")) $("#acc-cancel").onclick = (e) => changeRenewal(true, e.currentTarget);
+    if ($("#acc-resume")) $("#acc-resume").onclick = (e) => changeRenewal(false, e.currentTarget);
     $("#acc-signout").onclick = signOut;
     $("#acc-delete").onclick = async () => {
       if (!confirm("Permanently delete your account and all your data? This can't be undone.")) return;
@@ -1603,7 +1724,7 @@
 
     // stripe sends ppl back here w ?session_id=
     const params = new URLSearchParams(window.location.search);
-    if (params.get("session_id") && API.isLoggedIn()) {
+    if (page !== "checkout" && params.get("session_id") && API.isLoggedIn()) {
       try {
         await API.confirmCheckout(params.get("session_id"));
         await refreshUser();
@@ -1626,7 +1747,7 @@
     if (target && document.getElementById(target)) setTimeout(() => scrollToId(target), 80);
   }
 
-  window.CandorifyApp = { go, back };
+  window.CandorifyApp = { go, back, refreshUser };
   document.addEventListener("DOMContentLoaded", init);
 })();
 

@@ -5,9 +5,10 @@ from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.deps import get_current_user
-from app.api.routes import account, auth, bills, letters, translate, upload
+from app.api.routes import account, assistance, auth, billing, bills, clara, eob, letters, translate, upload
 from app.core.config import settings
 from app.core.database import Base, check_connection, engine
+from app.core.schema_upgrade import add_missing_columns
 from app.core.errors import register_error_handlers
 from app.core.http_security import add_http_security
 from app.models import answer_record, bill_record, flag_record, missing_code_record  # noqa: F401  (registers the tables for create_all)
@@ -23,6 +24,7 @@ retention = RetentionScheduler()
 async def lifespan(app: FastAPI):
     check_connection()  # stops the server with a clear message if the database is unreachable
     Base.metadata.create_all(bind=engine)  # creates missing tables; never changes existing ones
+    add_missing_columns(engine)  # adds new columns (e.g. bills.payments) to tables made before them
     retention.start()  # deletes expired bills now and every RETENTION_SWEEP_MINUTES
     yield
     retention.stop()
@@ -49,7 +51,9 @@ app.add_middleware(
 # ---- Public routes (no login needed) ----
 app.include_router(auth.router)  # /api/auth/signup (/register), /api/auth/login
 app.include_router(translate.public_router)  # /api/languages
-
+app.include_router(clara.router)  # /api/clara/start, /api/clara/ask (help assistant)
+app.include_router(assistance.router)  # /api/assistance/check (public, nothing stored)
+app.include_router(billing.public_router)  # /api/billing/config, /api/billing/webhook (Stripe)
 
 @app.get("/health")
 def health():
@@ -72,5 +76,7 @@ protected.include_router(bills.router)      # /api/bills (list, create, sample, 
 protected.include_router(translate.router)  # /api/translate?code=, /api/translate/text
 protected.include_router(letters.router)    # /api/letters
 protected.include_router(upload.router)     # /api/upload/pdf, /api/upload/sample, /api/upload/review
+protected.include_router(eob.router)        # /api/bills/{id}/eob, /eob-text (compare with the insurance EOB)
+protected.include_router(billing.router)    # /api/billing/checkout, /session/{id}, /cancel, /resume (Premium)
 
 app.include_router(protected)
