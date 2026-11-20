@@ -292,3 +292,62 @@ def test_mychart_department_lines_are_not_double_counted():
     assert b.lines[5].description.endswith("Access System Abdominal")        # wrapped line joined
     assert b.lines[3].description == "HC Thromboplas Time Partial - Aptt"     # code removed from the text
     assert run_checks(b).flag_count == 0
+
+
+
+# ---------- bill photos (text read on the phone) ----------
+
+from app.engine.photo_bills import clean_line, read_photo_text  # noqa: E402
+
+
+@pytest.mark.parametrize("raw,clean", [
+    ("HC Venipuncture - 36415 (CPT®) S60.00", "HC Venipuncture - 36415 (CPT®) $60.00"),
+    ("Emergency Room \u2014 General $ 5,249 .00", "Emergency Room - General $5,249.00"),
+    ("Laboratory - Chemistry 864,00", "Laboratory - Chemistry 864.00"),
+])
+def test_photo_text_cleanup(raw, clean):
+    assert clean_line(raw) == clean
+
+
+def test_photo_text_hospital_statement_with_ocr_slips():
+    page = ["Sample Health ITEMIZED ACCOUNT DETAIL", "Facility Location: Sample University Hospital",
+            "Description / Service Classification Amount",
+            "Pharmacy - General Classification S933.08", "Laboratory - Chemistry $ 864 .00",
+            "Emergency Room \u2014 General Classification $5,249.00", "Total Hospital Charges $7,046.08",
+            "Insurance Payments -$5,000.00", "Overall Patient Responsibility $550.00"]
+    r = read_photo_text([page])
+    b = r.bill
+    assert [ln.code for ln in b.lines] == ["0250", "0301", "0450"] and r.has_total
+    assert b.stated_subtotal == Decimal("7046.08") and run_checks(b).flag_count == 0
+    assert r.provider_name == "Sample University Hospital"
+
+
+def test_photo_text_doctor_statement_picks_the_charges_column():
+    page = ["Summary of Charges", "Date Description Provider Charges Credits Balance",
+            "Charges for TEST,PATIENT in Sample Pediatrics",
+            "11/17/2025 Office/Outpatient Established Sam Doctor, 420.00 10.00", "Mod Mdm 30 Min MD",
+            "12/02/2025 Insurance Payment - Test Plan 230.07"]
+    r = read_photo_text([page])
+    line = r.bill.lines[0]
+    assert len(r.bill.lines) == 1 and line.line_total == Decimal("420.00") and line.code == "99214"
+    assert r.bill.date_of_service.isoformat() == "2025-11-17" and r.provider_name == "Sample Pediatrics"
+    assert "TEST,PATIENT" not in line.description
+
+
+def test_photo_text_two_pages_and_nothing_found():
+    r = read_photo_text([["Laboratory - Hematology $400.00"], ["Anesthesia - General Classification $3,205.00"]])
+    assert len(r.bill.lines) == 2 and r.bill.stated_subtotal == Decimal("3605.00") and not r.has_total
+    assert read_photo_text([["Thank you for choosing us", "Call 555-0100"]]) is None
+
+
+def test_upload_photo_text(c):
+    pages = [["Description Amount", "Laboratory - Hematology $400.00", "Laboratory - Hematology $400.00",
+              "Total Charges $800.00"]]
+    r = c.post("/api/upload/photo-text", json={"pages": pages})
+    assert r.status_code == 201, r.text
+    out = r.json()
+    assert out["bill_format"] == "photo" and "check every charge" in out["notice"]
+    assert out["bill"]["label"] == "Uploaded photo" and [f["rule"] for f in out["flags"]["flags"]] == ["duplicate_line"]
+    bad = c.post("/api/upload/photo-text", json={"pages": [["nothing here"]]})
+    assert bad.status_code == 400 and "couldn't find any charges" in bad.json()["detail"]
+    assert c.post("/api/upload/photo-text", json={"pages": [["x"]] * 6}).status_code == 422

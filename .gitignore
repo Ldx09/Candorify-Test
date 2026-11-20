@@ -17,3 +17,7 @@ __pycache__/
 .venv/
 Billing_Statement*.pdf
 MyChart*.pdf
+
+.env
+*.db
+*.pdf

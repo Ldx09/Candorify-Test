@@ -1,0 +1,172 @@
+/* Clara, the help assistant. Loaded by clara.js. Uses the site's colours and fonts. */
+.clara {
+  --cl-forest: #1F3B2D; --cl-night: #18211B; --cl-green: #2E5A43;
+  --cl-beige: #EFE8D9; --cl-paper: #FBF8F1; --cl-sage: #C9D8C2; --cl-ochre: #DDB65F; --cl-ink: #161A14;
+  --cl-muted: #595D51; --cl-line: rgba(31, 59, 45, .16);
+  --cl-ease: cubic-bezier(.2, .8, .2, 1);
+  --cl-bottom: 20px;
+  font-family: "Inter Tight", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color: var(--cl-ink);
+}
+.clara *, .clara *::before, .clara *::after { box-sizing: border-box; }
+.clara [hidden] { display: none !important; }
+.clara-sr, .clara-hp { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; left: -9999px; }
+.clara button { font: inherit; cursor: pointer; }
+.clara :focus-visible { outline: 2px solid var(--cl-ochre); outline-offset: 2px; }
+
+/* ---- launcher: the lens ---- */
+.clara-launch {
+  position: fixed; right: 20px; bottom: var(--cl-bottom); z-index: 75;
+  display: flex; align-items: center; gap: 10px; padding: 6px 18px 6px 6px;
+  border: 0; border-radius: 999px; background: var(--cl-night); color: var(--cl-beige);
+  box-shadow: 0 10px 30px -10px rgba(24, 33, 27, .65), 0 0 0 1px rgba(239, 232, 217, .08) inset;
+  transition: transform .35s var(--cl-ease), padding .35s var(--cl-ease), background-color .25s;
+}
+.clara-launch:hover { transform: translateY(-2px); background: var(--cl-forest); }
+.clara-launch-text { font-size: .95rem; font-weight: 500; letter-spacing: .01em; white-space: nowrap; }
+.clara-lens {
+  position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  color: var(--cl-ochre);
+  background: radial-gradient(circle at 35% 30%, rgba(221, 182, 95, .28), transparent 55%), var(--cl-forest);
+}
+.clara-lens svg { width: 26px; height: 26px; transition: transform .5s var(--cl-ease); }
+/* one slow glint around the lens when the page loads, then still */
+.clara-lens::after {
+  content: ""; position: absolute; inset: -3px; border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 70%, var(--cl-ochre) 85%, transparent 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  animation: claraGlint 2.4s var(--cl-ease) .8s 2 both;
+}
+.clara-launch:hover .clara-lens svg { transform: rotate(-20deg) scale(1.06); }
+.clara.is-open .clara-launch { padding-right: 6px; }
+.clara.is-open .clara-launch-text { display: none; }
+.clara.is-open .clara-launch .clara-lens svg { transform: scale(.85); }
+
+.clara-nudge {
+  position: fixed; right: 20px; bottom: calc(var(--cl-bottom) + 68px); z-index: 75; margin: 0;
+  max-width: 230px; padding: 12px 14px; border-radius: 14px 14px 4px 14px;
+  background: var(--cl-paper); color: var(--cl-ink); font-size: .9rem; line-height: 1.4;
+  box-shadow: 0 12px 30px -12px rgba(24, 33, 27, .5); border: 1px solid var(--cl-line);
+  opacity: 0; transform: translateY(8px); transition: opacity .4s var(--cl-ease), transform .4s var(--cl-ease);
+}
+.clara.show-nudge .clara-nudge { opacity: 1; transform: none; }
+
+/* ---- panel: opens like a lens iris from the launcher ---- */
+.clara-panel {
+  position: fixed; right: 20px; bottom: calc(var(--cl-bottom) + 72px); z-index: 95;
+  width: 388px; height: min(620px, calc(100vh - 130px)); height: min(620px, calc(100dvh - 130px));
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--cl-beige); border-radius: 22px; border: 1px solid var(--cl-line);
+  box-shadow: 0 30px 70px -24px rgba(24, 33, 27, .55), 0 8px 18px -10px rgba(24, 33, 27, .3);
+  clip-path: circle(0 at calc(100% - 28px) calc(100% + 44px));
+  transition: clip-path .55s var(--cl-ease);
+}
+.clara.is-open .clara-panel { clip-path: circle(160% at calc(100% - 28px) calc(100% + 44px)); }
+.clara-panel > * { opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .4s var(--cl-ease); }
+.clara.is-open .clara-panel > * { opacity: 1; transform: none; transition-delay: .18s; }
+.clara.is-open .clara-panel > .clara-body { transition-delay: .24s; }
+.clara.is-open .clara-panel > .clara-compose, .clara.is-open .clara-panel > .clara-note { transition-delay: .3s; }
+
+.clara-head {
+  display: flex; align-items: center; gap: 12px; padding: 16px 14px 16px 16px;
+  background: var(--cl-forest); color: var(--cl-beige);
+}
+.clara-lens-sm { width: 40px; height: 40px; flex: none; background: radial-gradient(circle at 35% 30%, rgba(221, 182, 95, .3), transparent 55%), var(--cl-night); }
+.clara-lens-sm::after { display: none; }
+.clara-lens-sm svg { width: 22px; height: 22px; }
+.clara-who { flex: 1; min-width: 0; }
+.clara-who h2 { margin: 0; font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; font-size: 1.75rem; line-height: 1; letter-spacing: -.01em; color: var(--cl-beige); }
+.clara-who p { margin: 4px 0 0; font-size: .8rem; color: var(--cl-sage); }
+.clara-icon { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--cl-beige); opacity: .8; transition: background-color .2s, opacity .2s; }
+.clara-icon:hover { background: rgba(239, 232, 217, .12); opacity: 1; }
+.clara-icon svg { width: 20px; height: 20px; }
+
+.clara-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.clara-log { flex: 1; overflow-y: auto; padding: 18px 16px 8px; display: flex; flex-direction: column; gap: 10px; overscroll-behavior: contain; scrollbar-width: thin; }
+
+.clara-msg { max-width: 86%; padding: 11px 14px; font-size: .95rem; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.clara-bot { align-self: flex-start; background: var(--cl-paper); border: 1px solid var(--cl-line); border-radius: 16px 16px 16px 4px; }
+.clara-user { align-self: flex-end; background: var(--cl-green); color: var(--cl-beige); border-radius: 16px 16px 4px 16px; }
+.clara-msg.is-new { animation: claraIn .38s var(--cl-ease) both; }
+.clara-tag { display: block; margin-top: 6px; font-size: .74rem; color: var(--cl-muted); }
+
+.clara-typing { display: flex; gap: 5px; padding: 15px 16px; }
+.clara-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--cl-green); opacity: .35; animation: claraDot 1s ease-in-out infinite; }
+.clara-typing i:nth-child(2) { animation-delay: .15s; }
+.clara-typing i:nth-child(3) { animation-delay: .3s; }
+
+.clara-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 0 6px; }
+.clara-chips:not(:last-child) { display: none; }   /* only the latest suggestions stay */
+.clara-chip {
+  border: 1px solid rgba(31, 59, 45, .35); background: transparent; color: var(--cl-forest);
+  border-radius: 999px; padding: 8px 13px; font-size: .86rem; line-height: 1.25; text-align: left;
+  animation: claraIn .35s var(--cl-ease) both; animation-delay: calc(var(--i, 0) * 45ms + 80ms);
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.clara-chip:hover { background: var(--cl-sage); border-color: var(--cl-sage); }
+.clara-chip-contact { border-color: var(--cl-ochre); color: var(--cl-ink); background: rgba(221, 182, 95, .18); }
+.clara-chip-contact:hover { background: var(--cl-ochre); border-color: var(--cl-ochre); }
+
+.clara-compose { display: flex; gap: 8px; align-items: center; padding: 10px 12px 6px; border-top: 1px solid var(--cl-line); background: var(--cl-beige); }
+.clara-compose input {
+  flex: 1; min-width: 0; height: 46px; padding: 0 16px; border-radius: 999px;
+  border: 1px solid rgba(31, 59, 45, .25); background: var(--cl-paper); color: var(--cl-ink); font: inherit; font-size: 16px;
+}
+.clara-compose input::placeholder { color: #7d7f74; }
+.clara-compose input:focus { outline: none; border-color: var(--cl-green); box-shadow: 0 0 0 3px rgba(46, 90, 67, .18); }
+.clara-send { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border: 0; border-radius: 50%; background: var(--cl-forest); color: var(--cl-ochre); transition: transform .25s var(--cl-ease), background-color .2s; }
+.clara-send:hover { background: var(--cl-night); transform: translateX(2px); }
+.clara-send svg { width: 22px; height: 22px; }
+.clara-note { margin: 0; padding: 4px 16px 12px; font-size: .74rem; line-height: 1.4; color: var(--cl-muted); background: var(--cl-beige); }
+
+/* ---- contact form + sent ---- */
+.clara-contact, .clara-done { flex: 1; overflow-y: auto; padding: 20px 18px; display: flex; flex-direction: column; gap: 12px; animation: claraSide .4s var(--cl-ease) both; }
+.clara-contact h3, .clara-done h3 { margin: 0; font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: 1.6rem; line-height: 1.1; color: var(--cl-forest); }
+.clara-sub { margin: 0; font-size: .88rem; line-height: 1.45; color: var(--cl-muted); }
+.clara-contact label { display: grid; gap: 5px; font-size: .85rem; font-weight: 500; color: var(--cl-ink); }
+.clara-contact input, .clara-contact textarea {
+  width: 100%; padding: 11px 13px; border-radius: 12px; border: 1px solid rgba(31, 59, 45, .25);
+  background: var(--cl-paper); color: var(--cl-ink); font: inherit; font-size: 16px; resize: vertical;
+}
+.clara-contact input:focus, .clara-contact textarea:focus { outline: none; border-color: var(--cl-green); box-shadow: 0 0 0 3px rgba(46, 90, 67, .18); }
+.clara-error { margin: 0; padding: 9px 12px; border-radius: 10px; background: #F6DED5; color: #7A2E13; font-size: .86rem; }
+.clara-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 4px; }
+.clara-primary, .clara-ghost { border-radius: 999px; padding: 11px 18px; font-size: .92rem; font-weight: 500; border: 1px solid var(--cl-forest); transition: background-color .2s, color .2s; }
+.clara-primary { background: var(--cl-forest); color: var(--cl-beige); }
+.clara-primary:hover { background: var(--cl-night); }
+.clara-primary:disabled { opacity: .6; cursor: progress; }
+.clara-ghost { background: transparent; color: var(--cl-forest); }
+.clara-ghost:hover { background: rgba(31, 59, 45, .08); }
+.clara-done { align-items: center; justify-content: center; text-align: center; }
+.clara-done svg { width: 64px; height: 64px; fill: none; stroke: var(--cl-green); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.clara-done circle { stroke: var(--cl-ochre); stroke-dasharray: 145; stroke-dashoffset: 145; animation: claraDraw .6s var(--cl-ease) .1s forwards; }
+.clara-done path { stroke-dasharray: 40; stroke-dashoffset: 40; animation: claraDraw .4s var(--cl-ease) .55s forwards; }
+
+/* status line under page contact forms */
+.clara-form-status { margin: 10px 0 0; font-size: .92rem; min-height: 1.2em; }
+.clara-form-status:empty { display: none; }
+
+@keyframes claraIn { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes claraSide { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+@keyframes claraDot { 0%, 100% { opacity: .3; transform: translateY(0); } 50% { opacity: .9; transform: translateY(-3px); } }
+@keyframes claraGlint { from { transform: rotate(0); opacity: 1; } to { transform: rotate(360deg); opacity: 0; } }
+@keyframes claraDraw { to { stroke-dashoffset: 0; } }
+
+/* ---- phones ---- */
+@media (max-width: 760px) {
+  body.logged-in .clara { --cl-bottom: 84px; }   /* above the bottom app bar */
+  .clara-launch { right: 14px; padding: 5px; }
+  .clara-launch-text { display: none; }
+  .clara-nudge { right: 14px; bottom: calc(var(--cl-bottom) + 62px); }
+  .clara-panel {
+    left: 8px; right: 8px; width: auto; bottom: calc(var(--cl-bottom) + 64px);
+    height: min(640px, calc(100dvh - var(--cl-bottom) - 84px)); border-radius: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clara *, .clara *::before, .clara *::after { animation: none !important; transition: none !important; }
+  .clara-panel { clip-path: none; }
+  .clara-done circle, .clara-done path { stroke-dashoffset: 0; }
+}
