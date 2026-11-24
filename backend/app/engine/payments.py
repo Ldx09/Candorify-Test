@@ -13,7 +13,7 @@ import re
 from decimal import Decimal
 
 from app.engine import real_bills as rb
-from app.engine.photo_bills import _AMOUNT, _LEADING_DATE, _TRAILING_AMOUNTS, clean_line
+from app.engine.photo_bills import _AMOUNT, _LEADING_DATE, _TRAILING_AMOUNTS, logical_lines
 from app.models.payments import Payments
 
 
@@ -21,10 +21,12 @@ def _rx(pattern: str) -> re.Pattern:
     return re.compile(pattern, re.IGNORECASE)
 
 
-# Lines with money that are NOT payments (charges, payment plans, earlier balances, ...).
+# Lines with money that are NOT payments (charges, payment plans, ...).
 IGNORE = _rx(r"per month|/\s*month|a month\b|months?\b.*\bfor\b|pay as little|minimum payment|payment plan|"
-             r"installment|billed to (insurance|plan)|total (hospital |account )?charges|^charges$|previous balance|"
-             r"prior balance|past due date|statement date")
+             r"installment|billed to (insurance|plan)|total (hospital |account )?charges|^charges$|"
+             r"past due date|statement date|new charges|"
+             r"(payments?|insurance)\s*/\s*(adjustments?|credits?)|payments? (and|&) (adjustments|credits)")
+# ^ the last part: one number for payments AND adjustments together can't be split, and the parts are shown too
 ADJUSTMENT = _rx(r"adjust|write[- ]?off|discount|contractual|allowance|financial assistance|charity|courtesy|"
                  r"reduction|savings")
 INSURANCE = _rx(r"insurance (payment|paid|pmt|covered|credit)|insurance payments|(plan|insurer|insurance|medicare|"
@@ -33,15 +35,18 @@ INSURANCE = _rx(r"insurance (payment|paid|pmt|covered|credit)|insurance payments
 PATIENT_PAID = _rx(r"patient payment|guarantor payment|your payment|mychart payment|online payment|portal payment|"
                    r"payment.{0,20}thank you|thank you for your payment|self[- ]?pay payment|cash payment|"
                    r"check payment|(credit|debit) card payment|card payment|you paid|paid by (you|patient|guarantor)|"
-                   r"patient paid|amount you paid|co-?pay (paid|collected|received)")
+                   r"patient paid|amount you paid|co-?pay (paid|collected|received)|"
+                   r"payment\s*[-:]\s*(credit card|debit card|card|cash|check|visa|mastercard|amex|discover)")
 RESPONSIBILITY = _rx(r"patient responsibility|your responsibility|remaining responsibility|you may owe|your share|"
                      r"patient (portion|share)|member responsibility|your (total )?cost")
-RESPONSIBILITY_PART = _rx(r"^(co-?pay(ment)?|co-?insurance|deductible|not covered)( amount)?$")
+RESPONSIBILITY_PART = _rx(r"^(co-?pay(ment)?|co-?insurance|deductible|not covered)( amount)?(\s*\(.*)?$")
+# ^ "Deductible (Patient Responsibility)", "Coinsurance (20% of" : parts of the patient's share, added up
 BALANCE = _rx(r"amount due|balance due|total due|due now|please pay|pay this amount|current balance|"
               r"account balance|new balance|you owe|remaining balance|balance remaining|outstanding balance|"
               r"patient balance|credit balance|^balance$|^total balance")
 PAYMENTS_ANY = _rx(r"payments? received|total payments|payments (and|&) credits|^payments$|^credits$|"
                    r"credits applied|^payments/credits$")
+PRIOR = _rx(r"previous balance|prior balance|balance forward|carried forward|earlier balance")
 PAID_OFF = _rx(r"^(paid off|paid in full|zero balance|no balance due|nothing (is )?due)\b")
 SECTION = _rx(r"^(payments?|payments? (and|&) (adjustments|credits)|payment history|account activity|"
               r"transactions|payment activity)$")
@@ -65,7 +70,7 @@ def _parse(line: str) -> tuple[str, list[Decimal]] | None:
         return None
     if credit:
         amounts = [-abs(a) for a in amounts]
-    desc = _LEADING_DATE.sub("", m["desc"]).strip(" :-|")
+    desc = _LEADING_DATE.sub("", m["desc"]).strip(" -|")
     return desc, amounts
 
 
@@ -77,7 +82,8 @@ def _columns(line: str) -> dict | None:
     amounts = [w for w in words if w in rb.AMOUNT_HEADERS]
     if len(amounts) < 2 or "balance" not in amounts:
         return None
-    return {"count": len(amounts), "balance": amounts.index("balance"), "last_is_balance": amounts[-1] == "balance"}
+    return {"count": len(amounts), "balance": amounts.index("balance"), "last_is_balance": amounts[-1] == "balance",
+            "names": amounts}
 
 
 def extract_payments(pages: list[list[str]], charges: Decimal | None = None) -> Payments | None:
@@ -88,18 +94,18 @@ def extract_payments(pages: list[list[str]], charges: Decimal | None = None) -> 
     parts: list[Decimal] = []
     balances: list[Decimal] = []
     column_balances: list[Decimal] = []
+    prior: list[Decimal] = []
     paid_off = False
     in_section = False
     columns = None
 
     def add(bucket: str, desc: str, amount: Decimal):
-        (summary if SUMMARY.search(desc) else single).setdefault(bucket, []).append(abs(amount))
+        # "Insurance Payment:" in a summary box is a summary; lines without a colon may be single payments
+        is_summary = SUMMARY.search(desc) or desc.rstrip().endswith(":")
+        (summary if is_summary else single).setdefault(bucket, []).append(abs(amount))
 
     for page in pages:
-        for raw in page:
-            line = clean_line(raw)
-            if not line:
-                continue
+        for line in (ln for raw in page for ln in logical_lines(raw)):
             header = _columns(line)
             if header:
                 columns, in_section = header, False
@@ -113,7 +119,23 @@ def extract_payments(pages: list[list[str]], charges: Decimal | None = None) -> 
                 continue
             desc, amounts = parsed
             amount = amounts[-1]
-            if not desc or not rb._LETTERS.search(desc) or IGNORE.search(desc):
+            if not desc or not rb._LETTERS.search(desc):
+                continue
+            if PRIOR.search(desc) and not re.search(r"\bpayments?\b|\bpaid\b", desc, re.IGNORECASE):
+                # "Prior Balance: $25.00" carried onto this bill from an earlier visit (not "Payment - Prior Balance")
+                prior.append(abs(amount))
+                continue
+            if IGNORE.search(desc):
+                continue
+            if columns and re.search(r"\btotals?\b", desc, re.IGNORECASE) and len(amounts) == columns["count"]:
+                # the Totals row of a Charges / Credits / Adjustments / Balance table
+                for name, value in zip(columns["names"], amounts):
+                    if name in ("credits", "credit", "payments", "payment"):
+                        summary.setdefault("payments_any", []).append(abs(value))
+                    elif name in ("adjustments", "adjustment"):
+                        summary.setdefault("adjustments", []).append(abs(value))
+                    elif name == "balance":
+                        column_balances.append(value)
                 continue
             if ADJUSTMENT.search(desc):
                 add("adjustments", desc, amount)
@@ -121,10 +143,10 @@ def extract_payments(pages: list[list[str]], charges: Decimal | None = None) -> 
                 add("insurance_paid", desc, amount)
             elif PATIENT_PAID.search(desc):
                 add("patient_paid", desc, amount)
-            elif RESPONSIBILITY.search(desc):
-                summary.setdefault("patient_responsibility", []).append(abs(amount))
             elif RESPONSIBILITY_PART.search(desc):
                 parts.append(abs(amount))
+            elif RESPONSIBILITY.search(desc):
+                summary.setdefault("patient_responsibility", []).append(abs(amount))
             elif BALANCE.search(desc):
                 balances.append(-abs(amount) if "credit" in desc.lower() else amount)
             elif PAYMENTS_ANY.search(desc):
@@ -164,6 +186,10 @@ def extract_payments(pages: list[list[str]], charges: Decimal | None = None) -> 
         rest = any_paid - (p.insurance_paid or 0) - (p.patient_paid or 0) - (p.other_payments or 0)
         if rest > Decimal("0.01"):
             p.other_payments = (p.other_payments or 0) + rest
+    if prior:
+        p.prior_balance = max(prior)
+        if p.prior_balance == 0:
+            p.prior_balance = None
     if balances:
         p.balance_due = balances[0]
     elif column_balances:

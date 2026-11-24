@@ -11,6 +11,7 @@
     ["patient_responsibility", "Your share", "What you were asked to pay after insurance"],
     ["patient_paid", "You paid", "Payments you already made"],
     ["other_payments", "Payments (payer not shown)", "Paid, but the bill doesn't say by whom"],
+    ["prior_balance", "Earlier balance", "Left unpaid from an earlier visit and added to this bill"],
     ["balance_due", "Still owed", "What the bill says is left to pay. Below 0 means a credit"],
   ];
 

@@ -34,7 +34,9 @@ REVENUE_CATEGORIES: list[tuple[tuple[str, ...], str]] = [
     (("nuclear medicine",), "0340"),
     (("ct scan",), "0350"),
     (("computed tomography",), "0350"),
+    (("ct\\b",), "0350"),                   # "CT Abdomen/Pelvis with Contrast"
     (("operating room",), "0360"),
+    (("recovery room",), "0710"),          # before anesthesia: "Recovery Room / Post-Anesthesia Care"
     (("anesthesia",), "0370"),
     (("blood", "storage"), "0390"),
     (("blood", "processing"), "0390"),
@@ -46,6 +48,7 @@ REVENUE_CATEGORIES: list[tuple[tuple[str, ...], str]] = [
     (("speech", "therap"), "0440"),
     (("speech", "patholog"), "0440"),
     (("emergency room",), "0450"),
+    (("emergency department",), "0450"),
     (("cardiology",), "0480"),
     (("clinic\\b",), "0510"),
     (("ambulance",), "0540"),

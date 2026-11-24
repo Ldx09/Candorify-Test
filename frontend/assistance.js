@@ -18,8 +18,8 @@
     ["WA", "Washington"], ["WV", "West Virginia"], ["WI", "Wisconsin"], ["WY", "Wyoming"]];
   var HELP = "Most hospitals must offer free or cheaper care to people with lower incomes, and many people qualify " +
     "without knowing it. Enter your household and income, and we'll show what you may pay, your state's rules, " +
-    "whether Medicaid could cover the bill, and a letter to send. Nothing you type here is saved.";
-
+    "whether Medicaid could cover the bill, and a letter to send. Nothing you type here is saved. " +
+    "These are estimates based on published rules, so always confirm with your hospital.";
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -154,8 +154,10 @@
         '<button type="submit" class="btn btn-primary">Check</button></form>' +
         (error ? '<p class="aerr" role="alert">' + esc(error) + "</p>" : "") +
         (result ? resultHTML(result) : "") +
-        '<p class="afine">Only the hospital can decide if you qualify. This is general information, not financial or legal advice.</p></section>';
-
+        '<p class="afine">* Candorify isn\'t a financial assistance provider. These results are estimates based on published rules, ' +
+        'with sources linked. Please confirm with your hospital\'s billing office, which makes the final decision. ' +
+        'This is general information, not financial or legal advice.</p></section>';
+        
       var form = box.querySelector("form");
       form.addEventListener("submit", function (e) {
         e.preventDefault();

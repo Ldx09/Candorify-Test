@@ -37,7 +37,7 @@ MAX_PDF_BYTES = 5 * 1024 * 1024
 
 class PhotoTextIn(BaseModel):
     """The text the user's phone read from up to 5 photos: one list of lines per photo."""
-    pages: list[list[Annotated[str, Field(max_length=300)]]] = Field(min_length=1, max_length=MAX_PAGES)
+    pages: list[list[Annotated[str, Field(max_length=500)]]] = Field(min_length=1, max_length=MAX_PAGES)
     language: str | None = Field(default=None, max_length=10)
 
 class SampleUploadRequest(SampleBillRequest):
@@ -52,6 +52,8 @@ REAL_BILL_LABEL = "Uploaded bill"
 PHOTO_NOTICE = ("Read from your photos. Please check every charge and amount against your bill and fix "
                 "anything we misread before you continue.")
 PHOTO_LABEL = "Uploaded photo"
+PHOTO_NO_TOTAL = (" We couldn't read a total on the photo, so we added up the charges ourselves. Compare our total "
+                  "with the one printed on your bill: if they differ, a charge may be missing or misread.")
 PHOTO_UNREADABLE = ("We couldn't find any charges in these photos. Try again with the bill flat, in good light, "
                     "and the charges filling the photo. Or enter the charges by hand.")
 UNREADABLE = ("We couldn't find any charges in this PDF. Make sure it's a bill with a list of charges "
@@ -129,7 +131,7 @@ def upload_photo_text(body: PhotoTextIn, user: User = Depends(get_current_user),
     real = read_photo_text(body.pages)
     if real is None:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, PHOTO_UNREADABLE)
-    notice = PHOTO_NOTICE + ("" if real.has_total else NO_TOTAL_NOTICE)
+    notice = PHOTO_NOTICE + ("" if real.has_total else PHOTO_NO_TOTAL)
     return _result(db, user, real.bill, PHOTO_LABEL, body.language, bill_format="photo", notice=notice,
                    provider_name=real.provider_name)
     

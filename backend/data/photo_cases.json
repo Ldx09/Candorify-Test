@@ -1,0 +1,1564 @@
+[
+ {
+  "name": "demo_bills-1_easy",
+  "source": "data/demo_bills.pdf page 1, photographed (easy)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-001 Provider NPI: 1000000000",
+    "Date of service: 09/01/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "99284 Emergency department visit, level 4 1 $1,450.00 $1,450.00",
+    "0120 Room and board, semi-private 4 $2,800.00 $11,200.00",
+    "71046 Chest X-ray, two views 2 $265.00 $530.00",
+    "J2405 Ondansetron injection, 4 mg 1 $54.00 $54.00",
+    "AB402 Surgical dressing, sterile 2 $22.00 $44.00",
+    "Total charges $13,278.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "1450.00",
+    "11200.00",
+    "530.00",
+    "54.00",
+    "44.00"
+   ],
+   "total": "13278.00",
+   "flags": []
+  }
+ },
+ {
+  "name": "demo_bills-1_hard",
+  "source": "data/demo_bills.pdf page 1, photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Remized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-001 Provider NPI: 1000000000",
+    "Date of service: 09/01/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "99284 Emergency department visit, level 4 1 $1,450.00 $1,450.00",
+    "0120 Room and board, semi-private 4 $2,800.00 $11,200.00",
+    "71046 Chest X-ray, two views 2 $265.00 $530.00",
+    "J2405 Ondansetron injection, 4 mg 1 $54.00 $54.00",
+    "AB402 Surgical dressing, sterile 2 $22.00 $44.00",
+    "Total charges $13,278.00",
+    "This is a synthetic bil generated for testing Candorify RR does not represent a real patient of foal charges.",
+    "{",
+    "Ll]",
+    "=",
+    "2",
+    "BR }",
+    "»",
+    "]",
+    "es",
+    "1",
+    "Is",
+    "i 4",
+    "|",
+    "1 |",
+    "!",
+    "Rik",
+    "»",
+    "1]",
+    "1",
+    "at",
+    "1 I",
+    "R  al.",
+    "| ois",
+    "NE"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "1450.00",
+    "11200.00",
+    "530.00",
+    "54.00",
+    "44.00"
+   ],
+   "total": "13278.00",
+   "flags": []
+  }
+ },
+ {
+  "name": "demo_bills-2_easy",
+  "source": "data/demo_bills.pdf page 2, photographed (easy)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-002 Provider NPI: 1000000000",
+    "Date of service: 09/03/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "99285 Emergency department visit, level 5 1 $2,100.00 $2,100.00",
+    "A0427 Ambulance service, ALS, emergency transport, level 1 1 $1,250.00 $1,250.00",
+    "A0425 Ground ambulance mileage, per mile 25 $28.00 $700.00",
+    "0200 Intensive care, general 2 $6,500.00 $13,000.00",
+    "36415 Routine venipuncture (blood draw) 6 $18.00 $108.00",
+    "80053 Comprehensive metabolic panel 1 $118.00 $118.00",
+    "80053 Comprehensive metabolic panel 1 $118.00 $118.00",
+    "Total charges $17,394.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "2100.00",
+    "1250.00",
+    "700.00",
+    "13000.00",
+    "108.00",
+    "118.00",
+    "118.00"
+   ],
+   "total": "17394.00",
+   "flags": [
+    "duplicate_line"
+   ]
+  }
+ },
+ {
+  "name": "demo_bills-2_hard",
+  "source": "data/demo_bills.pdf page 2, photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "temized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name) Statement date: 09/28/2026",
+    "Account #: DEMO-002 Provider NPI: 1000000000",
+    "Date of service: 09/03/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "99285 Emergency department visit, level 5 1 $2,100.00 $2.100.00",
+    "A0427 Ambulance service, ALS, emergency transport, level 1 1 $1,250.00 $1,250.00",
+    "A0425 Ground ambulance mileage, per mile 25 $28.00 $700.00",
+    "0200 Intensive care, general 2 $6,500.00 $13,000.00",
+    "36415 Routine venipuncture (blood draw) 6 $18.00 $108.00",
+    "80053 Comprehensive metabolic panel 1 $118.00 $118.00",
+    "80053 Comprehensive metabolic panel 1 $118.00 $118.00",
+    "Total charges $17,394.00",
+    "This 1s a synthetic bill generated for testing Candorily It does not represent a real patient or real charges",
+    "1",
+    "1",
+    "S|",
+    "KY |"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "2100.00",
+    "1250.00",
+    "700.00",
+    "13000.00",
+    "108.00",
+    "118.00",
+    "118.00"
+   ],
+   "total": "17394.00",
+   "flags": [
+    "duplicate_line"
+   ]
+  }
+ },
+ {
+  "name": "demo_bills-3_easy",
+  "source": "data/demo_bills.pdf page 3, photographed (easy)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-003 Provider NPI: 1000000000",
+    "Date of service: 09/05/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "0110 Room and board, private 3 $3,400.00 $10,200.00",
+    "97110 Therapeutic exercise, each 15 minutes 4 $95.00 $380.00",
+    "0990 Television rental, per day 3 $15.00 $45.00",
+    "E0114 Crutches, underarm, adjustable, pair 1 $85.00 $95.00",
+    "A4550 Surgical tray 1 $120.00 $120.00",
+    "Total charges $10,840.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "10200.00",
+    "380.00",
+    "45.00",
+    "95.00",
+    "120.00"
+   ],
+   "total": "10840.00",
+   "flags": [
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "demo_bills-3_hard",
+  "source": "data/demo_bills.pdf page 3, photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-003 Provider NPI: 1000000000",
+    "Date of service: 09/05/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "0110 Room and board, private 3 $3,400.00 $10,200.00",
+    "97110 Therapeutic exercise, each 15 minutes 4 $95.00 $380.00",
+    "0990 Television rental, per day 3 $15.00 $45.00",
+    "E0114 Crutches, underarm, adjustable, pair 1 $85.00 $95.00",
+    "A4550 Surgical tray 1 $120.00 $120.00",
+    "Total charges $10,840.00",
+    "Tres 5 a synthetic bil generated lor testing Candoriy Rt does not represent a real patient or real charges.",
+    "}",
+    "L",
+    "|  J",
+    "1    |",
+    "L",
+    "3"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "10200.00",
+    "380.00",
+    "45.00",
+    "95.00",
+    "120.00"
+   ],
+   "total": "10840.00",
+   "flags": [
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "doctor_easy",
+  "source": "tests/test_real_bills.py doctor_pdf(), photographed (easy)",
+  "note": "",
+  "pages": [
+   [
+    "Summary of Charges",
+    "Date    Description    Provider    Charges Credits Balance",
+    "Charges for TEST,PATIENT in Sample Pediatrics",
+    "11/17/2025 Office/Outpatient Established Sam Doctor, ~~ 420.00    10.00",
+    "Mod Mdm 30 Min    MD",
+    "12/02/2025 Insurance Payment - Test Plan    230.07",
+    "Horizon of Test",
+    "11/25/2025 Insurance Adjustment - Test Plan    179.93",
+    "Horizon of Test",
+    "CO-Pay Amount"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "420.00"
+   ],
+   "total": "420.00",
+   "flags": []
+  }
+ },
+ {
+  "name": "doctor_hard",
+  "source": "tests/test_real_bills.py doctor_pdf(), photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Summary of Charges",
+    "Date    Description    Provider    Charges Credits Balance",
+    "Charges for TEST PATIENT in Sample Pediatrics",
+    "11/17/2025 Office/Outpatient Established Sam Doctor, 420.00    10.00",
+    "Mod Mdm 30 Min    MD",
+    "12/02/2025 Insurance Payment - Test Plan    230.07",
+    "Horizon of Test",
+    "11/25/2025 Insurance Adjustment - Test Plan    179.93",
+    "Horizon of Test",
+    "CO-Pay Amount",
+    "[]  |",
+    "} 12",
+    "1",
+    "'   it",
+    "hy!",
+    "Ll",
+    "Bl :",
+    "4.0 SN"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "420.00"
+   ],
+   "total": "420.00",
+   "flags": []
+  }
+ },
+ {
+  "name": "hospital_easy",
+  "source": "tests/test_real_bills.py hospital_pdf(), photographed (easy)",
+  "note": "",
+  "pages": [
+   [
+    "Sample Health PATIENT STATEMENT",
+    "Statement Date: 09/23/2026",
+    "Guarantor Name: JANE TEST",
+    "Account Number: HAR-0000000001",
+    "Total Charges: $36,780.56",
+    "Adjustments: -$5,741.45",
+    "Payments Received: -$30,489.11",
+    "Total Amount Due: $550.00",
+    "Pay as little as $69.00 / month for 8 months.",
+    "PAY NOW IN FULL",
+    "$550.00"
+   ],
+   [
+    "Sample Health ITEMIZED ACCOUNT DETAIL",
+    "Description / Service Classification    Amount",
+    "Pharmacy - General Classification    $933.08",
+    "Pharmacy - IV Solutions    $0.02",
+    "IV Therapy - General Classification    $707.00",
+    "Medical/Surgical Supplies and Devices - Sterile Supply    $5,017.16",
+    "Laboratory - General Classification    $120.00",
+    "Laboratory - Chemistry    $864.00",
+    "Laboratory - Immunology    $728.00",
+    "Laboratory - Hematology    $400.00",
+    "Laboratory Pathology - Histology    $395.00",
+    "Operating Room Services - General Classification    $13,670.00",
+    "Anesthesia - General Classification    $3,205.00",
+    "Emergency Room - General Classification    $5,249.00",
+    "Pharmacy - Drugs Requiring Detailed Coding    $165.30",
+    "Recovery Room - General Classification    $5,327.00",
+    "Total Hospital Charges    $36,780.56",
+    "Insurance Adjustments    -$5,741.45",
+    "Insurance Payments    -$30,489.11",
+    "Overall Patient Responsibility    $550.00",
+    "PRIMARY INSURANCE CO. POLICY # GROUP #",
+    "TEST INSURANCE 0000000000 NJ0000O"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "933.08",
+    "0.02",
+    "707.00",
+    "5017.16",
+    "120.00",
+    "864.00",
+    "728.00",
+    "400.00",
+    "395.00",
+    "13670.00",
+    "3205.00",
+    "5249.00",
+    "165.30",
+    "5327.00"
+   ],
+   "total": "36780.56",
+   "flags": []
+  }
+ },
+ {
+  "name": "hospital_hard",
+  "source": "tests/test_real_bills.py hospital_pdf(), photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Sample Health PATIENT STATEMENT",
+    "Statement Date: 09/23/2026",
+    "Guarantor Name: JANE TEST",
+    "Account Number: HAR-0000000001",
+    "Total Charges: $36,780.56",
+    "Adjustments: -$5,741.45",
+    "Payments Received: -$30,489.11",
+    "Total Amount Due: $550.00",
+    "Pay as little as $69.00 / month for 8 months",
+    "PAY NOW IN FULL",
+    "$550.00",
+    "il",
+    "i",
+    "4   i",
+    "+X",
+    "Bb] i",
+    "hd",
+    "ay",
+    "K L]",
+    "al",
+    "ui | De",
+    "B wl",
+    "Al"
+   ],
+   [
+    "Sample Health ITEMIZED ACCOUNT DETAIL",
+    "Description / Service Classification    Amount",
+    "Pharmacy - General Classification    $933.08",
+    "Pharmacy - IV Solutions    $0.02",
+    "IV Therapy - General Classification    $707.00",
+    "Medical/Surgical Supplies and Devices - Sterile Supply    $5,017.16",
+    "Laboratory - General Classification    $120.00",
+    "Laboratory - Chemistry    $864.00",
+    "Laboratory - Immunology    $728.00",
+    "Laboratory - Hematology    $400.00",
+    "Laboratory Pathology - Histology    $395.00",
+    "Operating Room Services - General Classification    $13,670.00",
+    "Anesthesia - General Classification    $3,205.00",
+    "Emergency Room - General Classification    $5,249.00",
+    "Pharmacy - Drugs Requiring Detailed Coding    $165.30",
+    "Recovery Room - General Classification    $5,327.00",
+    "Total Hospital Charges    $36,780.56",
+    "Insurance Adjustments    -$5,741.45",
+    "Insurance Payments    -$30,489.11",
+    "Overall Patient Responsibility    $550.00",
+    "PRIMARY INSURANCE CO. POLICY # GROUP #",
+    "TEST INSURANCE 0000000000 NJOOO0O",
+    ".",
+    "vy AT",
+    "AEE",
+    "3",
+    "-"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "933.08",
+    "0.02",
+    "707.00",
+    "5017.16",
+    "120.00",
+    "864.00",
+    "728.00",
+    "400.00",
+    "395.00",
+    "13670.00",
+    "3205.00",
+    "5249.00",
+    "165.30",
+    "5327.00"
+   ],
+   "total": "36780.56",
+   "flags": []
+  }
+ },
+ {
+  "name": "synthetic_bills-01_easy",
+  "source": "data/synthetic_bills.pdf page 1, photographed (easy)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name]    Statement date: 09/28/2026",
+    "Account #: BILL-001    Provider NPI: 1000000000",
+    "Date of service: 09/01/2026    Page: 1 of 1",
+    "A6402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "J7030    Sodium chloride 0.9% IV solution, 1000 mL    3    $78.00    $329.00",
+    "A6402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "99284    Emergency department visit, level 4    1    $1,450.00    $1,450.00",
+    "80053    Comprehensive metabolic panel    3    $118.00    $354.00",
+    "Total charges    $2,177.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "22.00",
+    "329.00",
+    "22.00",
+    "1450.00",
+    "354.00"
+   ],
+   "total": "2177.00",
+   "flags": [
+    "duplicate_line",
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "synthetic_bills-01_hard",
+  "source": "data/synthetic_bills.pdf page 1, photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "M    Anytow    3A",
+    "Patient: [Patent Name)    Statement date: 09282026",
+    "Account #: BILL-001    Provider NPI: 1000000000",
+    "Date of service: 0901/2026    Page: 1 of 1",
+    "Code    Description    Qty    Unit price    Line tota",
+    "AB402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "J7030    Sodium chloride 0.9% IV solution, 1000 mL    3    $78.00    $329.00",
+    "AB402    Surgical dressing, sterile    1    $2200    $22.00",
+    "99284    Emergency department visit, level 4    1    $1,450.00    $1,450.00",
+    "80053    Comprehensive metabolic panel    3    $118.00    $354.00",
+    "Total charges    $2177.00",
+    "»   ; \"300s rot represent a real patient of real Charges.",
+    "A",
+    "Ii",
+    "|",
+    "td    %",
+    "(",
+    "LJ",
+    "It",
+    "nl",
+    "a)",
+    "“lth |",
+    "w    n",
+    "I="
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "22.00",
+    "329.00",
+    "22.00",
+    "1450.00",
+    "354.00"
+   ],
+   "total": "2177.00",
+   "flags": [
+    "duplicate_line",
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "synthetic_bills-02_easy",
+  "source": "data/synthetic_bills.pdf page 2, photographed (easy)",
+  "note": "The phone couldn't read the 'Total charges' line at all, so the total is added up and the user is told to compare it.",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr. Anytown, USA",
+    "Patient: [Patient Name]    Statement date: 09/28/2026",
+    "Account #: BILL-002    Provider NPI: 1000000000",
+    "Date of service: 09/02/2026    Page: 1 of 1",
+    "99284    Emergency department visit, level 4    1    $1,450.00    $1,450.00",
+    "74177    CT scan, abdomen and pelvis, with contrast    3    $2,380.00    $7,140.00",
+    "0250    Pharmacy, general supplies    1    $65.00    $65.00",
+    "A6402    Surgical dressing, sterile    3    $22.00    $66.00",
+    "85025    Complete blood count with differential    1    $96.00    $96.00",
+    "J2405    Ondansetron injection, 4 mg    3    $54.00    $162.00",
+    "0710    Recovery room, per 30 minutes    1    $340.00    $340.00",
+    "BEE ame",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "1450.00",
+    "7140.00",
+    "65.00",
+    "66.00",
+    "96.00",
+    "162.00",
+    "340.00"
+   ],
+   "total": "9319.00",
+   "flags": [],
+   "has_total": false
+  }
+ },
+ {
+  "name": "synthetic_bills-02_hard",
+  "source": "data/synthetic_bills.pdf page 2, photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Remized Statement of Charges | 123 Medical Center Dr. Anylow   A",
+    "Patient: [Patient Name]    Statement date: 09 28 2026",
+    "Account #: BILL-002    Provider NPI: 1000000000",
+    "Date of service: 09022026    Page: 1 of 1",
+    "99284    Emergency department visit, level 4    1    $1,450.00    $1,450.00",
+    "man    CT scan, abdomen and pelvis, with contrast    3    $2,380.00    $7,140.00",
+    "0250    Pharmacy, general supplies    1    $65.00    $65.00",
+    "AB402    Surgical dressing. sterile    3    $22.00    $66.00",
+    "85025    Complete blood count with differential    1    $96.00    $96.00",
+    "J2405    Ondansetron injection. 4 mg    3    $54.00    $162.00",
+    "ono    Recovery room, per 30 minutes    1    $340.00    $340.00",
+    "Total charges    $9,831.40",
+    "This is a synthetc Dil generated for testing Candorty 1 does   ¢   sent a",
+    "fan",
+    "LL",
+    "= 1]  =\"",
+    "1    I",
+    "Bh 1",
+    "]",
+    "\"",
+    "i ty",
+    "]",
+    "hd  u",
+    "1 f    M",
+    "i"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "1450.00",
+    "7140.00",
+    "65.00",
+    "66.00",
+    "96.00",
+    "162.00",
+    "340.00"
+   ],
+   "total": "9831.40",
+   "flags": [
+    "subtotal_mismatch"
+   ]
+  }
+ },
+ {
+  "name": "synthetic_bills-03_easy",
+  "source": "data/synthetic_bills.pdf page 3, photographed (easy)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name]    Statement date: 09/28/2026",
+    "Account #: BILL-003    Provider NPI: 1000000000",
+    "Date of service: 09/03/2026    Page: 1 of 1",
+    "Code    Description    (e13%    Unit price    Line total",
+    "94760    Pulse oximetry, single determination    1    $38.00    $158.00",
+    "0250    Pharmacy, general supplies    3    $65.00    $195.00",
+    "74177    CT scan, abdomen and pelvis, with contrast    1    $2,380.00    $2,380.00",
+    "96365    IV infusion, initial hour    3    $412.00    $1,236.00",
+    "Ce ——————— Ee EN Eh Si At",
+    "Total charges    $3,969.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "158.00",
+    "195.00",
+    "2380.00",
+    "1236.00"
+   ],
+   "total": "3969.00",
+   "flags": [
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "synthetic_bills-03_hard",
+  "source": "data/synthetic_bills.pdf page 3, photographed (hard: dim, blurry, tilted)",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "M    !    Anytow   ISA",
+    "Patient: [Patient Name]    Statement date: 09282026",
+    "Account #: BILL-003    Provider NPL: 1000000000",
+    "Date of service: 09032026    Page: 1011",
+    "Code    Description    Qty    Unit price    Line tota",
+    "94760    Pulse oximetry, single determination    1    $38.00    $158.00",
+    "0250    Pharmacy. general supplies    3    $65.00    $195.00",
+    "74177    CT scan, abdomen and pelvis, with contrast    1    $2,380.00    $2,380.00",
+    "96365    IV infusion, initial hour    3    $412.00    $1.236.00",
+    "pe    ee",
+    "Total charges    $3,969.00",
+    "awsorty Rt 3008 NOt represent 8 eal palent of reall Charges",
+    "~N",
+    ")",
+    "i",
+    "Ln",
+    "i.",
+    "SL",
+    "5",
+    "23    YW"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "158.00",
+    "195.00",
+    "2380.00",
+    "1236.00"
+   ],
+   "total": "3969.00",
+   "flags": [
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "lakeside",
+  "source": "Lakeside sample statement (fictional)",
+  "note": "",
+  "pages": [
+   [
+    "kesid    .    1    Lakeside Physician Billing Services    Medical Billing Statement",
+    "La   esiae  Regiona    Patient Billing Department    a    FEE EET",
+    ".    Account Number: LRMC-78456321",
+    "Medical Center    fiespcpiogats    |",
+    "Rivermere, NJ 08854-0419    |  Statement Date: Jan 14, 2026",
+    "-    —Fri, 8:    -5:    ET",
+    "(973) 555-4100 | Mon-Fri, 8:00 am - 5:00 pm    |  Due Date:    Feb 13, 2026",
+    "Jordan K. Miller    Pay Online",
+    "4827 Maple Glen Drive    J   Make a secure payment, view statements,",
+    "Rivermere, NJ 08854    and manage your account at",
+    "www.LakesideHealthPay.org",
+    "Patient Information",
+    "Patient Name:    Jordan K. Miller    Encounter/Visit #:    E7759410",
+    "Date of Birth:    Mar 22, 1988    Service Location:    Lakeside Regional Medical Center",
+    "Patient ID:    P001947328    Type of Service:    Outpatient - Pediatrics",
+    "Primary Insurance    Secondary Insurance",
+    "Pinecrest Health Plan PPO    RiverState Health Advantage",
+    "Member ID: PCN4587321    Member ID: RSH9931075",
+    "Group: 720116    Group: 88420",
+    "Summary of Charges",
+    "Service Date(s)    Description    Provider    Charges    Payments Adjustments    fo",
+    "Dec 03, 2025    Pediatric Office Visit, Established (Level 3) Emma R. Patel, MD    275.00    175.00    70.00    30.00 |",
+    "Dec 03, 2025    Influenza Vaccination (lIV4)    Emma R. Patel, MD    45.00    45.00    0.00    0.00",
+    "Dec 03, 2025    Vaccine Administration    Emma R. Patel, MD    35.00    35.00    0.00    0.00 |",
+    "Totals    $355.00    $255.00    $70.00    $30.00",
+    "Account Activity    Payment Information",
+    "Total Charges    $355.00    Your responsibility for this visit is $30.00, which includes    |",
+    "Insurance Payments    -$255.00    a $30.00 copay. Please pay the remaining balance by",
+    "Insurance Adjustments (Contractual)    -$70.00    | Feb13, 2026.",
+    "Copay (Patient Responsibility)    $30.00    Pay online at www.LakesideHealthPay.org, by mail using the",
+    "=    | remittance stub below, or by phone at (973) 555-4100.",
+    "Remaining Balance Due    $30.00    de    (ey",
+    "Thank you for choosing Lakeside Regional Medical Center.",
+    "Questions about your bill, insurance, or payment options? FPiease contact Lakeside Physician Billing Services",
+    "at (973) 555-4100. For a detailed explanation of your charges, log in to the payment website above.",
+    "3<    Please detach and return the bottom portion with your payment.",
+    "A    :    Patient Name:    Jordan K. Miller",
+    "ve ery \\Reglanal    Account Number:    LRMC-78456321    eE:",
+    "edical Center    Statement Date:    Jan 14, 2026",
+    "Lakeside Physician Billing Services    “Due Date:    \"Feb 13, 2026",
+    "P.O. Box 730419    EF WJ",
+    "Rivermere, NJ 08854-0419    Amount Due:    $30.00    i",
+    "Remit Payment To:    Payment Enclosed:  §",
+    "Lakeside Physician Billing Services    SE hs Gt aaa",
+    "P.O. Box 730419",
+    "Rivermere, NJ 08854-0419",
+    "78456321 0000003000 021326 0001"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "275.00",
+    "45.00",
+    "35.00"
+   ],
+   "total": "355.00",
+   "flags": [],
+   "payments": {
+    "insurance_paid": "255.00",
+    "adjustments": "70.00",
+    "patient_responsibility": "30.00",
+    "balance_due": "30.00"
+   }
+  }
+ },
+ {
+  "name": "pinebrook",
+  "source": "Pinebrook Urgent Care sample (fictional)",
+  "note": "The printed rows add up to $370 but the bill says $365: a real mistake on the bill.",
+  "pages": [
+   [
+    "FY YY  Pinebrook Urgent Care Network    Statement Date:    02/14/2025",
+    "_Z==_ Patient Billing Statement    Sane £:    REZP150234",
+    "P.O. Box 7842, Brookfield, OR 97006 | (503) 555-4178    Amount Due:    $72.50",
+    "billing@pinebrookucn.com | www.pinebrookucn.com/billing    Due Date:    03/16/2025",
+    "Patient Information    Visit & Provider Information",
+    "Patient Name:    Jordan Ellis    3    Date of Service (DOS):    01/28/2025",
+    "Account #:    700458912    Location:    Pinebrook Urgent Care — Rivermere",
+    "Date of Birth:    07/19/1986    Rendering Provider:    Casey Morgan, PA-C",
+    "Phone:    (971) 555-2398    Visit Type:    Urgent Care",
+    "Address:    1843 Maple Ridge Dr",
+    "Rivermere, OR 97015",
+    "Insurance Information    Statement Summary",
+    "Primary Insurance    Secondary Insurance    Prior Balance:    $25.00",
+    "Pioneer Health Plan    None on File    New Charges (This Visit):    $365.00",
+    "Member ID: PH784339210    Insurance Payments/Adjustments:    -$307.50",
+    "Group #: 22417    Patient Payments (This Visit):    -$10.00",
+    "Relation: Self    =    2s    >",
+    "Amount Due:    $72.50",
+    "Itemized Charges (DOS: 01/28/2025)",
+    "CPT/HCPCS Service Description    Qty    Charge    roe    gw    py    Hed",
+    "| 99203 Urgent care visit, new patient (level 3)    1    $21000 =~ -$168.00 $42.00    $000 $0.00",
+    "| 87804    Influenza A/B antigen test (POCT)    1    $45.00    -$27.00    -$18.00    $0.00    $0.00 |",
+    "|    87811    SARS-CoV-2 antigen test (POCT)    1    $45.00    -$27.00    -$18.00    $0.00    $0.00 |",
+    "87070    Throat culture    1    $30.00    -$18.00    -$12.00    $0.00    $0.00",
+    "|    J1100    Dexamethasone, 4 mg (IM)    1    $25.00    -$15.00    -$10.00    $10.00    $0.00 |",
+    "| 96372    Therapeutic injection, IM    1    $15.00    -$9.00    -$6.00    $0.00    $0.00",
+    "k  Totals (This Visit)    $365.00    -$264.00    -$106.00    $10.00    $0.00 |",
+    "Account Activity",
+    "Date    Description    ERE    Pea    Amount",
+    "12/20/2024    Prior balance (unpaid from visit on 12/10/2024)    $25.00",
+    "01/28/2025    Payment — Credit Card (Receipt #RC559307)    -$10.00",
+    "02/03/2025    Insurance Payment — Pioneer Health Plan (EOB #PHT2458123)    -$201.50",
+    "02/03/2025    Insurance Adjustment — Contractual Allowance    -$106.00",
+    "Amount Due: $72.50    Due Date: 03/16/2025",
+    "Pay Online    =    Mail Payment",
+    "Make a secure payment at www.pinebrookucn.com/pay    Pinebrook Urgent Care Network",
+    "Use your account #: 700458912    P.O. Box 7842",
+    "Brookfield, OR 97006"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "210.00",
+    "45.00",
+    "45.00",
+    "30.00",
+    "25.00",
+    "15.00"
+   ],
+   "total": "365.00",
+   "flags": [
+    "subtotal_mismatch"
+   ],
+   "payments": {
+    "insurance_paid": "201.50",
+    "adjustments": "106.00",
+    "patient_paid": "10.00",
+    "prior_balance": "25.00",
+    "balance_due": "72.50"
+   }
+  }
+ },
+ {
+  "name": "harborview",
+  "source": "Harborview Pediatrics sample (fictional)",
+  "note": "The photo text reads one amount as '¢4o500' (printed $495), so it comes out as $405; the bill's own payments also don't add up.",
+  "pages": [
+   [
+    "L]    °    °    o",
+    "Harborview Pediatrics    ay,",
+    "—    .",
+    "\\    Patient Account Statement",
+    "430 Riverside Drive, Suite 200    S",
+    "Maplewood, NY 11756    Eaventbats: owas",
+    "Billing: (877) 555-3190 | www.harborviewpeds.org    el RE    POSTE",
+    "Statement Period: 01/01/2025 - 01/31/2025",
+    "Page:    “of 1",
+    "Guarantor In",
+    ".    formation    Patient Information",
+    "ame:    Jordan Reeves    3",
+    "Name:    Emily Reewvs",
+    "Address:    i    Y    es",
+    "Hidde Lore    Date of Birth:    08/22/2018",
+    "Efiore:    i 4 2 2;    1756    Medical Record #:    MR-569031",
+    "Relationship to Patient:    Parent    espa).    01/15/2025",
+    "Provider:    Dr. K. Patel, M.D.",
+    "Insurance Information",
+    "Primary Insurance:    Rivermere Health Plan    Member ID:    RH78452901",
+    "|    Secondary Insurance:    Lakeside Family Coverage    Member ID:    LSC309887",
+    "Account Summary    :    :    Then    =",
+    "“    &    =    &    il    i",
+    "Total Charges:    $892.00",
+    "Insurance Payment:    - $520.00",
+    "Adjustment (Contractual):    -$112.00",
+    "Amount Due:    $270.00",
+    "Itemized Charges",
+    "\"    |    z",
+    "| Dateof Service  CPT/Code    Description    Provider    Charges    even  [-TCe uae",
+    "|    E    |    |",
+    "01/15/2025    99213    Office visit, established patient = Dr. K. Patel, M.D.    $185.00    $110.00    $35.00    $40.00  |",
+    "01/15/2025    87804    Rapid influenza test    Dr. K. Patel, M.D.    $92.00    $92.00    $0.00    $0.00",
+    "i    iral panel    =",
+    "01/15/2025    81635 | (oui    Dr.K.Patel, MD. | ¢4o500 $318.00    $77.00 $110.00  |",
+    "o1s202s | oeo72 | Additional PPE /infection | pr. K_Patel, MD. | $120.00    $0.00    $000 $12000 |",
+    "Insurance Transactions    Balance Summary",
+    "| Date    Description    Amount    Previous Balance:    $0.00",
+    "| 01/28/2025    Insurance Payment — Rivermere Health Plan    -$520.00   |   |   New Charges:    $892.00",
+    "| 01/28/2025 Contractual Adjustment ~ In-Network    $112.00} IS PaiientAd|Eurieis.    -$632.00 |",
+    "Total Insurance/Adjustments    -$632.00 | | CurrentBalance: ~~ $310.00  J",
+    "Payment Options",
+    "&   Amount Due:    $270.00    C3 Pay online at www.harborviewpeds.org/pay",
+    "7    Call (877) 555-3190 to pay by phone",
+    "late fee.    L",
+    "Please pay by 03/07/2025 fo ayoidialig=    BX) Mail a check with the remittance slip below",
+    "Je    TREN Ee",
+    "Harborview Pediatrics",
+    "Remittance Slip    Mail Payment To:    Sa |",
+    "Account #: ~~ HP-00873654    Baiporgebfe ics - Billing    Amount Enclosed: SSB e iu",
+    "Patient:    Emily Reeves    P.O. Box    roy JR bed",
+    "Amount Due: $270.00    Brookfield, NY 11756",
+    "Due Date: 03/07/2025",
+    "For questions about your bill, please call (877) 555-31"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "185.00",
+    "92.00",
+    "405.00",
+    "120.00"
+   ],
+   "total": "892.00",
+   "flags": [
+    "payment_mismatch",
+    "subtotal_mismatch"
+   ],
+   "payments": {
+    "insurance_paid": "520.00",
+    "adjustments": "112.00",
+    "balance_due": "270.00"
+   }
+  }
+ },
+ {
+  "name": "northvalley",
+  "source": "North Valley Community Hospital sample (fictional)",
+  "note": "",
+  "pages": [
+   [
+    "North Valley Community Hospital    Patient Billing Statement    |",
+    "1500 Pine Ridge Drive, Rivermere, CA 94563    Outpatient Family Medicine",
+    "Billing Services: (888) 555-3472 | www.northvalleyhealth.org",
+    "Billing Address    Patient Account Number:    NVH-00873421",
+    "Jordan Ellis    Statement Date:    03/7/2025",
+    "742 Maple Terrace    Service Location:    Outpatient Family Medicine    es",
+    "Rivermere, CA 94563    Patient Name:    Jordan Ellis    Gt]",
+    "Date(s) of Service:    02/20/2025    Wed    ER Tas",
+    "Primary Insurance    | Secondary Insurance",
+    "Insurance Company:    Riverside Health Plan    Insurance Company:    ;    Lakeview Benefit Solutions    Rory",
+    "Policy Number:    'RHP45873296    a    Policy Number:    LVB9923104    |",
+    "Group Number:    RHP-1001    Group Number:    Tz",
+    "Subscriber:    Jordan Ellis    EE SEER NEE    Subscriber:    Jordan Ellis    [",
+    "Relationship to Patient: Self    i =    |",
+    "Summary of Charges",
+    "Date    Service Description    Charges    Credits    Adjustments    Balance    |",
+    "02/20/2025    Office Visit — Outpatient Family Medicine (Established Patient)    265.00    —    -132.50    132.50",
+    "02/20/2025    Comprehensive Metabolic Panel (Lab)    148.00    —    -59.20    88.80",
+    "02-20-2025    Hemoglobin Alc (Lab)    62.00    —    -24.80    37.20",
+    "02/20/2025    Specimen Collection (Venipuncture)    18.00    -18.00    —    0.00",
+    "Total for This Statement    $493.00    -$18.00    -$216.50    $258.50",
+    "Notes",
+    "« This statement includes outpatient services for the date(s) of service listed above.    Balance Due:    $258.50",
+    "e Payments and insurance adjustments may not include activity posted after the statement date.    2",
+    "« If you have questions about your bill or insurance, please call Billing Services at (888) 555-3472,    Poymeptinye By: 8    NZ    07/05/2025",
+    "Monday - Friday, 8:00 a.m. — 5:00 p.m.",
+    "Ways to Pay    | Message for Our Patients",
+    "CJ Pay Online: www.northvalleyhealth.org/paybill    Thank you for choosing North Valley Community Hospital. We are committed to",
+    "Q, Pay by Phone: (888) 555-3472    providing high-quality, compassionate care for you and your family.",
+    "x) Pay by Mail: North Valley Community Hospital — Billing Services",
+    "P.O. Box 771420, Rivermere, CA 94563"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "265.00",
+    "148.00",
+    "62.00",
+    "18.00"
+   ],
+   "total": "493.00",
+   "flags": [],
+   "payments": {
+    "adjustments": "216.50",
+    "other_payments": "18.00",
+    "balance_due": "258.50"
+   }
+  }
+ },
+ {
+  "name": "tilt_demo1_t12",
+  "source": "data/demo_bills.pdf page 1, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-001 Provider NPI: 1000000000",
+    "Date of service: 09/01/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "99284 Emergency department visit, level 4 1 $1,450.00 $1,450.00",
+    "0120 Room and board, semi-private 4 $2,800.00 $11,200.00",
+    "71046 Chest X-ray, two views 2 $265.00 $530.00",
+    "J2405 Ondansetron injection, 4 mg 1 $54.00 $54.00",
+    "A6402 Surgical dressing, sterile 2 $22.00 $44.00",
+    "Total charges $13,278.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "1450.00",
+    "11200.00",
+    "530.00",
+    "54.00",
+    "44.00"
+   ],
+   "total": "13278.00",
+   "flags": []
+  }
+ },
+ {
+  "name": "tilt_demo1_t5",
+  "source": "data/demo_bills.pdf page 1, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-001 Provider NPI: 1000000000",
+    "Date of service: 09/01/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "99284 Emergency department visit, level 4 1 $1,450.00 $1,450.00",
+    "0120 Room and board, semi-private 4 $2,800.00 $11,200.00",
+    "71046 Chest X-ray, two views 2 $265.00 $530.00",
+    "J2405 Ondansetron injection, 4 mg 1 $54.00 $54.00",
+    "A6402 Surgical dressing, sterile 2 $22.00 $44.00",
+    "Total charges $13,278.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "1450.00",
+    "11200.00",
+    "530.00",
+    "54.00",
+    "44.00"
+   ],
+   "total": "13278.00",
+   "flags": []
+  }
+ },
+ {
+  "name": "tilt_demo1_t8",
+  "source": "data/demo_bills.pdf page 1, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "Itemized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name] Statement date: 09/28/2026",
+    "Account #: DEMO-001 Provider NPI: 1000000000",
+    "Date of service: 09/01/2026 Page: 1 of 1",
+    "Code Description Qty Unit price Line total",
+    "99284 Emergency department visit, level 4 1 $1,450.00 $1,450.00",
+    "0120 Room and board, semi-private 4 $2,800.00 $11,200.00",
+    "71046 Chest X-ray, two views 2 $265.00 $530.00",
+    "J2405 Ondansetron injection, 4 mg 1 $54.00 $54.00",
+    "A6402 Surgical dressing, sterile 2 $22.00 $44.00",
+    "Total charges $13,278.00",
+    "This is a synthetic bill generated for testing Candorify. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "1450.00",
+    "11200.00",
+    "530.00",
+    "54.00",
+    "44.00"
+   ],
+   "total": "13278.00",
+   "flags": []
+  }
+ },
+ {
+  "name": "tilt_pine_t12",
+  "source": "Pinebrook sample, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "FY YY Pinebrook Urgent Care Network    | statement Date:    02/14/2025",
+    "ZZX_ Patient Billing Statement    | Statement §:    PB-78150234",
+    "P.O. Box 7842, Brookfield, OR 97006 | (503) 555-4178    Amount Due:    $72.50",
+    "billing@pinebrookucn.com | www.pinebrookucn.com/billing    Due Date:    03/16/2025",
+    "Patient Name:    Jordan Ellis    |   Date of Service (DOS):   01/28/2025",
+    "| Account #:    700458912    | | Location:    Pinebrook Urgent Care ~ Rivermere",
+    "| DateofBirth: 07/19/1986    | | Rendering Provider:    Casey Morgan, PA-C",
+    "| Phone:    (971) 555-2398   Visit Type:    Urgent Care    oa",
+    "| Address:    1843 Maple Ridge Dr",
+    "|    5    Rivermere, OR 97015",
+    "Insurance Information    Statement Summary    -",
+    "Pioneer Health Plan    None on File    New Charges (This Visit):    $365.00",
+    "| Member ID: PH784339210    Insurance Payments/Adjustments:    ~-$307.50",
+    "Group #: 22417    Patient Payments (This Visit):    -$10.00",
+    "Relation: Self    CE",
+    "a.    AmountDue: $7250",
+    "Itemized Charges (DOS: 01/28/2025)",
+    "Insurance Insurance Patient Patient",
+    "CPT/HCPCS   Service Description    Qty    Charge   Adjustment   Payment   poe Si Balance",
+    "99203    Urgent care visit, new patient (level 3) 1    $21000  -$16800  -$4200 $0.00    $0.00",
+    "87804    Influenza A/B antigen test (POCT)    1    $45.00   -$2700  -$1800 $000 $000",
+    "87811    SARS-CoV-2 antigen test (POCT)    1    $45.00    -$27.00    -$18.00    $0.00    $0.00",
+    "87070    Throat culture    1    $30.00    -$1800 $1200 $000 $000",
+    "J1100    Dexamethasone, 4 mg (IM)    1    $25.00    -$15.00    -$10.00    $10.00    $0.00",
+    "96372    Therapeutic injection, IM    1    $1500 $900 $600 $000 $0.00",
+    "Totals (This Visit)    y",
+    "vem swe sme sew se]",
+    "Account Activity    ! 5 ¥",
+    "| 12/20/2024    Prior balance (unpaid from visit on 12/10/2024)    ®    5    $25.00",
+    "01/28/2025    Payment - Credit Card (Receipt #RCS59307)    MEE    -$1000 |",
+    "02/03/2025    Insurance Payment - Pioneer Health Plan (EOB #PHT2458123)    es    -$201.50 | :",
+    "02/03/2025    Insurance Adjustment — Contractual Allowance    106.00 |",
+    "§ a    0  <  TE  Ro |   a pn 5    .  3 a",
+    "~ Amount Due: $72.50    \"N",
+    "-~    -    —_— ee ——— ee    Sm    —    RN    ve tol   8",
+    "DPR",
+    "Pay Online    [= Mail Payment    Re",
+    "[=]    Make a secure payment at www.pinebrookucn.com/pay    Pinebrook Urgent Care Network",
+    "Use your account #: 700458912    P.O. Box 7842    Tai TR",
+    "Brookfield, OR 97006 ig Fa"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "210.00",
+    "45.00",
+    "45.00",
+    "30.00",
+    "25.00",
+    "15.00"
+   ],
+   "total": "365.00",
+   "flags": [
+    "subtotal_mismatch"
+   ]
+  }
+ },
+ {
+  "name": "tilt_pine_t5",
+  "source": "Pinebrook sample, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "sh Pinebrook Urgent Care Network    © Statement Date:    02/14/2025",
+    ".    .  .    |",
+    "== Patient Billing Statement    | Statement #:    PB-78150234",
+    "P.O. Box 7842, Brookfield, OR 97006 | (503) 555-4178    Amount Due:    $72.50",
+    "billing@pinebrookucn.com | www.pinebrookucn.com/billing    Due Date:    03/16/2025",
+    "| Patient Name:    Jordan Ellis    Date of Service (DOS):    01/28/2025",
+    "| Account i.    700458912    | | Location:    Pinebrook Urgent Care ~ Rivermere",
+    "wm de    07/19/1986    Rendering Provider:    Casey Morgan, PA-C    4 a",
+    "Phone:    (971) 555-2398    | visit Type:    Urgent Care",
+    "Address:    1843 Maple Ridge Dr    |",
+    "bec    Rivermere, OR 97015.    J",
+    "Statement Summary    :",
+    "Primary Insurance    Secondary Insurance    Prior Balance:    $25.00",
+    "Pioneer Health Plan    None on File    New Charges (This Visit):    $365.00",
+    "| Member ID: PH784339210    Insurance Payments/Adjustments:    -$307.50",
+    "Group #: 22417    Patient Payments (This Visit):    -$10.00",
+    "| Relation: Self    Due:    =  Ry ,  50",
+    "SE    i ————    Lg SEES |",
+    "Itemized Charges (DOS: 01/28/2025)",
+    "Insurance Insurance    Patient Pa    =",
+    "CPT/HCPCS Service Description    Qty Charge  ,gjustment Payment Payment    4",
+    "99203    Urgent care visit, new patient (level 3)    1    $210.00    ~$168.00    ~$42.00    $0.00    $0.00",
+    "87804    Influenza A/B antigen test (POCT)    1    $45.00    -$27.00    -$18.00    $0.00    $0.00",
+    "87811    SARS-CoV-2 antigen test (POCT)    1    $45.00    -$27.00    -$18.00    $0.00    $0.00  |",
+    "87070    Throat culture    1    $30.00    -$1800  -$12.00    $000 $000",
+    "J1100    Dexamethasone, 4 mg (IM)    1    $25.00    -$15.00    ~-$10.00    $10.00    $0.00    :",
+    "96372    Therapeutic injection, IM    1    $15.00    ~$9.00    -$6.00 1    $0.00    ~ $0.00",
+    "Totals (This Visit)    :    $365.00 $264.00 $106.00 $10.00 $0.00 |",
+    "Account Activity",
+    "| Date    Description    3 oN. em    A   4",
+    "12/20/2024    Prior balance (unpaid from visit on 12/10/2024)    {an    $25.00    i",
+    "|    01/28/2025    Payment - Credit Card (Receipt #RC559307)    |    ~ -$1000    »",
+    "02/03/2025    Insurance Payment - Pioneer Health Plan (EOB #PHT2458123)    BRS    -$201.50",
+    "|    02/03/2025    Insurance Adjustment - Contractual Allowance    -$106.00",
+    "p    oA    T=    YF",
+    "Amount Due: $72.50    D    Nd",
+    "1H on TEC   pL.  -    aig    “3",
+    "-    i    -",
+    "Pay Online    =    Mail Payment    nse",
+    "Make a secure payment at www.pinebrookucn.com/pay    Pinebrook Urgent Care Network    + aan Lt",
+    "Use your account #: 700458912    P.O. Box 7842    S",
+    "Brookfield, OR 97006    Pit aad"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "210.00",
+    "45.00",
+    "45.00",
+    "30.00",
+    "25.00",
+    "15.00"
+   ],
+   "total": "365.00",
+   "flags": [
+    "subtotal_mismatch"
+   ]
+  }
+ },
+ {
+  "name": "tilt_pine_t8",
+  "source": "Pinebrook sample, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "1h Pinebrook Urgent Care Network    [Statement Date:    02/14/2025",
+    "_——__ Patient Billing Statement    | Statement #:    PB-78150234",
+    "P.O. Box 7842, Brookfield, OR 97006 | (503) 555-4178    Amount Due:    $72.50",
+    "billing@pinebrookucn.com | www.pinebrookucn.comybilling    Due Date:    03/16/2025",
+    "| Patient Name:    Jordan Ellis    Date of Service (DOS): 01/28/2025",
+    "[Cute    700458912    | | Location:    Pinebrook Urgent Care - Rivermere",
+    "—_    07/19/1986    |    Rendering Provider:    Casey Morgan, PA-C    + ba,",
+    "Phone:    (971) 555-2398    Visit Type:    U    t Care",
+    "| Address:    1843 Maple Ridge Dr",
+    "Lo Rivermers, ORG701S",
+    "Primary Insurance    Secondary Insurance    Prior Balance:    $25.00",
+    "Pioneer Health Plan    None on File    New Charges (This Visit):    $365.00",
+    "| Member ID: PH784339210    Insurance Payments/Adjustments:    -$307.50",
+    "Group #: 22417    Patient Payments (This Visit):    -$10.00",
+    "Relation: Self    Amount Due: EA = = =  st i",
+    "Itemized Charges (DOS: 01/28/2025)",
+    "Insurance Insurance Patient Pa",
+    "CPT/HCPCS Service Description    Qty    Charge    Adjustment Payment 1 CB",
+    "99203    Urgent care visit, new patient (level 3)    1    $210.00    -$168.00    ~-$42.00    $0.00    $0.00",
+    "87804    Influenza A/B antigen test (POCT)    1    $45.00    -$2700 ~~ -$1800 $000 $000",
+    "87811    SARS-CoV-2 antigen test (POCT)    1    $45.00    -$2700 ~~ -$1800 ~~ $000 $0.00",
+    "87070    Throat culture    1    $3000 ~~ -$1800  -$1200 $000 $000",
+    "J1100    Dexamethasone, 4 mg (IM)    1    $25.00    -$15.00    -$10.00    $10.00    $0.00",
+    "$15.00   -$9.00   -$600 $000 $000",
+    "96372    Therapeutic injection, IM    1    ‘    3    Ee SE",
+    "Totals (This Visit)    Xo    $365.00 $264.00 -$106.00 $10.00    LT",
+    "Account Activity    3    n    .    .    -    =",
+    "|  Date    Description 3    ,    WOAGL i l   RE 4   Su A   X",
+    "|\" 12/20/2024    Prior balance (unpaid from visit on 12/10/2024)    Gi    a    $25.00",
+    "|   01/28/2025    Payment - Credit Card (Receipt #RC559307)    ec    -$1000 |",
+    "02/03/2025    Insurance Payment — Pioneer Health Plan (EOB #PHT2458123)    Bg    oe    \\",
+    "| ovonamas meaner Conrad Movers    2)",
+    "Amount Due:    SA    N",
+    "PE oe    at",
+    "Mail Payment    Rees +1 0",
+    "— Pay Online    com/pay    &   Pinebrook Urgent Care Network",
+    "Make a secure payment at www pineb    P.0. Box 7842    3",
+    "Use your account #: 700458912    Brookfield, OR 97006    Ue"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "210.00",
+    "45.00",
+    "45.00",
+    "30.00",
+    "25.00",
+    "15.00"
+   ],
+   "total": "365.00",
+   "flags": [
+    "subtotal_mismatch"
+   ]
+  }
+ },
+ {
+  "name": "tilt_syn1_t12",
+  "source": "data/synthetic_bills.pdf page 1, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "temized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name)    Statement date: 09/28/2026",
+    "Account #: BILL-001    Provider NPI: 1000000000",
+    "Date of service: 09/01/2026    Page: 10f 1",
+    "AB402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "J7030    Sodium chloride 0.9% IV solution, 1000 mL    3    $78.00    $329.00",
+    "AB402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "99284    Emergency department visit, level 4    1    $1,450.00    $1,450.00",
+    "80053    Comprehensive metabolic panel    3    $118.00    $354.00",
+    "Total charges    $2,177.00",
+    "This is a synthetic t    yenerated for testing Candority. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "22.00",
+    "329.00",
+    "22.00",
+    "1450.00",
+    "354.00"
+   ],
+   "total": "2177.00",
+   "flags": [
+    "duplicate_line",
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "tilt_syn1_t5",
+  "source": "data/synthetic_bills.pdf page 1, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "temized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name]    Statement date: 09/28/2026",
+    "Account #: BILL-001    Provider NPI: 1000000000",
+    "Date of service: 09/01/2026    Page: 10f 1",
+    "AB402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "J7030    Sodium chloride 0.9% IV solution, 1000 mL    3    $78.00    $329.00",
+    "AB402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "99284    Emergency department visit, level 4    1    $1,450.00    $1,450.00",
+    "80053    Comprehensive metabolic panel    3    $118.00    $354.00",
+    "Total charges    $2,177.00",
+    "T    ynthetic bill generated for testing Candorify. it does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "22.00",
+    "329.00",
+    "22.00",
+    "1450.00",
+    "354.00"
+   ],
+   "total": "2177.00",
+   "flags": [
+    "duplicate_line",
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "tilt_syn1_t8",
+  "source": "data/synthetic_bills.pdf page 1, photographed tilted",
+  "note": "",
+  "pages": [
+   [
+    "Riverside General Hospital",
+    "temized Statement of Charges | 123 Medical Center Dr, Anytown, USA",
+    "Patient: [Patient Name)    Statement date: 09/28/2026",
+    "Account #: BILL-001    Provider NPI: 1000000000",
+    "Date of service: 09/01/2026    Page: 1 of 1",
+    "AB402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "J7030    Sodium chloride 0.9% IV solution, 1000 mL    3    $78.00    $329.00",
+    "AB402    Surgical dressing, sterile    1    $22.00    $22.00",
+    "99284    Emergency department visit, level 4    1    $1,450.00    $1,450.00",
+    "80053    Comprehensive metabolic panel    3    $118.00    $354.00",
+    "Total charges    $2,177.00",
+    "™    2 synthetic bill generated for testing Candority. It does not represent a real patient or real charges."
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "22.00",
+    "329.00",
+    "22.00",
+    "1450.00",
+    "354.00"
+   ],
+   "total": "2177.00",
+   "flags": [
+    "duplicate_line",
+    "line_math"
+   ]
+  }
+ },
+ {
+  "name": "westbrook_3_pages",
+  "source": "Westbrook Regional sample hospital statement, 3 phone photos (fictional)",
+  "note": "Page subtotals are listed but are not charges; the Billing Activity table repeats charges already listed. The bill's own total ($56,492) is far below its 34 listed charges ($74,599), J2543 is listed twice, and the payments are $10 off.",
+  "pages": [
+   [
+    "3    >    Westbrook Patient Financial Services",
+    "wl |» Westbrook Regional    PO. Box 76419",
+    "°n   Medical C    Westbrook, NJ 07093-6419",
+    "edaica    enter    (877) 555-3210 (Mon-Fri, 8:00 AM — 5:30 PM ET)",
+    "EE -    www.westbrookregional.org/billing",
+    ".    Statement Date:    Account Number:    Due Date:",
+    "Hospital Statement    05/18/2026    WRMC.47205831 | 08/17/2026 | Pegelof3",
+    "Guarantor / Patient Information    Insurance Information",
+    "Guarantor:    Olivia Mercer    Primary Insurance:    Pioneer Health PPO",
+    "Patient:    Daniel Mercer    -",
+    "|    3    ki",
+    "|  A bes    WRMC-47295831    Secondary Insurance: Lakeview Supplemental Plan",
+    "Medical Record Number: MR-8803142",
+    "Admission Date:    04/22/2026    Attending Provider",
+    "Discharge Date:    04/25/2026    5    N    3",
+    "Service Type:    Inpatient admission (multi-day) following    Attending Provider:    Sonia Patel, MD",
+    "emergency evaluation and laparoscopic",
+    "appendectomy.",
+    "Acco    umma",
+    "untLS    oy    Amount Due",
+    "Total Hospital Charges    $56,482.00",
+    "Insurance Payments    -$32,468.75    $ 4   609   2 5",
+    "Insurance Adjustments    -$18,904.00    ’    Ll",
+    "Prior Patient Payments    -$500.00",
+    "Estimated Patient Balance    $4,609.25    Due By: 06/17/2026",
+    "Hospital Service Summary",
+    "Service Date(s)    Service / Description    Provider / Department    Charges",
+    "Emergency Department Evaluation",
+    "04/22/2026    (initial assessment, stabilization)    Emergency Department    $2,385.00",
+    "04/22/2026    CT Abdomen/Pelvis with Contrast    Radiology    $3,725.00",
+    "04/22/2026    Operating Room Services    | Surgical Services    $8,950.00",
+    "| 04/22/2026    Laparoscopic Appendectomy    Sonia Patel, MD (General Surgery)    $14,320.00",
+    "04/22/2026    Anesthesia Services    Anesthesiology    $4,865.00",
+    "04/22/2026 - 04/22/26    Recovery Room / Post-Anesthesia Care    | Post-Anesthesia Care Unit    |    $2,140.00",
+    "04/22/2026 - 04/25/2026 | Room and Board — Medical/Surgical (3 days)    Inpatient Care Unit    $12,600.00",
+    "04/22/2026 - 04/25/2026    Pharmacy (inpatient medications)    Pharmacy    $2,715.00",
+    "04/22/2026 - 04/25/2026    Nursing Services (inpatient care)    | Nursing Services    |    $4,782.00",
+    "SSCS Sai os ou A SEE Ras Se Te    |    E:",
+    "Subtotal of Charges (Page 1)    $56,482.00",
+    "Additional itemized charges continue on the following page."
+   ],
+   [
+    "ey",
+    "5    Westbrook Patient Financial Services",
+    "= a Westbrook Regional    PO. Box 76419",
+    "Cm    cal    Westbrook, NJ 07093-6419",
+    "Medical Center    (877) 555-3210 (Mon-Fri, 8:00 AM — 5:30 PM ET)",
+    "EE    www.westbrookregional.org/billing",
+    "A    Statement Date:    Account Number:    Due Date:",
+    "Hospital Statement    05/18/2026    WRMC-47295831 | 06/17/2026 | \"28¢2°f3",
+    "Guarantor / Patient Information    Insurance Information",
+    "Guarantor:    Olivia Mercer    Primary Insurance:    Pioneer Health PPO",
+    "Patient:    Daniel Mercer    x",
+    "Secondary Insurance: Lakeview Supplemental Plan",
+    "Account Number:    WRMC-47295831    ab    PP",
+    "Medical Record Number: MR-8803142",
+    "Admission Date:    04/22/2026    Attending Provider",
+    "i    :    04/25/2026",
+    "Digghsrge Dee    4 : /    FES    :    :    Attending Provider:    Sonia Patel, MD",
+    "Service Type:    Inpatient admission (multi-day) following",
+    "emergency evaluation and laparoscopic",
+    "appendectomy.",
+    "Detailed Itemized Charges",
+    "2    Revenue /    Pa    3    3",
+    "Service Date    CPT Code    Description    Department / Provider    Qty / Units    Charges",
+    "| 04/22/2026    85025    Complete Blood Count (CBC) w/ Diff    Laboratory Services    1    $165.00",
+    "04/22/2026    80053    Comprehensive Metabolic Panel (CMP)    Laboratory Services    1    |    $230.00",
+    "04/22/2026    81001    Urinalysis, Complete    Laboratory Services    1    $120.00",
+    "Surgical Pathology Exam    |",
+    "04/22/2026    88304    (appendix, gross & microscopic)    Pathology    |    1    $1,485.00",
+    "04/22/2026    96365    IV Therapy, Initial Infusion (< 1 hour)    Infusion Services    1    $285.00",
+    "|    |\" IV Fluids, 0.9% Sodium Chloride",
+    "|   04/22/2026 |  J7030 | (3000 mL bag)    | Pharmacy    BE    $78.00",
+    "04/22/2026    J2405    Ondansetron Injection, 4 mg    Pharmacy    1    $64.00",
+    "04/22/2026 | J1170    Morphine Sulfate Injection, 2 mg    |   Pharmacy    1    |    $85.00",
+    "04/22/2026    J1885    Ketorolac Injection, 15 mg    Pharmacy    1    $52.00",
+    "04/22/2026    J2543    Piperacillin/Tazobactam (Zosyn) IV, 3.375 g  |  Pharmacy    |    1    $412.00",
+    "04/22/2026    J2543    Piperacillin/Tazobactam (Zosyn) IV, 3.375 g    Pharmacy    1    $412.00",
+    "04/23/2026    76700    Abdominal Ultrasound, Complete    | Radiology    1    |    $1,250.00",
+    "04/23/2026    G0378    Telemetry Monitoring (per day)    Cardiac Monitoring    | 1day    $685.00",
+    "04/23/2026    94664    Respiratory Assessment & Treatment    Respiratory Therapy    |    1    $210.00",
+    "04/24/26    99232    Hospitalist Rounds (Subsequent Day)    Hospital Medicine    1    $525.00",
+    ".    3    Sonia Patel, MD    [",
+    "04/24/2026   |    99024    Post-op Surgical Follow-up (inpatient)    (General Surgery)    1    $340.00",
+    "04/24/2026    A4216    Sterile Kit, Minor Procedure    | Supply / Central Supply    1    $128.00",
+    "| 04/25/2026 | A4649    Surgical Supply — Misc. (wound care)    Supply / Central Supply    3    $96.00",
+    "| 04/25/2026    96376    IV Therapy, Additional Infusion (each)    Infusion Services    1    $190.00",
+    "04/25/2026    LAB    CMP, Repeat (Rpt)    | Laboratory Services    1    $230.00",
+    "Subtotal of Charges (Page 2)    $7,041.00",
+    "%    Additional itemized charges continue on Page 3."
+   ],
+   [
+    "N    .    5    Westbrook Patient Financial Services",
+    "= a Westbrook Regional    P.O. Box 76419",
+    "’n    ical    Westbrook, NJ 07093-6419",
+    "Medical Center    (877) 555-3210 (Mon-Fri, 8:00 AM — 5:30 PM ET)",
+    "EE    www.westbrookregional.org/billing",
+    "A    Statement Date:    Account Number:    Due Date:",
+    "Hospital Statement    05/18/2026    WRMC-47295831 | 06/17/2026 | \"29¢30f3",
+    "Hospital Service Summary (continued)",
+    "Service Date(s)    Service / Description    Provider / Department    Charges",
+    "04/25/2026    Physical Therapy Evaluation    Rehabilitation Services    $1,350.00",
+    "| 04/25/2026 - 04/29/2026    Physical Therapy (4 sessions)    Rehabilitation Services    $4,800.00",
+    "|   04/25/2026    Durable Medical Equipment (walker)    Supply Services    $375.00",
+    "04/26/2026 — 04/27/2026    Inpatient Room — Standard (2 days)    Inpatient Care Unit    $4,200.00",
+    "|   04/27/2026    Discharge Planning Services    Case Management    $350.00",
+    "Subtotal of Charges (Page 3)    $10,975.00",
+    "Total Hospital Charges (All Pages)    $56,492.00",
+    "Billing Activity / Insurance Transactions    Final Account Summary",
+    "Posting Date    Transaction / Description    Amount    Total Charges (All Pages)    $56,492.00 |",
+    "04/22/2026    Charge - Emergency Dept. Evaluation    $2,385.00    |    Insurance Payments    $32,468.75 |",
+    "| 04/23/2026    Charge — CT Abdomen/Pelvis w/ Contrast    $3,725.00 | | Contractual Adjustments    -$18,904.00   |",
+    "| 04/28/26    Ins. Payment — Pioneer Health PPO    $32,468.75    Patient Payments    -$500.00",
+    "|   04/29/2026    Contractual Adjustment — In-Network    -$18,904.00    Deductible (Patient Responsibility)    $1,500.00",
+    "| 05/02/2026    Patient Payment ~ Prior Balance    |    -$500.00    Coinsurance (20% of $15,309.25)    $3,061.85",
+    "05/05/2026    Charge ~ Physical Therapy (4 sessions)    $4,800.00    Final Balance Due    $4,609.25",
+    "Payment Options",
+    "JP |   Pay Online (Fastest)    |   Pay by Phone    |   (=) Pay by Mall",
+    "[    E    Send your payment with the    |",
+    "www.westbrookregional.org/billing    (877) 555-3210    |    remittance stub below to:",
+    "view yourac coun, make a payment,    Mon-Fri, 8:00 AM - 5:30 PM ET    eg Roca Medical Center",
+    "and manage billing preferences.    |    Westbrook, NJ 07093-6419",
+    "This is the final page of your statement. No additional pages will follow.",
+    "If you have questions about your bill, please contact Westbrook Patient Financial Services at (877) 555-3210.",
+    "-=¥----——--—=------=-==-————=——————-— Detach and return with your payment. = = = = = = = = = = = = = = = mm eee",
+    "\"| o Westbrook Regional    Payment Remittance Stub",
+    "3 “m  Medical Center    Include this portion with your payment.",
+    "EE",
+    "Westbrook Patient Financial Services    [ AccountNumber: 5  'WRMC-47295831    Td",
+    "P.O. Box 76419    Medical Record Number:    | Mr-8803142",
+    "Westbrook, NJ 07093-6419    Statement Date:    | 05/18/2026",
+    "Due Date:    06/17/2026",
+    "Olivia Mercer    Current Balance:    $4,609.25",
+    "Daniel Mercer",
+    "Westbrook, NJ 07093    Payment Amount Enclosed: $",
+    "01000047295831 0000460925 06172026 7"
+   ]
+  ],
+  "expect": {
+   "charges": [
+    "2385.00",
+    "3725.00",
+    "8950.00",
+    "14320.00",
+    "4865.00",
+    "2140.00",
+    "12600.00",
+    "2715.00",
+    "4782.00",
+    "165.00",
+    "230.00",
+    "120.00",
+    "1485.00",
+    "285.00",
+    "78.00",
+    "64.00",
+    "85.00",
+    "52.00",
+    "412.00",
+    "412.00",
+    "1250.00",
+    "685.00",
+    "210.00",
+    "525.00",
+    "340.00",
+    "128.00",
+    "96.00",
+    "190.00",
+    "230.00",
+    "1350.00",
+    "4800.00",
+    "375.00",
+    "4200.00",
+    "350.00"
+   ],
+   "total": "56492.00",
+   "flags": [
+    "duplicate_line",
+    "payment_mismatch",
+    "subtotal_mismatch"
+   ],
+   "payments": {
+    "insurance_paid": "32468.75",
+    "adjustments": "18904.00",
+    "patient_responsibility": "4561.85",
+    "patient_paid": "500.00",
+    "balance_due": "4609.25"
+   }
+  }
+ }
+]

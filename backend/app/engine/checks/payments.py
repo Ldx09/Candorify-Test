@@ -1,7 +1,7 @@
 """Payment checks, for bills that show who paid what (bill.payments). Plain arithmetic, no AI.
 
 payment_mismatch: the payments don't add up to what the bill says is still owed, either
-    charges - insurance paid - discounts - payments = still owed, or
+    charges + earlier balance - insurance paid - discounts - payments = still owed, or
     the patient's share - what the patient paid = still owed.
 overpaid: the patient paid more than their share, or the bill shows a credit: they may be owed a refund.
 Nothing is checked when the bill doesn't show enough, or when the reader had to throw away a misread amount.
@@ -26,19 +26,21 @@ def check_payments(bill: Bill) -> list[Flag]:
     if owed is not None and not p.uncertain:
         paid_by_others = (p.insurance_paid or 0) + (p.adjustments or 0) + (p.other_payments or 0)
         if p.insurance_paid is not None or p.adjustments is not None:
-            expected = bill.stated_subtotal - paid_by_others - (p.patient_paid or 0)
+            prior = p.prior_balance or 0          # an unpaid balance from an earlier visit, carried onto this bill
+            expected = bill.stated_subtotal + prior - paid_by_others - (p.patient_paid or 0)
             # If the payments add up with the charges as listed, the problem is the printed total, which the
             # subtotal check already flags: don't flag the same mistake twice.
-            listed = sum((ln.line_total for ln in bill.lines), Decimal("0")) - paid_by_others - (p.patient_paid or 0)
+            listed = sum((ln.line_total for ln in bill.lines), Decimal("0")) + prior - paid_by_others - (p.patient_paid or 0)
             if abs(expected - owed) > TOLERANCE and abs(listed - owed) > TOLERANCE:
                 steps = [f"charges {_money(bill.stated_subtotal)}"]
+                plus = f" + earlier balance {_money(prior)}" if prior else ""
                 for value, label in ((p.insurance_paid, "insurance paid"), (p.adjustments, "discounts"),
                                      (p.other_payments, "other payments"), (p.patient_paid, "your payments")):
                     if value is not None:
                         steps.append(f"{label} {_money(value)}")
                 flags.append(Flag(
                     rule="payment_mismatch", line_no=None, code=None, expected=expected, actual=owed,
-                    message=(f"The payments don't add up: {' - '.join(steps)} = {_money(expected)}, but the bill "
+                    message=(f"The payments don't add up: {steps[0]}{plus} - {' - '.join(steps[1:])} = {_money(expected)}, but the bill "
                              f"says you owe {_money(owed)}. Ask the billing office to explain the difference."),
                 ))
         elif p.patient_responsibility is not None and p.patient_paid is not None:

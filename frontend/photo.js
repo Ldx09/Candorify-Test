@@ -163,9 +163,61 @@
         px[j] = px[j + 1] = px[j + 2] = v;
       }      
       ctx.putImageData(data, 0, 0);
-      return c;
-    });
+      return straighten(c, px);    });
   }
+
+    // A photo taken at a slight angle makes the text lines slant, and the reader then mixes up the rows.
+  // Finds the slant (up to 15 degrees) from where the dark pixels line up best, and turns the picture level.
+  function skewAngle(px, w, h) {
+    var step = Math.max(1, Math.round(Math.max(w, h) / 1000)), xs = [], ys = [], d = 3 * step;
+    // ink: a dark pixel with light paper just above or below it (a dark table or shadow doesn't count)
+    for (var y = d; y < h - d; y += step) {
+      for (var x = 0; x < w; x += step) {
+        var v = px[(y * w + x) * 4];
+        if (v < 120 && (px[((y - d) * w + x) * 4] > 170 || px[((y + d) * w + x) * 4] > 170)) { xs.push(x); ys.push(y); }
+      }
+    }
+    if (xs.length < 500) return 0;
+    var keep = Math.max(1, Math.floor(xs.length / 60000));
+    var size = Math.ceil(Math.hypot(w, h)) + 2;
+    function score(deg) {
+      var a = deg * Math.PI / 180, cos = Math.cos(a), sin = Math.sin(a), bins = new Float64Array(size), off = size / 2;
+      for (var i = 0; i < xs.length; i += keep) {
+        var b = Math.round((ys[i] - h / 2) * cos - (xs[i] - w / 2) * sin + off);
+        if (b >= 0 && b < size) bins[b]++;
+      }
+      var s = 0;
+      for (var k = 0; k < size; k++) s += bins[k] * bins[k];
+      return s;
+    }
+    function best(from, to, by) {
+      var top = from, topScore = -1;
+      for (var dd = from; dd <= to + 1e-9; dd += by) {
+        var sc = score(dd);
+        if (sc > topScore) { topScore = sc; top = dd; }
+      }
+      return top;
+    }
+    var coarse = best(-15, 15, 0.5);
+    return best(coarse - 0.5, coarse + 0.5, 0.1);
+  }
+  function straighten(c, px) {
+    var deg = skewAngle(px, c.width, c.height);
+    if (Math.abs(deg) < 0.3) return c;
+    var a = deg * Math.PI / 180, cos = Math.abs(Math.cos(a)), sin = Math.abs(Math.sin(a));
+    var out = document.createElement("canvas");
+    out.width = Math.round(c.width * cos + c.height * sin);
+    out.height = Math.round(c.width * sin + c.height * cos);
+    var o = out.getContext("2d");
+    o.fillStyle = "#fff";
+    o.fillRect(0, 0, out.width, out.height);
+    o.translate(out.width / 2, out.height / 2);
+    o.rotate(-a);
+    o.drawImage(c, -c.width / 2, -c.height / 2);
+    return out;
+  }
+
+
   function imgFallback(file) {
     return new Promise(function (ok, fail) {
       var img = new Image(), url = URL.createObjectURL(file);
@@ -204,9 +256,10 @@
         return chain.then(function () {
           current = i;
           return prepare(file).then(function (canvas) { return worker.recognize(canvas); }).then(function (r) {
-            pages.push((r.data.text || "").split("\n").map(function (l) { return l.trim(); })
-              .filter(Boolean).map(function (l) { return l.slice(0, 300); }).slice(0, 400));
-          });
+            // wide gaps between a bill's columns are kept as 4 spaces: the server uses them to tell columns apart
+            pages.push((r.data.text || "").split("\n").map(function (l) { return l.trim().replace(/ {5,}/g, "    "); })
+              .filter(Boolean).map(function (l) { return l.slice(0, 500); }).slice(0, 400));
+                      });
         });
       }, Promise.resolve()).then(function () { return pages; });
     }).finally(function () {
@@ -219,6 +272,7 @@
     clear: clear,
     readPages: readPages,
     readFiles: readFiles,
+    lastPages: null,   // the text of the last photos read; for testing: copy(JSON.stringify(CandorifyPhoto.lastPages))
   };
   
   function init() { build(); }

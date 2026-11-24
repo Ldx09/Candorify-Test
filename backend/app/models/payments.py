@@ -15,6 +15,7 @@ class Payments(BaseModel):
     patient_responsibility: Decimal | None = Field(default=None, ge=0, **_MONEY)  # the patient's share
     patient_paid: Decimal | None = Field(default=None, ge=0, **_MONEY)            # paid by the patient
     other_payments: Decimal | None = Field(default=None, ge=0, **_MONEY)          # paid, payer not shown
+    prior_balance: Decimal | None = Field(default=None, ge=0, **_MONEY)           # owed from an earlier visit
     balance_due: Decimal | None = Field(default=None, **_MONEY)                   # still owed (below 0 = credit)
     uncertain: bool = False   # True if the reader had to throw away an impossible amount (not shown to users)
 
@@ -36,4 +37,4 @@ class Payments(BaseModel):
 
 
 AMOUNT_FIELDS = ("insurance_paid", "adjustments", "patient_responsibility", "patient_paid", "other_payments",
-                 "balance_due")
+                 "prior_balance", "balance_due")

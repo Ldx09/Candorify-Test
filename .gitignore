@@ -21,3 +21,7 @@ MyChart*.pdf
 .env
 *.db
 *.pdf
+backend/photo_cases_local/
+backend_current.zip
+.env
+backend/.env
